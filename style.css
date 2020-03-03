@@ -160,3 +160,61 @@ footer p {
   font-size: 20px;
   color: var(--black-2);
 }
+
+/* ==== MODAL ==== */
+
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  visibility: hidden;
+}
+
+.modal-overlay .modal {
+  background: white;
+  border-radius: 16px;
+  width: 660px;
+  height: 413px;
+  margin: 20vh auto;
+}
+
+.modal-article {
+  text-align: center;
+}
+
+.modal-article img {
+  margin: 30px 30px 20px;
+  border-radius: 15px;
+  width: 600px;
+  height: 200px;
+}
+
+.modal-article p {
+  font-size: 24px;
+  line-height: 26px;
+  color: var(--black-2);
+  margin-bottom: 5px;
+}
+
+.modal-article span {
+  display: block;
+  font-size: 18px;
+  line-height: 21px;
+  margin-bottom: 60px;
+  color: var(--gray-1);
+}
+
+.modal-article a {
+  font-size: 16px;
+  line-height: 19px;
+  color: var(--gray-2);
+  cursor: pointer;
+}
+
+/* ==== MODAL ACTIVE ==== */
+
+.modal-overlay.active{
+  visibility: visible;
+}
