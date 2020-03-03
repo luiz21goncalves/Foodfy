@@ -140,3 +140,23 @@ footer p {
   line-height: 62px;
   color: var(--gray-2);
 }
+
+/* ==== ABOUT ==== */
+
+.about p, .start p, .recipe p {
+  font-size: 18px;
+  color: #444444;
+  line-height: 28px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.about h1 {
+  font-size: 24px;
+  color: var(--black-2);
+}
+
+.start h2, .recipe h3 {
+  font-size: 20px;
+  color: var(--black-2);
+}
