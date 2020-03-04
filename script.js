@@ -9,7 +9,7 @@ for (let recipe of recipes) {
     modalOverlay.querySelector("p").innerHTML = recipe.querySelector("p").innerHTML;
     modalOverlay.querySelector("span").innerHTML = recipe.querySelector("span").innerHTML;
   });
-};
+}
 
 modalOverlay.querySelector("a").addEventListener("click", function() {
   modalOverlay.classList.remove("active");
