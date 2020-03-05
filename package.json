@@ -1,0 +1,26 @@
+{
+  "name": "Foodfy",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luiz21goncalves/Foodfy.git"
+  },
+  "keywords": [],
+  "author": "Luiz Goncalves",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/luiz21goncalves/Foodfy/issues"
+  },
+  "homepage": "https://github.com/luiz21goncalves/Foodfy#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nunjucks": "^3.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}

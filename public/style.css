@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap');
+
+
+:root {
+  --black-1: #000000;
+  --black-2: #111111;
+  --pink: #FBDFDB;
+  --gray-1: #777777;
+  --gray-2: #999999;
+  --gray-3: #eeeeee;
+  --font-menu:
+}
+
+/* ==== LAUYOUT ==== */
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+header, main, footer {
+  margin: 0 230px;
+}
+
+nav {
+  margin-top: 31px;
+  height: 32px;
+  background-color: var(--pink);
+  display: flex;
+  align-items: center;
+}
+
+nav img {
+  margin-right: 122px;
+}
+
+nav a {
+  font-size: 16px;
+  line-height: 19px;
+  color: var(--black-2);
+  text-decoration: none;
+  margin-right: 30px;
+}
