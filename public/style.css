@@ -23,14 +23,13 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-header, main, footer {
-  margin: 0 230px;
+header, footer {
+  padding: 0 230px;
 }
 
 nav {
-  margin-top: 31px;
+  margin-top: 30px;
   height: 32px;
-  background-color: var(--pink);
   display: flex;
   align-items: center;
 }
@@ -45,4 +44,115 @@ nav a {
   color: var(--black-2);
   text-decoration: none;
   margin-right: 30px;
+}
+
+main {
+  margin: 50px auto;
+  padding: 0 230px;
+}
+
+footer {
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color:var(--gray-3);
+}
+
+footer p {
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--gray-2);
+}
+
+/* ==== INDEX ==== */
+
+section {
+  background: var(--pink);
+  margin-bottom: 50px;
+  border-radius: 30px;
+  width: 940px;
+  height: 366px;
+  position: relative;
+}
+
+.section-content {
+  width: 316px;
+  position: absolute;
+  top: 117px;
+  left: 60px;
+}
+
+.section-content h1 {
+  font-size: 32px;
+  line-height: 38px;
+  color: var(--black-2);
+  margin-bottom: 10px;
+}
+
+.section-content p {
+  opacity: 0.7;
+  font-size: 18px;
+  line-height: 28px;
+  color: var(--black-1);
+}
+
+.section-img {
+  position: absolute;
+  top: 66px;
+  right: 100px;
+}
+
+.recipes {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 30px 20px;
+}
+
+article img {
+  width: 300;
+  height: 140px;
+  border-radius: 15px;
+}
+
+article p {
+  font-size: 18px;
+  line-height: 21px;
+  color: var(--black-2);
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+article span {
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--gray-1);
+}
+
+/* ==== ABOUT ==== */
+
+.about h1, .start h2, .recipe h3 {
+  color: var(--black-2);
+  margin-bottom: 20px;
+}
+
+.about h1 {
+  font-size: 24px;
+  line-height: 28px;
+}
+
+.start h2 {
+  font-size: 20px;
+  line-height: 24px;
+}
+.recipe h3 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.about p, .start p, .recipe p {
+  font-size: 18px;
+  line-height: 28px;
+  color: #444444;
+  margin-bottom: 30px;
 }
