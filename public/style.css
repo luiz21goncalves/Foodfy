@@ -177,7 +177,7 @@ article span {
   color: var(--gray-1);
 }
 
-.ingredient h3, .preparation h3, .additional-information h3 {
+.paragraphs h3 {
   font-size: 24px;
   color: var(--black-2);
   display: inline-block;
@@ -185,18 +185,18 @@ article span {
   margin-top: 50px;
 }
 
-.ingredient a, .preparation a, .additional-information a {
+.paragraphs a {
   font-size: 12px;
   color: var(--gray-2);
   cursor: pointer;
   margin-left: 8px;
 }
 
-.ingredient ul {
+.paragraphs ul {
   list-style-position: inside;
 }
 
-.ingredient li, .preparation p, .additional-information p {
+.paragraphs li, .paragraphs p {
   font-size: 18px;
   line-height: 28px;
   color: #444444;
@@ -204,5 +204,5 @@ article span {
 }
 
 .recipe-hidden.active {
-  visibility: hidden;
+  display: none;
 }
