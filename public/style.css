@@ -40,7 +40,6 @@ nav img {
 
 nav a {
   font-size: 16px;
-  line-height: 19px;
   color: var(--black-2);
   text-decoration: none;
   margin-right: 30px;
@@ -61,7 +60,6 @@ footer {
 
 footer p {
   font-size: 14px;
-  line-height: 16px;
   color: var(--gray-2);
 }
 
@@ -85,7 +83,6 @@ section {
 
 .section-content h1 {
   font-size: 32px;
-  line-height: 38px;
   color: var(--black-2);
   margin-bottom: 10px;
 }
@@ -109,15 +106,18 @@ section {
   gap: 30px 20px;
 }
 
+article {
+  cursor: pointer;
+}
+
 article img {
-  width: 300;
+  width: 300px;
   height: 140px;
   border-radius: 15px;
 }
 
 article p {
   font-size: 18px;
-  line-height: 21px;
   color: var(--black-2);
   margin-top: 20px;
   margin-bottom: 5px;
@@ -125,34 +125,84 @@ article p {
 
 article span {
   font-size: 14px;
-  line-height: 16px;
   color: var(--gray-1);
 }
 
 /* ==== ABOUT ==== */
 
-.about h1, .start h2, .recipe h3 {
+.about h1, .about-start h2, .about-recipe h3 {
   color: var(--black-2);
   margin-bottom: 20px;
 }
 
-.about h1 {
+.about-about h1 {
   font-size: 24px;
-  line-height: 28px;
 }
 
-.start h2 {
+.about-start h2 {
   font-size: 20px;
-  line-height: 24px;
 }
-.recipe h3 {
+.about-recipe h3 {
   font-size: 20px;
-  line-height: 24px;
 }
 
-.about p, .start p, .recipe p {
+.about p, .about-start p, .about-recipe p {
   font-size: 18px;
   line-height: 28px;
   color: #444444;
   margin-bottom: 30px;
+}
+
+/* ==== RECIPE ==== */
+
+.recipe-container img{
+  width: 940px;
+  height: 280px;
+  border-radius: 15px;
+  margin-bottom: 50px;
+}
+
+.recipe-title {
+  text-align: center;
+}
+
+.recipe-title h1 {
+  font-size: 36px;
+  color: var(--black-2);
+  margin-bottom: 4px;
+}
+
+.recipe-title h2 {
+  font-size: 20px;
+  color: var(--gray-1);
+}
+
+.ingredient h3, .preparation h3, .additional-information h3 {
+  font-size: 24px;
+  color: var(--black-2);
+  display: inline-block;
+  margin-bottom: 20px;
+  margin-top: 50px;
+}
+
+.ingredient a, .preparation a, .additional-information a {
+  font-size: 12px;
+  color: var(--gray-2);
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.ingredient ul {
+  list-style-position: inside;
+}
+
+.ingredient li, .preparation p, .additional-information p {
+  font-size: 18px;
+  line-height: 28px;
+  color: #444444;
+  width: 940px;
+}
+
+.recipe-hidden.active {
+  visibility: hidden;
 }

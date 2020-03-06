@@ -5,10 +5,64 @@
     <link rel="stylesheet" href="/style.css">
 {% endblock head %}
 
+{% block nav %}
+  <a href="/">
+    <img src="../assets/logo.png" alt="Foodfy logo">
+  </a>
+  <a href="/about">Sobre</a>
+  <a href="/recipe"><strong>Receitas</strong></a>
+{% endblock nav %}
+
 {% block content %}
-  <article>
-    <img src="./assets/burger.png" alt="">
-    <p>Triplo bacon burger</p>
-    <span>por Jorge Relato</span>
-  </article>
+
+  <div class="recipe-container">
+    <img src="{{ recipe.image }}" alt="Imagem de {{ recipe.title }}">
+
+    <div class="recipe-title">
+      <h1>{{ recipe.title }}</h1>
+      <h2>{{ recipe.author }}</h2>
+    </div>
+
+    <div class="ingredient">
+      <div>
+        <h3>Ingredientes</h3>
+        <a>ESCONDER</a>
+      </div>
+
+      <ul>
+        <div class="recipe-hidden">
+          {% for ingredient in recipe.ingredients %}
+            <li>{{ingredient}}</li>
+          {% endfor %}
+        </div>
+      </ul>
+    </div>
+
+    <div class="preparation">
+      <div>
+        <h3>Modo de preparo</h3>
+        <a>ESCONDER</a>
+      </div>
+
+      <div class="recipe-hidden">
+        {% for phrase in recipe.preparation %}
+          <p>{{ phrase }}</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="additional-information">
+      <div>
+        <h3>Informações adicionais</h3>
+        <a>ESCONDER</a>
+      </div>
+
+      <div class="recipe-hidden">
+        <p>{{ recipe.information }}</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+
 {% endblock content %}

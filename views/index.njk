@@ -18,42 +18,17 @@
   </section>
 
   <div class="recipes">
+
+  {% for recipe in recipes %}
+  
     <article>
-      <img src="./assets/burger.png" alt="">
-      <p>Triplo bacon burger</p>
-      <span>por Jorge Relato</span>
+      <img src="{{ recipe.image }}" alt="Imagem de {{ recipe.title }}">
+      <p>{{ recipe.title }}</p>
+      <span>{{ recipe.author }}</span>
     </article>
+  
+  {% endfor %}
     
-    <article>
-      <img src="./assets/pizza.png" alt="">
-      <p>Pizza 4 estações</p>
-      <span>por Fabiana Melo</span>
-    </article>
-
-    <article>
-      <img src="./assets/espaguete.png" alt="">
-      <p>Espaguete de alho</p>
-      <span>por Júlia Kinoto</span>
-    </article>
-
-    <article>
-      <img src="./assets/lasanha.png" alt="">
-      <p>Lasanha mac n' cheese</p>
-      <span>por Juliana Vieira</span>
-    </article>
-
-    <article>
-      <img src="./assets/doce.png" alt="">
-      <p>Bocinhos pão-de-mel</p>
-      <span>por Ricardo Golvea</span>
-    </article>
-
-    <article>
-      <img src="./assets/asinhas.png" alt="">
-      <p>Asinhas de frando ao barbacue</p>
-      <span>por Vinia Steroski</span>
-    </article>
-
   </div>
 
   <script src="./script.js"></script>

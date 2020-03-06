@@ -10,11 +10,13 @@
   <body>
     <header>
       <nav>
+      {% block nav %}
           <a href="/">
             <img src="./assets/logo.png" alt="Foodfy logo">
           </a>
         <a href="/about">Sobre</a>
         <a href="/recipe">Receitas</a>
+      {% endblock nav %}
       </nav>
     </header>
  
