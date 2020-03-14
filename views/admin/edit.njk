@@ -1,0 +1,24 @@
+{% extends "admin/layout.njk" %}
+
+
+{% block content %}
+
+<div class="form">
+  <form action="">
+
+    <div class="actions">
+      <h3>Editando receita: {{ recipe.title }}</h3>  
+      <button type="submit">Salvar recita</button>
+    </div>
+
+    {% include "admin/filds.njk" %}
+  </form>
+
+  <form action="" id="delete">
+    <input type="hidden" name="id">
+    <button type="submit">Deletar</button>
+  </form>
+</div>
+
+
+{% endblock content %}

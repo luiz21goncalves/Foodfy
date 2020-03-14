@@ -1,0 +1,38 @@
+{% extends "admin/layout.njk" %}
+
+{% block content %}
+  <div class="actions">
+    <h3>Gerenciar recitas</h3>
+    <button type="submit">Salvar recita</button>
+  </div>
+
+  <div class="recipes admin">
+
+    {% for recipe in recipes %}
+
+      <article class="admin">
+        <img src="{{ recipe.image }}" alt="Imagem de {{ recipe.title }}">
+        
+        <div>       
+          <p>{{ recipe.title }}</p>
+          <span>por {{ recipe.author }}</span>
+          <a>Visualizar</a>
+        </div>
+      </article>
+
+    {% endfor %}
+    
+  </div>
+
+  <script>
+    const recipes = document.querySelectorAll("article");
+
+    for (let i = 0; i < recipes.length; i++) {
+      recipes[i].addEventListener("click", function() {
+        location.href = `/admin/recipes/${i}`
+        console.log(location.href)
+      });
+    };
+  </script>
+
+{% endblock content %}

@@ -1,18 +1,5 @@
 {% extends "layout.njk" %}
 
-{% block head %}
-    <title>Receitas - Foodfy</title>
-    <link rel="stylesheet" href="/style.css">
-{% endblock head %}
-
-{% block nav %}
-  <a href="/">
-    <img src="../assets/logo.png" alt="Foodfy logo">
-  </a>
-  <a href="/about">Sobre</a>
-  <a href="/recipe"><strong>Receitas</strong></a>
-{% endblock nav %}
-
 {% block content %}
 
   <div class="recipe-container">
@@ -20,7 +7,7 @@
 
     <div class="recipe-title">
       <h1>{{ recipe.title }}</h1>
-      <h2>{{ recipe.author }}</h2>
+      <p>{{ recipe.author }}</p>
     </div>
 
     <div class="paragraphs">
@@ -62,7 +49,27 @@
       </div>
     </div>
   </div>
-  
-  <script src="../script.js"></script>
+
+  <script>
+    const paragraphs = document.querySelectorAll(".paragraphs");
+
+    for (let paragraph of paragraphs) {
+      let hidden = false
+      
+      paragraph.querySelector(".btn-hidden").addEventListener("click", function () {
+        
+        if (hidden) {
+          paragraph.querySelector(".recipe-hidden").classList.remove("active");
+          paragraph.querySelector(".btn-hidden").innerHTML = "ESCONDER";
+          hidden = false;
+
+        } else {
+          paragraph.querySelector(".recipe-hidden").classList.add("active");
+          paragraph.querySelector(".btn-hidden").innerHTML = "MOSTRAR";
+          hidden = true;
+        }
+      });
+    }
+  </script>
 
 {% endblock content %}

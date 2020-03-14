@@ -8,7 +8,6 @@
   --gray-1: #777777;
   --gray-2: #999999;
   --gray-3: #eeeeee;
-  --font-menu:
 }
 
 /* ==== LAUYOUT ==== */
@@ -45,9 +44,14 @@ nav a {
   margin-right: 30px;
 }
 
+nav a.active {
+  font-weight: bold;
+}
+
 main {
   margin: 50px auto;
-  padding: 0 230px;
+  width: 940px;
+  box-sizing: border-box;
 }
 
 footer {
@@ -172,7 +176,7 @@ article span {
   margin-bottom: 4px;
 }
 
-.recipe-title h2 {
+.recipe-title p {
   font-size: 20px;
   color: var(--gray-1);
 }
@@ -205,4 +209,152 @@ article span {
 
 .recipe-hidden.active {
   display: none;
+}
+
+/* ==== LAYOUT ADMIN ==== */
+
+header.admin {
+  background-color: #111111;
+  height: 80px;
+}
+
+header.admin nav {
+  margin-top: 0;
+  height: 80px;
+}
+
+/* ==== ADMIN INDEX ==== */
+
+
+div.recipes.admin {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 30px;
+}
+
+article.admin {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  cursor: initial;
+}
+
+article.admin img {
+  width: 172px;
+  height: 80px;
+  border-radius: 8px;
+}
+
+article.admin div {
+  height: 80px;
+  width: 250px;
+}
+
+article.admin div p{
+  margin-top: 0;
+}
+
+article.admin div a {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  text-decoration: none;
+  color: #6558C3;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ==== ADMIN SHOW RECIPE ==== */
+
+div.actions {
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+div.actions h3 {
+  margin: 0;
+  font-size: 24px;
+  color: var(--black-2);
+}
+
+div.actions button, div.actions a.button {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #6558C3;
+  padding: 9px 20px;
+  text-decoration: none;
+  display: inline-block;
+  position: absolute;
+  right: 0px;
+  border-radius: 4px;
+  margin: 0;
+  outline: none;
+  cursor: pointer;
+}
+
+/* ==== FORM ==== */
+
+div.form {
+  position: relative;
+}
+
+form .author, form .item {
+  margin-bottom: 30px;
+}
+
+form .author {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 20px;
+}
+
+form .author div p, form .item p {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+form .author div input[type="text"], form .item input[type="text"], form .item textarea{
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  border-radius: 4px;
+  padding: 15px 20px;
+  font-size: 16px;
+  width: 100%;
+  color: #111;
+  box-sizing: border-box;
+}
+
+form .item a {
+  font-size: 16px;
+  font-weight: bold;
+  color: #6558C3;
+  text-decoration: none;
+  margin-top: 15px;
+  display: inline-block;
+}
+
+form#delete {
+  position: absolute;
+}
+
+form#delete button[type="submit"] {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #DC4747;;
+  padding: 9px 20px;
+  text-decoration: none;
+  display: inline-block;
+  position: absolute;
+  top: -845px;
+  left: 700px;
+  border-radius: 4px;
+  margin: 0;
+  outline: none;
+  cursor: pointer;
 }

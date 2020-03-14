@@ -1,22 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    {% block head %}
-      <title>Foodfy</title>
-      <link rel="stylesheet" href="/style.css">
-    {% endblock head %}
+    <title>Foodfy</title>
+    <link rel="stylesheet" href="/style.css">
   </head>
   
   <body>
     <header>
       <nav>
-      {% block nav %}
-          <a href="/">
-            <img src="./assets/logo.png" alt="Foodfy logo">
-          </a>
+        <img src="/assets/logo.png" alt="Foodfy logo">
         <a href="/about">Sobre</a>
-        <a href="/recipe">Receitas</a>
-      {% endblock nav %}
+        <a href="/recipes">Receitas</a>
       </nav>
     </header>
  
@@ -30,5 +24,8 @@
         <p>Todos direitos reservados, receitas Foodfy</p>
       </div>
     </footer>
+
+    <script src="/script.js"></script>
+    
   </body>
 </html>
