@@ -318,7 +318,7 @@ form .author div p, form .item p {
   margin-bottom: 10px;
 }
 
-form .author div input[type="text"], form .item input[type="text"], form .item textarea{
+form .author div input, form .item input, form .item textarea{
   border: 1px solid #ddd;
   border-radius: 4px;
   border-radius: 4px;
@@ -327,15 +327,21 @@ form .author div input[type="text"], form .item input[type="text"], form .item t
   width: 100%;
   color: #111;
   box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
 }
 
-form .item a {
+form .item div div + div {
+  margin-top: 10px;
+}
+
+form .item button {
   font-size: 16px;
   font-weight: bold;
   color: #6558C3;
-  text-decoration: none;
+  background-color: transparent;
   margin-top: 15px;
   display: inline-block;
+  outline: none;
 }
 
 form#delete {
@@ -351,8 +357,8 @@ form#delete button[type="submit"] {
   text-decoration: none;
   display: inline-block;
   position: absolute;
-  top: -845px;
-  left: 700px;
+  top: -4px;
+  left: 701px;
   border-radius: 4px;
   margin: 0;
   outline: none;

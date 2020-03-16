@@ -4,7 +4,13 @@
 {% block content %}
 
 <div class="form">
-  <form action="">
+
+  <form action="POST" action="/admin/recipes?_method=DELETE" id="delete">
+    <input type="hidden" name="id">
+    <button type="submit">Deletar</button>
+  </form>
+
+  <form action="POST" action="/admin/recipes?_method=PUT">
 
     <div class="actions">
       <h3>Editando receita: {{ recipe.title }}</h3>  
@@ -14,10 +20,6 @@
     {% include "admin/filds.njk" %}
   </form>
 
-  <form action="" id="delete">
-    <input type="hidden" name="id">
-    <button type="submit">Deletar</button>
-  </form>
 </div>
 
 
