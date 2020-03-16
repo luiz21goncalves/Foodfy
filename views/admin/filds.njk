@@ -23,11 +23,21 @@
 <div class="item">
   <div id="ingredients">
     <p>Ingredientes</p>
-    {% for ingredient in recipe.ingredients %}
+
+    {% if recipe.preparation == "" %}
       <div class="ingredient">
         <input type="text" name="ingredients[]" value="{{ ingredient }}">
       </div>
-    {% endfor %}
+    {% endif %}
+
+    {% if recipe.ingredientes != "" %}
+      {% for ingredient in recipe.ingredients %}
+        <div class="ingredient">
+          <input type="text" name="ingredients[]" value="{{ ingredient }}">
+        </div>
+      {% endfor %}
+    {% endif %}
+
   </div>
   <button type="button" class="add-ingredient">Adicionar novo ingrediente</button>
 </div>
@@ -36,12 +46,20 @@
   <div id="preparation">
     <p>Modo de preparo</p>
 
-    {% for preparate in recipe.preparation %}
+    {% if recipe.preparation == "" %}
       <div class="preparation">
         <input type="text" name="preparation[]" value="{{ preparate }}">
       </div>
-    {% endfor %}
+    {% endif %}
 
+    {% if recipe.preparation != "" %}
+      {% for preparate in recipe.preparation %}
+        <div class="preparation">
+          <input type="text" name="preparation[]" value="{{ preparate }}">
+        </div>
+      {% endfor %}
+    {% endif %}
+    
   </div>
   <button type="button" class="add-preparation">Adicionar novo passo</button>
 </div>
@@ -49,7 +67,7 @@
 
 <div class="item">
   <p>Informações adicionais</p>
-  <textarea name="information" cols="30" rows="10"> {{ recipe.information }} </textarea>
+  <textarea name="information" cols="30" rows="10">{{ recipe.information }}</textarea>
 </div>
 
 <script>

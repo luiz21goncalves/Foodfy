@@ -110,8 +110,8 @@ section {
   gap: 30px 20px;
 }
 
-article {
-  cursor: pointer;
+article a {
+  text-decoration: none;
 }
 
 article img {
@@ -342,6 +342,7 @@ form .item button {
   margin-top: 15px;
   display: inline-block;
   outline: none;
+  cursor: pointer;
 }
 
 form#delete {

@@ -6,7 +6,17 @@ exports.index = function(req ,res) {
 };
 
 exports.create = function(req, res) {
-  return res.render("admin/create")
+  const recipe = {
+    id:"",
+    title: "",
+    author: "",
+    image: "",
+    ingredients: "",
+    preparation: "",
+    information:""
+  }
+
+  return res.render("admin/create", {recipe})
 };
 
 exports.post = function(req ,res) {
@@ -74,5 +84,45 @@ exports.edit = function(req, res) {
 }
 
 exports.put = function (req, res) {
-  res.send("vamos editar")
+  const { id } = req.body
+  let index = 0
+
+  const fonudRecipe = data.recipes.find(function(recipe, foundIndex) {
+    if (id == recipe.id) {
+      index = foundIndex;
+      return true
+    }
+  });
+
+  if (!fonudRecipe) return res.send("Receita não encontrada");
+
+  const recipe = {
+    ...fonudRecipe,
+    ...req.body,
+    id:  Number(req.body.id),
+  }
+
+  data.recipes[index] = recipe
+
+  fs.writeFile("data.json", JSON.stringify(data, null, 2), function (err) {
+    if (err) return res.send("Erro ao salvar o aquivo!")
+
+    return res.redirect(`/admin/recipes/${id}`);
+  });
+};
+
+exports.delete = function(req, res) {
+  const { id } = req.body;
+
+  const fonudRecipe = data.recipes.filter(function(recipe) {
+    return recipe.id != id;
+  });
+
+  data.recipes = fonudRecipe
+
+  fs.writeFile("data.json", JSON.stringify(data, null, 2), function (err) {
+    if (err) return res.send("Erro ao salvar o aquivo!")
+  });
+  
+  return res.redirect("/admin/recipes");
 };

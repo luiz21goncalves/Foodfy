@@ -16,23 +16,15 @@
   {% for recipe in recipes %}
   
     <article>
-      <img src="{{ recipe.image }}" alt="Imagem de {{ recipe.title }}">
-      <p>{{ recipe.title }}</p>
-      <span>por {{ recipe.author }}</span>
+      <a href="/recipes/{{ recipe.id }}">
+        <img src="{{ recipe.image }}" alt="Imagem de {{ recipe.title }}">
+        <p>{{ recipe.title }}</p>
+        <span>por {{ recipe.author }}</span>
+      </a>
     </article>
   
   {% endfor %}
     
   </div>
-
-<script>
-  const recipes = document.querySelectorAll("article");
-
-  for (let i = 0; i < recipes.length; i++) {
-    recipes[i].addEventListener("click", function() {
-      location.href = `/recipes/${i}`
-    });
-  };
-</script>
 
 {% endblock content %}
