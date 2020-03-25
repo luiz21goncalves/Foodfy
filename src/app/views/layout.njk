@@ -6,14 +6,17 @@
   </head>
   
   <body>
-    <header>
-      <nav>
-        <img src="/assets/logo.png" alt="Foodfy logo">
-        <a href="/about">Sobre</a>
-        <a href="/recipes">Receitas</a>
-      </nav>
-    </header>
- 
+    {% block header %}
+      <header>
+        <nav>
+          <img src="/assets/logo.png" alt="Foodfy logo">
+          <a href="/about">Sobre</a>
+          <a href="/recipes">Receitas</a>
+          <a href="/chefs">Chefs</a>
+        </nav>
+      </header>
+    {% endblock header %}
+    
     <main>
       {% block content %}
       {% endblock content %}

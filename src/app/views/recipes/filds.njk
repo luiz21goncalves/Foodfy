@@ -1,17 +1,26 @@
-<div class="author">
+<div class="item">
   <div>
     <p>Nome da receita</p>
     <input 
       type="text" 
       name="title"
-      placeholder="Nome da receita"
       value="{{ recipe.title }}"
     >
   </div>
+</div>
 
+<div class="item">
   <div>
-    <p>Autor da receita</p>
-    <input type="text" name="author" value="{{ recipe.author }}">
+    <select name="chef_id">
+      {% for chef in chefs %}
+        <option 
+          {% if recipe.chef_id == chef.id %}selected{% endif %}
+          value="{{ chef.id }}"
+        >
+          {{ chef.name }}
+        </option>
+      {% endfor %}
+    </select>
   </div>
 </div>
 
@@ -24,7 +33,7 @@
   <div id="ingredients">
     <p>Ingredientes</p>
 
-    {% if recipe.preparation == "" %}
+    {% if recipe.ingredient == "" %}
       <div class="ingredient">
         <input type="text" name="ingredients[]" value="{{ ingredient }}">
       </div>
@@ -45,7 +54,6 @@
 <div class="item">
   <div id="preparation">
     <p>Modo de preparo</p>
-
     {% if recipe.preparation == "" %}
       <div class="preparation">
         <input type="text" name="preparation[]" value="{{ preparate }}">
@@ -86,13 +94,10 @@
   }
 
   function addField(container, fieldContainer) {
-        // Realiza um clone do último ingrediente adicionado
     const newField = fieldContainer[fieldContainer.length - 1].cloneNode(true);
 
-    // Não adiciona um novo input se o último tem um valor vazio
     if (newField.children[0].value == "") return false;
 
-    // Deixa o valor do input vazio
     newField.children[0].value = "";
     container.appendChild(newField);
   }

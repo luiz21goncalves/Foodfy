@@ -25,11 +25,46 @@ body {
 header, footer {
   padding: 0 230px;
 }
+header {
+  display: flex;
+}
+
+header nav form {
+  display: inline-block;
+  margin-left: 50px;
+  align-self: center;
+  align-content: center;
+}
+
+header nav form input {
+  font-size: 14px;
+  color: #999999;
+  width: 250px;
+  padding: 8px 16px;
+  margin-right: 10px;
+  border: 1px solid #DDDDDD;
+  border-radius: 4px;
+  border-radius: 4px;
+}
+
+header form button {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #6558C3;
+  padding: 9px 20px;
+  text-decoration: none;
+  border-radius: 4px;
+  margin: 0;
+  outline: none;
+  cursor: pointer;
+}
 
 nav {
   margin-top: 30px;
   height: 32px;
   display: flex;
+  flex-direction: row;
   align-items: center;
 }
 
@@ -55,6 +90,8 @@ main {
 }
 
 footer {
+  position: relative;
+  top: 10px;
   height: 62px;
   display: flex;
   align-items: center;
@@ -223,6 +260,15 @@ header.admin nav {
   height: 80px;
 }
 
+header.admin nav a {
+  color: #999;
+}
+
+header.admin nav a.active {
+  font-weight: bold;
+  color: #fff;
+}
+
 /* ==== ADMIN INDEX ==== */
 
 
@@ -278,6 +324,7 @@ div.actions h3 {
   margin: 0;
   font-size: 24px;
   color: var(--black-2);
+  max-width: 600px;
 }
 
 div.actions button, div.actions a.button {
@@ -318,7 +365,7 @@ form .author div p, form .item p {
   margin-bottom: 10px;
 }
 
-form .author div input, form .item input, form .item textarea{
+form .author div input, form .item input,form .item textarea, form .item select{
   border: 1px solid #ddd;
   border-radius: 4px;
   border-radius: 4px;
@@ -328,6 +375,7 @@ form .author div input, form .item input, form .item textarea{
   color: #111;
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
+  background-color: #fff;
 }
 
 form .item div div + div {
@@ -357,11 +405,78 @@ form#delete button[type="submit"] {
   padding: 9px 20px;
   text-decoration: none;
   display: inline-block;
-  position: absolute;
-  top: -4px;
-  left: 701px;
+  position: fixed;
+  top: 126px;
+  right: 380px;
   border-radius: 4px;
   margin: 0;
-  outline: none;
   cursor: pointer;
 }
+
+/* ==== INDEX CHEFS ==== */
+
+.chef-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 320px;
+}
+
+.chef-container .chefs {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+}
+
+.chef-container .chefs  img{
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+}
+
+.chef-container .chefs p {
+  font-size: 18px;
+  color: #111;
+  margin-bottom: 5px;
+}
+
+.chef-container .chefs a {
+  font-size: 14px;
+  color: #6558C3;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* ==== SHOW CHEF ==== */
+
+.chef-container.admin {
+  margin: 0 auto;
+  max-width: 100%;
+  text-align: center;
+  display: initial;
+}
+
+ body main h3 {
+  margin-top: 50px;
+  margin-bottom: 30px;
+  font-size: 24px;
+  color: #111111;
+  text-align: left;
+}
+
+.chef-container.admin img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+.chef-container.admin h2 {
+  font-size: 36px;
+  color: #111111;
+  margin-top: 30px;
+  margin-bottom: 4px;
+}
+.chef-container.admin span {
+  font-size: 20px;
+  color: #777777;
+}
+
+

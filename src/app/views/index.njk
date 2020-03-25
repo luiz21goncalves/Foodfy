@@ -1,5 +1,25 @@
 {% extends "layout.njk" %}
 
+{% block header %}
+  <header>
+    <nav>
+      <img src="/assets/logo.png" alt="Foodfy logo">
+      <a href="/about">Sobre</a>
+      <a href="/recipes">Receitas</a>
+      <a href="/chefs">Chefs</a>
+      <form action="/recipes" method="GET">
+        <input 
+          type="text" 
+          name="filter" 
+          placeholder="buscar uma receita"
+          value="{{ filter }}"
+        >
+        <button id="filter" type="submit">Filtrar</button>
+      </form>
+    </nav>
+  </header>
+{% endblock header %}
+
 {% block content %}
   <section>
     <div class="section-content">
@@ -11,6 +31,8 @@
     </div>
   </section>
 
+  <h3 class="filter_text"></h3>
+
   <div class="recipes">
 
   {% for recipe in recipes %}
@@ -19,10 +41,10 @@
       <a href="/recipes/{{ recipe.id }}">
         <img src="{{ recipe.image }}" alt="Imagem de {{ recipe.title }}">
         <p>{{ recipe.title }}</p>
-        <span>por {{ recipe.author }}</span>
+        <span>por {{ recipe.chef_name }}</span>
       </a>
     </article>
-  
+
   {% endfor %}
     
   </div>

@@ -1,0 +1,18 @@
+{% extends "layout_admin.njk" %}
+
+
+{% block content %}
+
+  <form method="POST" action="/admin/chefs">
+
+    <div class="actions">
+      <h3>Criando chef</h3>
+      <button type="submit">Salvar chef</button>
+    </div>
+
+    {% include "chefs/filds.njk" %}
+
+  </form>
+
+
+{% endblock content %}
