@@ -1,8 +1,9 @@
 {% extends "layout_admin.njk" %}
 
 {% block content %}
+
   <div class="actions">
-    <h3>Gerenciar recitas</h3>
+    <h2>Gerenciar recitas</h2>
     <a class="button" href="/admin/recipes/create">Nova receita</a>
   </div>
 
@@ -10,7 +11,7 @@
 
     {% for recipe in recipes %}
 
-      <article class="admin">
+      <article>
         <img src="{{ recipe.image }}" alt="Imagem de {{ recipe.title }}">
         
         <div>       
@@ -18,10 +19,12 @@
           <span>por {{ recipe.chef_name }}</span>
           <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
         </div>
+        
       </article>
 
     {% endfor %}
     
   </div>
+
 
 {% endblock content %}

@@ -6,26 +6,25 @@
   </head>
   
   <body>
-    {% block header %}
-      <header>
-        <nav>
+    <header>
+      <a href="/">
           <img src="/assets/logo.png" alt="Foodfy logo">
-          <a href="/about">Sobre</a>
-          <a href="/recipes">Receitas</a>
-          <a href="/chefs">Chefs</a>
-        </nav>
-      </header>
-    {% endblock header %}
+      </a>
+      
+      <nav>
+        <a href="/about">Sobre</a>
+        <a href="/recipes">Receitas</a>
+        <a href="/chefs">Chefs</a>
+      </nav>
+    </header>
     
     <main>
       {% block content %}
       {% endblock content %}
     </main>
-
+  
     <footer>
-      <div class="footer-content">
-        <p>Todos direitos reservados, receitas Foodfy</p>
-      </div>
+      <p>Todos direitos reservados, receitas Foodfy</p>
     </footer>
 
     <script src="/script.js"></script>

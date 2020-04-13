@@ -1,6 +1,9 @@
 <div class="item">
   <div>
     <p>Nome da receita</p>
+  </div>
+
+  <div>
     <input 
       type="text" 
       name="title"
@@ -10,6 +13,20 @@
 </div>
 
 <div class="item">
+  <div>
+    <p>Imagem da receita</p>
+  </div>
+  
+  <div>
+    <input type="url" name="image" value="{{ recipe.image }}">
+  </div>
+</div>
+
+<div class="item">
+  <div>
+    <p>Chef</p>
+  </div>
+
   <div>
     <select name="chef_id">
       {% for chef in chefs %}
@@ -22,11 +39,6 @@
       {% endfor %}
     </select>
   </div>
-</div>
-
-<div class="item">
-  <p>Imagem da receita</p>
-  <input type="url" name="image" value="{{ recipe.image }}">
 </div>
 
 <div class="item">
@@ -46,8 +58,8 @@
         </div>
       {% endfor %}
     {% endif %}
-
   </div>
+
   <button type="button" class="add-ingredient">Adicionar novo ingrediente</button>
 </div>
 
@@ -74,8 +86,13 @@
 
 
 <div class="item">
-  <p>Informações adicionais</p>
-  <textarea name="information" cols="30" rows="10">{{ recipe.information }}</textarea>
+  <div>
+    <p>Informações adicionais</p>
+  </div>
+
+  <div>
+    <textarea name="information" cols="30" rows="10">{{ recipe.information }}</textarea>
+  </div>
 </div>
 
 <script>

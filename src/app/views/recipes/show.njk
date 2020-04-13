@@ -3,7 +3,7 @@
 {% block content %}
 
   <div class="actions">
-    <h3>Receita: {{ recipe.title }}</h3>
+    <h2>Receita: {{ recipe.title }}</h2>
     <a href="/admin/recipes/{{ recipe.id }}/edit" class="button">Editar Receita</a>
   </div>
 
@@ -17,23 +17,19 @@
     </div>
 
     <div class="paragraphs">
-      <div>
-        <h3>Ingredientes</h3>
-      </div>
+      <h3>Ingredientes</h3>
 
       <ul>
         <div>
-          {% for ingredient in recipe.ingredients %}
-            <li>{{ingredient}}</li>
-          {% endfor %}
+            {% for ingredient in recipe.ingredients %}
+              <li>{{ingredient}}</li>
+            {% endfor %}
         </div>
       </ul>
     </div>
 
     <div class="paragraphs">
-      <div>
-        <h3>Modo de preparo</h3>
-      </div>
+      <h3>Modo de preparo</h3>
 
       <div>
         {% for phrase in recipe.preparation %}
@@ -43,9 +39,7 @@
     </div>
 
     <div class="paragraphs">
-      <div>
-        <h3>Informações adicionais</h3>
-      </div>
+      <h3>Informações adicionais</h3>
 
       <div>
         <p>{{ recipe.information }}</p>

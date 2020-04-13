@@ -7,14 +7,14 @@
 
   <form method="POST" action="/admin/chefs?_method=DELETE" id="delete">
     <input type="hidden" name="id" value="{{ chef.id }}">
-    <button type="submit">Deletar</button>
+    <button class="button delete" type="submit">Deletar</button>
   </form>
 
   <form method="POST" action="/admin/chefs?_method=PUT">
 
     <div class="actions">
-      <h3>Editando chef</h3>  
-      <button type="submit">Salvar recita</button>
+      <h2>Editando chef</h2>  
+      <button class="button" type="submit">Salvar recita</button>
     </div>
 
     {% include "chefs/filds.njk" %}

@@ -1,5 +1,5 @@
 const Recipe = require("../models/recipe");
-const Chefs = require("../models/chef");
+const Chef = require("../models/chef");
 
 module.exports = {
   indexRecipes(req, res) {
@@ -8,7 +8,7 @@ module.exports = {
     const params = {
       filter,
       callback(recipes) {
-        return res.render("index", { recipes, filter })
+        return res.render("customer/index", { recipes, filter })
       }
     }
     
@@ -17,8 +17,8 @@ module.exports = {
   },
 
   indexChefs(req, res) {
-    Chefs.all(function(chefs) {
-      return res.render("chefs", {chefs})
+    Chef.all(function(chefs) {
+      return res.render("customer/chefs", {chefs})
     })
   },
 
@@ -26,7 +26,7 @@ module.exports = {
     Recipe.find(Number(req.params.id), function(recipe) {
       if (!recipe) return res.send("Receita não encontrada!");
       
-      return res.render("show", { recipe })
+      return res.render("customer/show", { recipe })
     })
   }
 }
