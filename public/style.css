@@ -12,6 +12,7 @@
   --color-9: #dc4747;
   --color-10: #FBDFDB;
   --color-11: #eeeeee;
+  --color-12: #666666;
   --title-1: bold 36px Helvetica;
   --title-2: bold 24px  Helvetica;
   --text: 16px Helvetica;
@@ -113,7 +114,7 @@ footer p {
   font: var(--text-footer);
 }
 
-/* === RECIPES ===*/
+/* === RECIPES INDEX ===*/
 
 section.chef {
   background-color: var(--color-10);
@@ -122,6 +123,7 @@ section.chef {
   display: flex;
   border-radius: 30px;
   margin-top: 30px;
+  margin-bottom: 50px;
 }
 
 section.chef div:nth-child(1) {
@@ -149,7 +151,143 @@ section.chef div:nth-child(2) {
   align-items: flex-end;
   justify-content: flex-end;
   margin-right: 100px;
-} 
+}
+
+.filter-text {
+  font: var(--title-2);
+  color: var(--color-1);
+  margin-bottom: 20px;
+}
+
+.recipes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px 20px;
+  margin-bottom: 50px;
+}
+
+.recipes article a {
+  text-decoration: none;
+}
+
+.recipes article img {
+  max-width: 300px;
+  width: 100%;
+  height: 140px;
+  border-radius: 15px;
+}
+
+.recipes article p {
+  font: var(--text-recipe);
+  color: var(--color-1);
+  line-height: initial;
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+.recipes article span {
+  font: var(--text-footer);
+  color: var(--color-3);
+}
+
+/* === RECIPES SHOW === */
+
+.recipe-container {
+  margin: 50px 0;
+}
+
+.recipe-container img {
+  max-width: 940px;
+  width: 100%;
+  height: 280px;
+  border-radius: 15px;
+}
+
+.recipe-container .recipe-title {
+  margin: 50px 0;
+  text-align: center;
+}
+
+.recipe-container .recipe-title h1 {
+  font: var(--title-1);
+  color: var(--color-1);
+  margin-bottom: 4px;
+}
+
+.recipe-container .recipe-title p {
+  font: var(--text-author);
+  color: var(--color-3)
+}
+
+.recipe-container .paragraphs {
+  margin-bottom: 40px
+}
+
+.recipe-container .paragraphs div:nth-child(1) h3 {
+  font: var(--title-2);
+  color: var(--color-1);
+  margin-right: 8px;
+  display: inline-block;
+}
+
+.recipe-container .paragraphs div:nth-child(1) a {
+  font: var(--text-footer);
+  font-size: 12px;
+  color: var(--color-4);
+}
+
+.recipe-container .paragraphs .recipe-hidden {
+  margin-top: 20px;
+}
+
+.recipe-container .paragraphs .recipe-hidden.active {
+  display: none;
+}
+
+
+.recipe-container .paragraphs .recipe-hidden p, .recipe-container .paragraphs .recipe-hidden li {
+  font: var(--text-recipe);
+  color: var(--color-2);
+}
+
+.recipe-container .paragraphs ul {
+  list-style-position: inside;
+}
+
+/* === CHEFS === */
+.chef-container {
+  margin: 50px 0;
+  display: grid;
+  grid-template-columns: repeat(4 , 1fr);
+  gap: 30px 20px;
+}
+
+.chef-container .chefs {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 64px 1fr;
+}
+
+.chef-container .chefs img{
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+}
+.chef-container .chefs div {
+  margin-left: 20px;
+}
+
+.chef-container .chefs div p {
+  font: var(--text-recipe);
+  line-height: initial;
+  color: var(--color-1);
+  width: 100%;
+}
+
+.chef-container .chefs div span {
+  font: var(--text-footer);
+  color: var(--color-12);
+}
 
 /* === ABOUT === */
 
@@ -277,6 +415,7 @@ header.admin nav a.active {
   font: var(--text-recipe);
   line-height: initial;
   color: var(--color-1);
+  margin: 0;
   margin-bottom: 5px;
 }
 
@@ -350,4 +489,46 @@ header.admin nav a.active {
   z-index: 5;
   top: 50px;
   right: 145px;
+}
+
+/* === CHEFS INDEX === */
+
+.chef-container.admin {
+  margin: 30px 0;
+}
+
+.chef-container.admin .chefs div a {
+  font: var(--text-footer);
+  font-weight: bold;
+  color: var(--color-8);
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+/* === CHEF SHOW === */
+
+.chef-profile {
+  margin: 50px auto;
+  text-align:center;
+  width: 100%;
+  display: initial;
+}
+
+.chef-profile img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin-bottom: 30px;
+}
+
+.chef-profile h1 {
+  font: var(--title-1);
+  color: var(--color-1);
+  margin-bottom: 4px;
+}
+
+.chef-profile span {
+  font: var(--text-author);
+  color: var(--color-3)
 }

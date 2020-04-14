@@ -9,7 +9,7 @@ routes.get("/", function(req, res) {
 });
 
 routes.get("/about", function(req, res) {
-  return res.render("customer/about");
+  return res.render("customers/about");
 });
 
 routes.get("/recipes", CustomersController.indexRecipes);
