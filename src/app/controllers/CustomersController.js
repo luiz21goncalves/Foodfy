@@ -3,7 +3,7 @@ const Chef = require("../models/chef");
 
 module.exports = {
   indexRecipes(req, res) {
-    const { filter = "" } = req.query;
+    const { filter = '' } = req.query;
     
     const params = {
       filter,
