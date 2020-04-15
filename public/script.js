@@ -12,14 +12,19 @@ for (item of menuItens) {
 }
 
 const ImagesUpload = {
+  input: '',
   uploadLimit: 5,
+  files: [],
   preview: document.querySelector('#images-preview'),
   handleFileInput(event) {
     const { files: fileList } = event.target;
+    ImagesUpload.input = event.target;
     
     if (ImagesUpload.hasLimit(event)) return
 
     Array.from(fileList).forEach(file => {
+      ImagesUpload.files.push(file);
+
       const reader = new FileReader();
 
       reader.onload = () => {
@@ -31,24 +36,70 @@ const ImagesUpload = {
       }
 
       reader.readAsDataURL(file);
-    })
+    });
+
+    ImagesUpload.input.files = ImagesUpload.getAllFiles();
   },
   hasLimit(event) {
-    const { uploadLimit } = ImagesUpload;
+    const { uploadLimit, input, preview } = ImagesUpload;
+    const { files: fileList } = input;
 
     if (fileList.length > uploadLimit) {
-      alert(`Envie no máximo ${uploadLimit} imagens`)
-      event.prefentDefault()
+      alert(`Envie no máximo ${uploadLimit} imagens.`);
+      event.prefentDefault();
+      return true;
+    }
+
+    const imagesContainer = [];
+    preview.childNodes.forEach(item => {
+      if (item.classList && item.classList.value == 'image')
+        imagesContainer.push(item)
+    })
+
+    const totalImages = fileList.length + imagesContainer.length;
+
+    if (totalImages > uploadLimit) {
+      alert('Você atingiu o limite máximo de imagens.')
+      event.prefentDefault();
       return true;
     }
 
     return false;
   },
+  getAllFiles() {
+    const dataTransfer = new DataTransfer();
+
+    ImagesUpload.files.forEach(file => dataTransfer.items.add(file));
+
+    return dataTransfer.files;
+  },
   getContainer(image) {
     const container = document.createElement('div');
+    
     container.classList.add('image');
-    container.onclick = () => alert('removido');
+
+    container.onclick = ImagesUpload.removeImage;
+    
     container.appendChild(image);
+    container.appendChild(ImagesUpload.getButtonClose());
+
     return container;
+  },
+  getButtonClose() {
+    const button = document.createElement('i');
+    button.classList.add('material-icons');
+    button.innerHTML = 'close';
+
+    return button;
+  },
+  removeImage(event) {
+    const imageContainer = event.target.parentNode;
+    const imagesArray = Array.from(ImagesUpload.preview.children);
+    const index = imagesArray.indexOf(imageContainer);
+
+    ImagesUpload.files.splice(index, 1);
+    ImagesUpload.input = ImagesUpload.getAllFiles();
+
+    imageContainer.remove();
   }
 }

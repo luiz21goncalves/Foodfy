@@ -13,16 +13,16 @@
   --color-10: #FBDFDB;
   --color-11: #eeeeee;
   --color-12: #666666;
-  --title-1: bold 36px Helvetica;
-  --title-2: bold 24px  Helvetica;
-  --text: 16px Helvetica;
-  --text-author: 20px Helvetica;
-  --text-recipe: 18px/28px Helvetica;
-  --text-placeholder: 16px Helvetica;
-  --text-button: bold 16px Helvetica;
-  --text-menu: 15px Helvetica;
-  --text-menu-active: 15px Helvetica;
-  --text-footer: 14px Helvetica;
+  --title-1: bold 36px Helvetica, sans-serif;
+  --title-2: bold 24px  Helvetica, sans-serif;
+  --text: 16px Helvetica, sans-serif;
+  --text-author: 20px Helvetica, sans-serif;
+  --text-recipe: 18px/28px Helvetica, sans-serif;
+  --text-placeholder: 16px Helvetica, sans-serif;
+  --text-button: bold 16px Helvetica, sans-serif;
+  --text-menu: 15px Helvetica, sans-serif;
+  --text-menu-active: 15px Helvetica, sans-serif;
+  --text-footer: 14px Helvetica, sans-serif;
   --padding: 0 16.4%;
 }
 
@@ -157,13 +157,14 @@ section.chef div:nth-child(1) {
 }
 
 section.chef div:nth-child(1) h1 {
-  font: bold 32px Helvetica;
+  font: var(--title-1);
+  font-size: 32px;
   color: var(--color-1);
   margin-bottom: 10px;
 }
 
 section.chef div:nth-child(1) p {
-  font: 18px/28px Helvetica;
+  font: var(--text-recipe);
   color: var(--color-1);
   opacity: 0.7;
 }
@@ -561,54 +562,99 @@ header.admin nav a.active {
 form .item #images-upload {
   position: relative;
   overflow: hidden;
+
   width: 150px;
   height: 150px;
+
   border: 1px solid var(--color-5);
   border-radius: 4px;
 }
 
-form .item #images-upload i {
+form .item #images-upload i.material-icons {
   font-size: 28px;
+  font-weight: bold;
+
   color: var(--color-3);
+
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  left: 0;
+  top: 0;
   z-index: -5;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 form .item #images-input {
   position: absolute;
   top: 0;
   left: 0;
+
   overflow: hidden;
+
   width: 100%;
   height: 100%;
+
   cursor: pointer;
   opacity: 0;
 }
 
 form .item .images-input {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-}
-
-/* IMAGES PREVIEWS */
-
-form .item #images-preview {
   display: flex;
   flex-direction: row;
 }
 
-form .item #images-preview .image {
-  min-width: 150px;
-  height: 150px;
-  margin-left: 10px;
-  border: 1px solid var(--color-5);
-  border-radius: 4px;
+/* IMAGES PREVIEWS */
+
+#images-preview {
+  display: flex;
+  flex-direction: row;
 }
 
-form .item #images-preview .image img {
+#images-preview .image {
+  width: 150px;
+  height: 150px;
+
+  margin-left: 10px;
+
+  border: 1px solid var(--color-5);
+  border-radius: 4px;
+
+  position: relative;
+}
+
+#images-preview .image img {
   width: 100%;
   height: 100%;
+}
+
+#images-preview .image i.material-icons {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+  color: transparent;
+
+  font-size: 28px;
+  font-weight: bold;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 400ms;
+}
+
+#images-preview .image:hover i.material-icons {
+  background-color: rgba(221,221,221, 0.75);
+  color: var(--color-9);
+  
+  cursor: pointer;
 }
