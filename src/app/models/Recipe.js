@@ -7,7 +7,8 @@ module.exports = {
       SELECT recipes.*, chefs.name AS chef_name
       FROM recipes
       LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-      ORDER BY recipes.id`);
+      ORDER BY recipes.id`
+    );
   },
 
   create(data) {
@@ -39,7 +40,8 @@ module.exports = {
       SELECT recipes.*, chefs.name AS chef_name
       FROM recipes
       LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-      WHERE recipes.id = $1`, [id]);
+      WHERE recipes.id = $1`, [id]
+    );
   },
 
   search(filter) {

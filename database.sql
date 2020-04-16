@@ -20,7 +20,6 @@ CREATE TABLE "chefs" (
 CREATE TABLE "recipes" (
   "id" SERIAL PRIMARY KEY,
   "chef_id" integer NOT NULL,
-  "image" text NOT NULL,
   "title" text NOT NULL,
   "ingredients" text[] NOT NULL,
   "preparation" text[] NOT NULL,

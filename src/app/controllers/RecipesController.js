@@ -36,9 +36,9 @@ module.exports = {
     const filePromise = req.files.map(file => File.create({ ...file }));
     results = await Promise.all(filePromise);
 
-    console.log(results)
-    
-    // results = await RecipeFile.create({fileId, recipeId})
+    const filesId = results.map(result => result.rows[0])
+    const recipeFilePromise =  filesId.map(fileId => RecipeFile.create(fileId, recipeId))
+    await Promise.all(recipeFilePromise)
     
     return res.redirect(`recipes/${recipeId}`);
   },
