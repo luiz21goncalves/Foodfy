@@ -10,7 +10,7 @@
     <button class="button delete" type="submit">Deletar</button>
   </form>
 
-  <form method="POST" action="/admin/recipes?_method=PUT">
+  <form method="POST" action="/admin/recipes?_method=PUT" enctype="multipart/form-data">
 
     <div class="actions">
       <h2>Editando receita: {{ recipe.title }}</h2>  

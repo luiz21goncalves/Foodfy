@@ -1,17 +1,18 @@
-const Chef = require ("../models/chef");
+const Chef = require ("../models/Chef");
 
 module.exports = {
-  index(req, res) {
-    Chef.all(function(chefs) {
-      return res.render("chefs/index", { chefs });
-    })
+  async index(req, res) {
+    const results = await Chef.all();
+    const chefs = results.rows;
+
+    return res.render("chefs/index", { chefs });
   },
 
   create(req, res) {
     return res.render("chefs/create");
   },
 
-  post(req, res) {
+  async post(req, res) {
     const keys = Object.keys(req.body);
 
     for (key of keys) {
@@ -20,30 +21,34 @@ module.exports = {
       }
     }
 
-    Chef.create(req.body, function(chef) {
-      return res.redirect(`chefs/${chef.id}`)
-    });
+    const results = await Chef.create(req.body);
+    const chefId = results.rows[0].id;
+
+    return res.redirect(`chefs/${chefId}`);
   },
 
-  show(req, res) {
-    Chef.find(req.params.id, function(chef) {
-      if (!chef) return res.send("Chef não encontrado!");
+  async show(req, res) {
+    let results = await Chef.find(req.params.id);
+    const chef = results.rows[0];
+
+    if (!chef) return res.send("Chef não encontrado!");
+
+    results = await Chef.findRecipesByChef(req.params.id);
+    const recipes = results.rows;
       
-      Chef.findRecepesByChef(req.params.id, function(recipes) {
-        return res.render("chefs/show", { chef, recipes });
-      })
-    })
+    return res.render("chefs/show", { chef, recipes });
   },
 
-  edit(req, res) {
-    Chef.find(req.params.id, function(chef) {
-      if (!chef) return res.send("Chef não encontrado!");
+  async edit(req, res) {
+    const results = await Chef.find(req.params.id);
+    const chef = results.rows[0];
 
-      return res.render("chefs/edit", { chef });
-    });
+    if (!chef) return res.send("Chef não encontrado!");
+
+    return res.render("chefs/edit", { chef });
   },
 
-  put(req, res) {
+  async put(req, res) {
     const keys = Object.keys(req.body);
 
     for (key of keys) {
@@ -52,26 +57,21 @@ module.exports = {
       }
     }
 
-    Chef.update(req.body, function() {
-      return res.redirect(`/admin/chefs/${req.body.id}`)
-    })
+    await Chef.update(req.body);
+
+    return res.redirect(`/admin/chefs/${req.body.id}`)
   },
 
-  delete(req, res) {
-    Chef.findRecepesByChef(req.body.id, function(recipes) {
-      if (recipes == "") {
-        Chef.delete(req.body.id, function() {
-          return res.redirect("/admin/chefs");
-        })
-      } else {
-        const recipeTitle = [];
+  async delete(req, res) {
+    const results = Chef.findRecipesByChef(req.params.id);
+    const recipes = results.rows;
 
-        for (recipe of recipes) {
-          recipeTitle.push(recipe.title)
-        }
-        
-        return res.send(`Esse chefe possui pelo menos uma receita cadastrada! Delete ${recipeTitle} antes de tentar novamente.`)
-      }
-    })
+    if (recipes == "") {
+      await Chef.delete(req.body.id);
+      
+      return res.redirect("/admin/chefs");
+    }
+
+    return res.send(`Esse chefe possui pelo menos uma receita cadastrada! Delete suas receitas antes de tentar novamente.`)
   }
 }

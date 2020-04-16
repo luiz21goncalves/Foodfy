@@ -59,18 +59,16 @@
   <div id="ingredients">
     <p>Ingredientes</p>
 
-    {% if recipe.ingredient == "" %}
-      <div class="ingredient">
-        <input type="text" name="ingredients[]" value="{{ ingredient }}">
-      </div>
-    {% endif %}
-
-    {% if recipe.ingredientes != "" %}
+    {% if recipe.ingredients %}
       {% for ingredient in recipe.ingredients %}
         <div class="ingredient">
           <input type="text" name="ingredients[]" value="{{ ingredient }}">
         </div>
       {% endfor %}
+    {% else %}
+      <div class="ingredient">
+        <input type="text" name="ingredients[]" value="{{ ingredient }}">
+      </div>
     {% endif %}
   </div>
 
@@ -80,18 +78,17 @@
 <div class="item">
   <div id="preparation">
     <p>Modo de preparo</p>
-    {% if recipe.preparation == "" %}
-      <div class="preparation">
-        <input type="text" name="preparation[]" value="{{ preparate }}">
-      </div>
-    {% endif %}
 
-    {% if recipe.preparation != "" %}
+    {% if recipe.preparation %}
       {% for preparate in recipe.preparation %}
         <div class="preparation">
           <input type="text" name="preparation[]" value="{{ preparate }}">
         </div>
       {% endfor %}
+    {% else %}
+      <div class="preparation">
+        <input type="text" name="preparation[]" value="{{ preparate }}">
+      </div>
     {% endif %}
     
   </div>
