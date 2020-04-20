@@ -21,21 +21,19 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: chefs; Type: TABLE; Schema: public; Owner: postgres
+-- Name: chefs; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.chefs (
     id integer NOT NULL,
     name text NOT NULL,
-    avatar_url text NOT NULL,
-    created_at timestamp without time zone NOT NULL
+    created_at timestamp without time zone NOT NULL,
+    file_id integer
 );
 
 
-ALTER TABLE public.chefs OWNER TO postgres;
-
 --
--- Name: chefs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: chefs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.chefs_id_seq
@@ -47,17 +45,15 @@ CREATE SEQUENCE public.chefs_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.chefs_id_seq OWNER TO postgres;
-
 --
--- Name: chefs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: chefs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.chefs_id_seq OWNED BY public.chefs.id;
 
 
 --
--- Name: files; Type: TABLE; Schema: public; Owner: postgres
+-- Name: files; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.files (
@@ -67,10 +63,8 @@ CREATE TABLE public.files (
 );
 
 
-ALTER TABLE public.files OWNER TO postgres;
-
 --
--- Name: files_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: files_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.files_id_seq
@@ -82,17 +76,15 @@ CREATE SEQUENCE public.files_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.files_id_seq OWNER TO postgres;
-
 --
--- Name: files_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: files_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.files_id_seq OWNED BY public.files.id;
 
 
 --
--- Name: recipe_files; Type: TABLE; Schema: public; Owner: postgres
+-- Name: recipe_files; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.recipe_files (
@@ -102,10 +94,8 @@ CREATE TABLE public.recipe_files (
 );
 
 
-ALTER TABLE public.recipe_files OWNER TO postgres;
-
 --
--- Name: recipe_files_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: recipe_files_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.recipe_files_id_seq
@@ -117,17 +107,15 @@ CREATE SEQUENCE public.recipe_files_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.recipe_files_id_seq OWNER TO postgres;
-
 --
--- Name: recipe_files_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: recipe_files_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.recipe_files_id_seq OWNED BY public.recipe_files.id;
 
 
 --
--- Name: recipes; Type: TABLE; Schema: public; Owner: postgres
+-- Name: recipes; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.recipes (
@@ -141,10 +129,8 @@ CREATE TABLE public.recipes (
 );
 
 
-ALTER TABLE public.recipes OWNER TO postgres;
-
 --
--- Name: recipes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: recipes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.recipes_id_seq
@@ -156,75 +142,84 @@ CREATE SEQUENCE public.recipes_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.recipes_id_seq OWNER TO postgres;
-
 --
--- Name: recipes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: recipes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.recipes_id_seq OWNED BY public.recipes.id;
 
 
 --
--- Name: chefs id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: chefs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.chefs ALTER COLUMN id SET DEFAULT nextval('public.chefs_id_seq'::regclass);
 
 
 --
--- Name: files id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: files id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.files ALTER COLUMN id SET DEFAULT nextval('public.files_id_seq'::regclass);
 
 
 --
--- Name: recipe_files id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: recipe_files id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.recipe_files ALTER COLUMN id SET DEFAULT nextval('public.recipe_files_id_seq'::regclass);
 
 
 --
--- Name: recipes id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: recipes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.recipes ALTER COLUMN id SET DEFAULT nextval('public.recipes_id_seq'::regclass);
 
 
 --
--- Data for Name: chefs; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: chefs; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.chefs (id, name, avatar_url, created_at) FROM stdin;
-1	Jorge Relato	https://images.unsplash.com/photo-1545659531-9a66f06e260a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60	2020-04-13 00:00:00
-2	Juliano Vieira	https://images.unsplash.com/photo-1541614101331-1a5a3a194e92?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60	2020-04-13 00:00:00
-3	Ricardo Golvea	https://images.unsplash.com/photo-1562038624-576954020553?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60	2020-04-13 00:00:00
-4	Fabiana Melo	https://images.unsplash.com/photo-1566554273541-37a9ca77b91f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60	2020-04-13 00:00:00
-6	Júlia Kinoto	https://images.unsplash.com/photo-1544176617-c3fade1ffa26?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60	2020-04-13 00:00:00
-5	Vania Steroski	https://images.unsplash.com/photo-1541279267475-73a3bc2c6bba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60	2020-04-13 00:00:00
+COPY public.chefs (id, name, created_at, file_id) FROM stdin;
+1	Jorge Relato	2020-04-13 00:00:00	\N
+2	Juliano Vieira	2020-04-13 00:00:00	\N
+3	Ricardo Golvea	2020-04-13 00:00:00	\N
+4	Fabiana Melo	2020-04-13 00:00:00	\N
+6	Júlia Kinoto	2020-04-13 00:00:00	\N
+5	Vania Steroski	2020-04-13 00:00:00	\N
+7	teste	2020-04-16 00:00:00	\N
 \.
 
 
 --
--- Data for Name: files; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: files; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.files (id, name, path) FROM stdin;
+1	1587063629550-asinhas.png	public/images/1587063629550-asinhas.png
+2	1587063629574-doce.png	public/images/1587063629574-doce.png
+3	1587063629576-espaguete.png	public/images/1587063629576-espaguete.png
+4	1587063629558-burger.png	public/images/1587063629558-burger.png
+5	1587063629579-lasanha.png	public/images/1587063629579-lasanha.png
 \.
 
 
 --
--- Data for Name: recipe_files; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: recipe_files; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.recipe_files (id, recipe_id, file_id) FROM stdin;
+1	7	1
+2	7	4
+3	7	2
+4	7	3
+5	7	5
 \.
 
 
 --
--- Data for Name: recipes; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: recipes; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.recipes (id, chef_id, title, ingredients, preparation, information, created_at) FROM stdin;
@@ -234,39 +229,40 @@ COPY public.recipes (id, chef_id, title, ingredients, preparation, information, 
 5	1	Espaguete ao alho	{"1 pacote de macarrão 500 g (tipo do macarrão a gosto)","1 saquinho de alho granulado","1/2 tablete de manteiga (não use margarina)","1 colher (sopa) de azeite extra virgem","ervas (manjericão, orégano, salsa, cebolinha, tomilho, a gosto)",sal,"1 dente de alho","gengibre em pó a gosto","1 folha de louro"}	{"Quando faltar mais ou menos 5 minutos para ficar no ponto de escorrer o macarrão, comece o preparo da receita.","Na frigideira quente coloque a manteiga, o azeite, a folha de louro, e o alho granulado.","Nesta hora um pouco de agilidade, pois o macarrão escorrido vai para a frigideira, sendo mexido e dosado com sal a gosto, as ervas, o gengibre em pó a gosto também.","O dente de alho, serve para você untar os pratos onde serão servidos o macarrão.","Coloque as porções nos pratos já com o cheiro do alho, e enfeite com algumas ervas."}	Não lave o macarrão nem passe óleo ou gordura nele depois de escorrê-lo. Coloque direto na frigideira.	2020-04-13 00:00:00
 6	3	Docinhos pão-do-céu	{"1 kg de batata - doce","100 g de manteiga","3 ovos","1 pacote de coco seco ralado (100 g)","3 colheres (sopa) de açúcar","1 lata de Leite Moça","1 colher (sopa) de fermento em pó","manteiga para untar","açúcar de confeiteiro"}	{"Cozinhe a batata-doce numa panela de pressão, com meio litro de água, por cerca de 20 minutos. Descasque e passe pelo espremedor, ainda quente.","Junte a manteiga,os ovos, o coco ralado,o açúcar, o Leite Moça e o fermento em pó, mexendo bem após cada adição.","Despeje em assadeira retangular média, untada e leve ao forno médio (180°C), por aproximadamente 45 minutos.","Depois de frio, polvilhe, com o açúcar de confeiteiro e corte em quadrados."}		2020-04-13 00:00:00
 3	5	Asinhas de frango ao barbecue	{"12 encontros de asinha de galinha, temperados a gosto","2 colheres de sopa de farinha de trigo","1/2 xícara (chá) de óleo","1 xícara de molho barbecue","Salada (opcional)"}	{"Em uma tigela coloque o encontro de asinha de galinha e polvilhe a farinha de trigo e misture com as mãos.","Em uma frigideira ou assador coloque o óleo quando estiver quente frite até ficarem douradas.","Para servir fica bonito com salada, ou abuse da criatividade."}		2020-04-13 00:00:00
+7	1	teste	{teste}	{teste}	teste teste 123	2020-04-16 00:00:00
 \.
 
 
 --
--- Name: chefs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: chefs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.chefs_id_seq', 6, true);
-
-
---
--- Name: files_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.files_id_seq', 1, false);
+SELECT pg_catalog.setval('public.chefs_id_seq', 7, true);
 
 
 --
--- Name: recipe_files_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: files_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.recipe_files_id_seq', 1, false);
-
-
---
--- Name: recipes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.recipes_id_seq', 6, true);
+SELECT pg_catalog.setval('public.files_id_seq', 5, true);
 
 
 --
--- Name: chefs chefs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: recipe_files_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.recipe_files_id_seq', 5, true);
+
+
+--
+-- Name: recipes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.recipes_id_seq', 7, true);
+
+
+--
+-- Name: chefs chefs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.chefs
@@ -274,7 +270,7 @@ ALTER TABLE ONLY public.chefs
 
 
 --
--- Name: files files_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: files files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.files
@@ -282,7 +278,7 @@ ALTER TABLE ONLY public.files
 
 
 --
--- Name: recipe_files recipe_files_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: recipe_files recipe_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.recipe_files
@@ -290,7 +286,7 @@ ALTER TABLE ONLY public.recipe_files
 
 
 --
--- Name: recipes recipes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: recipes recipes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.recipes
@@ -298,7 +294,15 @@ ALTER TABLE ONLY public.recipes
 
 
 --
--- Name: recipe_files recipe_files_file_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: chefs chefs_files_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.chefs
+    ADD CONSTRAINT chefs_files_id_fkey FOREIGN KEY (file_id) REFERENCES public.files(id);
+
+
+--
+-- Name: recipe_files recipe_files_file_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.recipe_files
@@ -306,7 +310,7 @@ ALTER TABLE ONLY public.recipe_files
 
 
 --
--- Name: recipe_files recipe_files_recipe_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: recipe_files recipe_files_recipe_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.recipe_files
@@ -314,7 +318,7 @@ ALTER TABLE ONLY public.recipe_files
 
 
 --
--- Name: recipes recipes_chef_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: recipes recipes_chef_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.recipes

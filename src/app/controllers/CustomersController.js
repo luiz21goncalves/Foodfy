@@ -3,27 +3,39 @@ const Chef = require("../models/Chef");
 
 module.exports = {
   async indexRecipes(req, res) {
-    const { filter = '' } = req.query;
+    try {
+      const { filter = '' } = req.query;
     
-    const results = await Recipe.search(filter);
-    const recipes = results.rows;
-    
-    return res.render("customers/index", { recipes, filter })
+      const results = await Recipe.search(filter);
+      const recipes = results.rows;
+      
+      return res.render("customers/index", { recipes, filter });
+    } catch (err) {
+      throw new Error(err);
+    }
   },
 
   async indexChefs(req, res) {
-    const results = await Chef.all();
-    const chefs = results.rows
-    
-    return res.render("customers/chefs", { chefs })
+    try {
+      const results = await Chef.all();
+      const chefs = results.rows;
+      
+      return res.render("customers/chefs", { chefs });
+    } catch (err) {
+      throw new Error(err);
+    }
   },
 
   async showRecipes(req, res) {
-    const results = await Recipe.find(req.params.id);
-    const recipe = results.rows[0];
-
-    if (!recipe) return res.send("Receita não encontrada!");
-    
-    return res.render("customers/show", { recipe })
+    try {
+      const results = await Recipe.find(req.params.id);
+      const recipe = results.rows[0];
+  
+      if (!recipe) return res.send("Receita não encontrada!");
+      
+      return res.render("customers/show", { recipe });
+    } catch (err) {
+      throw new Error(err);
+    }
 }
 }

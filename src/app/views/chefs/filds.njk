@@ -13,7 +13,19 @@
     <p>Avatar</p>
   </div>
 
-  <div>
-    <input type="url" name="avatar_url" value="{{ chef.avatar_url }}">
+  <div class="images-input">
+    <div id="images-upload">
+      <input 
+        type="file" 
+        name="images_chefs" 
+        id="images-input"
+        multiple
+        accept="image/*"
+        onchange="ImagesUpload.handleFileInput(event)"
+      >
+      <i class="material-icons">add</i>
+    </div>
+
+    <div id="images-preview"></div>
   </div>
 </div>
