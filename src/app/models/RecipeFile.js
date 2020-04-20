@@ -19,5 +19,15 @@ module.exports = {
     } catch (err) {
       throw new Error(err);
     }
+  },
+
+  all() {
+    return db.query(`
+      SELECT files.*, recipe_files.recipe_id
+      FROM recipe_files
+      JOIN files ON (recipe_files.file_id = files.id)
+      GROUP BY files.id, recipe_files.recipe_id
+      ORDER BY files.id
+    `)
   }
 }

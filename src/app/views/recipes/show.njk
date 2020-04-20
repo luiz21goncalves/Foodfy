@@ -9,7 +9,13 @@
 
   <div class="recipe-container admin">
  
-    <img src="{{ recipe.image }}" alt="Imagem de {{ recipe.title }}">
+    {% for recipeFile in recipesFiles %}
+
+      {% if recipeFile.recipe_id == recipe.id %}
+        <img src="{{ recipeFile.src }}" alt="Imagem de {{ recipe.title }}">
+      {% endif %}
+
+    {% endfor %}
 
     <div class="recipe-title">
       <h1>{{ recipe.title }}</h1>

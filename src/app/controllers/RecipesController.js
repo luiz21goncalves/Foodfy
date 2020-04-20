@@ -5,10 +5,16 @@ const RecipeFile = require('../models/RecipeFile');
 module.exports = {
   async index(req ,res) {
     try {
-      const results = await Recipe.all();
+      let results = await Recipe.all();
       const recipes = results.rows;
+
+      results = await RecipeFile.all();
+      const recipesFiles = results.rows.map( file => ({
+        ...file,
+        src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
+      }))
       
-      return res.render('recipes/index', { recipes });
+      return res.render('recipes/index', { recipes, recipesFiles });
     } catch (err) {
       throw new Error(err);
     }
@@ -57,12 +63,18 @@ module.exports = {
 
   async show(req, res) {
     try {
-      const results = await Recipe.find(req.params.id);
+      let results = await Recipe.find(req.params.id);
       const recipe = results.rows[0];
 
       if (!recipe) return res.send('Receita não encontrada.');
+
+      results = await RecipeFile.all();
+      const recipesFiles = results.rows.map( file => ({
+        ...file,
+        src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
+      }))
       
-      return res.render('recipes/show', { recipe });
+      return res.render('recipes/show', { recipe, recipesFiles });
     } catch (err) {
       throw new Error(err);
     }

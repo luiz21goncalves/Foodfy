@@ -4,10 +4,16 @@ const File = require('../models/File');
 module.exports = {
   async index(req, res) {
     try {
-      const results = await Chef.all();
+      let results = await Chef.all();
       const chefs = results.rows;
-  
-      return res.render('chefs/index', { chefs });
+
+      results = await File.all();
+      const chefsFiles = results.rows.map( file => ({
+        ...file,
+        src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
+      }));
+      
+      return res.render('chefs/index', { chefs, chefsFiles });
     } catch (err) {
       throw new Error(err);
     }
@@ -21,22 +27,19 @@ module.exports = {
     const keys = Object.keys(req.body);
 
     for (key of keys) {
-      if (req.body[key] == '') {
-        return res.send('Por favor, preencha todos os dados!')
-      }
+      if (req.body[key] == '') 
+        return res.send('Por favor, preencha todos os dados.')
     }
 
     try {
-      const filesPromise = req.files.map(file => File.create({ ...file }));
-      let results = await Promise.all(filesPromise);
-
-      const fileId = results.map(result => result.rows[0]);
+      let results = await File.create(req.file);
+      const fileId = results.rows[0];
 
       const data = {
         ...req.body,
-        fileId: fileId[0].id
-      }
-      
+        fileId: fileId.id
+      };
+
       results = await Chef.create(data);
       const chefId = results.rows[0].id;
   
@@ -55,8 +58,14 @@ module.exports = {
   
       results = await Chef.findRecipesByChef(req.params.id);
       const recipes = results.rows;
+
+      results = await File.all();
+      const chefsFiles = results.rows.map( file => ({
+        ...file,
+        src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
+      }));
         
-      return res.render('chefs/show', { chef, recipes });
+      return res.render('chefs/show', { chef, recipes, chefsFiles });
     } catch (err) {
       throw new Error(err);
     }

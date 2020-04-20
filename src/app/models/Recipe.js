@@ -18,15 +18,16 @@ module.exports = {
   create(data) {
     try {
       const query = `
-      INSERT INTO recipes (
-        chef_id,
-        title,
-        ingredients,
-        preparation,
-        information,
-        created_at
-      ) VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING id`
+        INSERT INTO recipes (
+          chef_id,
+          title,
+          ingredients,
+          preparation,
+          information,
+          created_at
+        ) VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING id
+      `;
   
       const values = [
         data.chef_id,
@@ -49,7 +50,8 @@ module.exports = {
         SELECT recipes.*, chefs.name AS chef_name
         FROM recipes
         LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-        WHERE recipes.id = $1`, [id]
+        WHERE recipes.id = $1`,
+        [id]
       );
     } catch (err) {
       throw new Error(err);
@@ -63,7 +65,8 @@ module.exports = {
         FROM recipes
         LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
         WHERE recipes.title ILIKE '%${filter}%'
-        ORDER BY recipes.id`;
+        ORDER BY recipes.id
+      `;
 
       return db.query(query);
     } catch (err) {
@@ -74,14 +77,15 @@ module.exports = {
   update(data) {
     try {
       const query = `
-      UPDATE recipes SET
-        chef_id=($1),
-        image=($2),
-        title=($3),
-        ingredients=($4),
-        preparation=($5),
-        information=($6)
-      WHERE id = $7`;
+        UPDATE recipes SET
+          chef_id=($1),
+          image=($2),
+          title=($3),
+          ingredients=($4),
+          preparation=($5),
+          information=($6)
+        WHERE id = $7
+      `;
     
       const values = [
         data.chef_id,

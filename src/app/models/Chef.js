@@ -5,11 +5,12 @@ module.exports = {
   all() {
     try {
       return db.query(`
-      SELECT chefs.*, COUNT(recipes) AS total
-      FROM chefs
-      LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
-      GROUP BY chefs.id
-      ORDER BY chefs.id`);
+        SELECT chefs.*, COUNT(recipes) AS total
+        FROM chefs
+        LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
+        GROUP BY chefs.id
+        ORDER BY chefs.id
+      `);
     } catch (err) {
       throw new Error(err);
     }
@@ -18,11 +19,13 @@ module.exports = {
   find(id) {
     try {
       return db.query(`
-      SELECT chefs.*, COUNT(recipes) AS total
-      FROM chefs 
-      LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
-      WHERE chefs.id = $1
-      GROUP BY chefs.id`, [id]);
+        SELECT chefs.*, COUNT(recipes) AS total
+        FROM chefs 
+        LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
+        WHERE chefs.id = $1
+        GROUP BY chefs.id`,
+        [id]
+      );
     } catch (err) {
       throw new Error(err);
     }
@@ -31,11 +34,13 @@ module.exports = {
   findRecipesByChef(id) {
     try {
       return db.query(`
-      SELECT recipes.*
-      FROM chefs
-      LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
-      WHERE recipes.chef_id = $1
-      ORDER BY recipes.id`,[id]);
+        SELECT recipes.*
+        FROM chefs
+        LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
+        WHERE recipes.chef_id = $1
+        ORDER BY recipes.id`,
+        [id]
+      );
     } catch (err) {
       throw new Error(err);
     }
@@ -44,12 +49,13 @@ module.exports = {
   create(data) {
     try {
       const query = `
-      INSERT INTO chefs (
-        name,
-        created_at,
-        file_id
-      ) VALUES ($1,$2, $3)
-      RETURNING id`;
+        INSERT INTO chefs (
+          name,
+          created_at,
+          file_id
+        ) VALUES ($1,$2, $3)
+        RETURNING id
+      `;
   
       const values = [
         data.name,
@@ -66,11 +72,12 @@ module.exports = {
   update(data) {
     try {
       const query = `
-      UPDATE chefs SET
-        name=($1),
-        avatar_url=($2)
-      WHERE id = $3`;
-  
+        UPDATE chefs SET
+          name=($1),
+          avatar_url=($2)
+        WHERE id = $3
+      `;
+    
       const values = [
         data.name,
         data.avatar_url,

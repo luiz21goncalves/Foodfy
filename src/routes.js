@@ -36,8 +36,8 @@ routes.get('/admin/chefs', ChefsController.index);
 routes.get('/admin/chefs/create', ChefsController.create);
 routes.get('/admin/chefs/:id', ChefsController.show);
 routes.get('/admin/chefs/:id/edit', ChefsController.edit);
-routes.post('/admin/chefs', multer.array('images_chefs', 1), ChefsController.post);
-routes.put('/admin/chefs', multer.array('images_chefs', 1), ChefsController.put);
+routes.post('/admin/chefs', multer.single('images_chefs'), ChefsController.post);
+routes.put('/admin/chefs', multer.single('images_chefs'), ChefsController.put);
 routes.delete('/admin/chefs', ChefsController.delete);
 
 module.exports = routes;

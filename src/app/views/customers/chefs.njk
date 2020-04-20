@@ -4,7 +4,17 @@
   <div class="chef-container">
     {% for chef in chefs %}
       <div class="chefs">
-        <img src="{{ chef.avatar_url }}" alt="imagem de {{ chef.name }}"> 
+
+      {% for chefFile in chefsFiles %}
+
+        {% if chef.file_id == chefFile.id %}
+          <img src="{{ chefFile.src }}" alt="imagem de {{ chef.name }}"> 
+        {# {% else %}
+          <img src="http://placehold.it/500x500?text=PRODUTO SEM FOTO" alt="Produto sem foto"> #}
+        {% endif %}
+
+      {% endfor %}
+
         <div>
           <p>{{ chef.name }}</p>
           <span value="">{{ chef.total }} receitas</span>
