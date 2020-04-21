@@ -68,13 +68,18 @@ module.exports = {
 
       if (!recipe) return res.send('Receita não encontrada.');
 
-      results = await RecipeFile.all();
-      const recipesFiles = results.rows.map( file => ({
+      results = await RecipeFile.find(req.params.id);
+      const recipeFilesPromise = results.rows.map(file => File.find(file.file_id))
+
+      results = await Promise.all(recipeFilesPromise)
+      const recipeFilesArray = results.map(result => result.rows[0])
+
+      const recipeFiles = recipeFilesArray.map( file => ({
         ...file,
         src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
-      }))
-      
-      return res.render('recipes/show', { recipe, recipesFiles });
+      }));
+
+      return res.render('recipes/show', { recipe, recipeFiles });
     } catch (err) {
       throw new Error(err);
     }

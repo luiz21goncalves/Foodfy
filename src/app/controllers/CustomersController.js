@@ -1,16 +1,23 @@
 const Recipe = require('../models/Recipe');
 const Chef = require('../models/Chef');
 const File = require('../models/File');
+const RecipeFile = require('../models/RecipeFile');
 
 module.exports = {
   async indexRecipes(req, res) {
     try {
       const { filter = '' } = req.query;
     
-      const results = await Recipe.search(filter);
+      let results = await Recipe.search(filter);
       const recipes = results.rows;
+
+      results = await RecipeFile.all();
+      const recipesFiles = results.rows.map(file => ({
+        ...file,
+        src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
+      }));
       
-      return res.render('customers/index', { recipes, filter });
+      return res.render('customers/index', { recipes, filter, recipesFiles });
     } catch (err) {
       throw new Error(err);
     }

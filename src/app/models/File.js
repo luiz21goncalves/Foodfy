@@ -32,7 +32,7 @@ module.exports = {
 
   find(id) {
     try {
-      return db.query(`SELECT * FROM files WHERE file.id = $1`, [id]);
+      return db.query(`SELECT * FROM files WHERE files.id = $1`, [id]);
     } catch (err) {
       throw new Error(err);
     }

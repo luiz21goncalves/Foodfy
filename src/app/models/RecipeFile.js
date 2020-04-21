@@ -29,5 +29,16 @@ module.exports = {
       GROUP BY files.id, recipe_files.recipe_id
       ORDER BY files.id
     `)
+  },
+
+  find(id) {
+    return db.query(`
+      SELECT * 
+      FROM recipe_files 
+      WHERE recipe_files.recipe_id = $1
+      ORDER BY recipe_files.file_id
+      `,
+      [id]
+    );
   }
 }
