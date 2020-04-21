@@ -7,8 +7,11 @@ module.exports = {
       let results = await Chef.all();
       const chefs = results.rows;
 
-      results = await File.all();
-      const chefsFiles = results.rows.map( file => ({
+      const chefsFilesPromise = await chefs.map(chef => File.find(chef.file_id));
+      results = await Promise.all(chefsFilesPromise);
+
+      let chefsFiles = results.map(result => result.rows[0]);
+      chefsFiles = chefsFiles.map(file => ({
         ...file,
         src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
       }));
@@ -59,13 +62,11 @@ module.exports = {
       results = await Chef.findRecipesByChef(req.params.id);
       const recipes = results.rows;
 
-      results = await File.all();
-      const chefsFiles = results.rows.map( file => ({
-        ...file,
-        src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
-      }));
+      results = await File.find(chef.file_id);
+      const chefsFiles = results.rows
         
-      return res.render('chefs/show', { chef, recipes, chefsFiles });
+      return res.send({ chef, recipes, chefFile });
+      return res.render('chefs/show', { chef, recipes, chefFile });
     } catch (err) {
       throw new Error(err);
     }

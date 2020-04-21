@@ -8,13 +8,14 @@ module.exports = {
       let results = await Recipe.all();
       const recipes = results.rows;
 
-      results = await RecipeFile.all();
-      const recipesFiles = results.rows.map( file => ({
-        ...file,
-        src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
-      }))
-      
-      return res.render('recipes/index', { recipes, recipesFiles });
+      const recipesFilesPromise = await recipes.map(recipe => RecipeFile.find(recipe.id));
+      results = await Promise.all(recipesFilesPromise)
+
+      const recipesIdArray = results.map(result => result.rows[0]);
+
+      const recipesFiles = recipesIdArray.map(recipeFile => console.log(recipeFile.file_id))
+
+      return res.render('recipes/index', { recipes, recipesIdArray });
     } catch (err) {
       throw new Error(err);
     }
@@ -51,9 +52,9 @@ module.exports = {
       const filesPromise = req.files.map(file => File.create({ ...file }));
       results = await Promise.all(filesPromise);
 
-      const filesId = results.map(result => result.rows[0]);
-      const recipeFilePromise =  filesId.map(fileId => RecipeFile.create(fileId.id, recipeId));
-      await Promise.all(recipeFilePromise);
+      const recipeFiles = results.map(result => result.rows[0]);
+      const recipeFilesPromise =  recipeFiles.map(file => RecipeFile.create(file.id, recipeId));
+      await Promise.all(recipeFilesPromise);
       
       return res.redirect(`recipes/${recipeId}`);
     } catch (err) {
@@ -63,23 +64,24 @@ module.exports = {
 
   async show(req, res) {
     try {
-      let results = await Recipe.find(req.params.id);
+      const recipeId = req.params.id;
+
+      let results = await Recipe.find(recipeId);
       const recipe = results.rows[0];
 
       if (!recipe) return res.send('Receita não encontrada.');
 
-      results = await RecipeFile.find(req.params.id);
-      const recipeFilesPromise = results.rows.map(file => File.find(file.file_id))
+      results = await RecipeFile.find(recipeId);
+      const recipeFilesPromise = results.rows.map(file => File.find(file.file_id));
+      results = await Promise.all(recipeFilesPromise);
 
-      results = await Promise.all(recipeFilesPromise)
-      const recipeFilesArray = results.map(result => result.rows[0])
-
-      const recipeFiles = recipeFilesArray.map( file => ({
+      let recipesFiles = results.map(result => result.rows[0]);
+      recipesFiles = recipeFiles.map(file => ({
         ...file,
         src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
       }));
 
-      return res.render('recipes/show', { recipe, recipeFiles });
+      return res.render('recipes/show', { recipe, recipesFiles });
     } catch (err) {
       throw new Error(err);
     }
@@ -87,7 +89,9 @@ module.exports = {
 
   async edit(req, res) {
     try {
-      let results = await Recipe.find(req.params.id);
+      const recipeId = req.params.id;
+
+      let results = await Recipe.find(recipeId);
       const recipe = results.rows[0];
 
       if (!recipe) return res.send('Receita não encontrada.');
@@ -95,7 +99,17 @@ module.exports = {
       results = await Recipe.chefSelectOptions();
       const chefs = results.rows;
 
-      return res.render('recipes/edit', { recipe, chefs });
+      results = await RecipeFile.find(recipeId);
+      const recipeFilesPromise = results.rows.map(file => File.find(file.file_id));
+      results = await Promise.all(recipeFilesPromise);
+
+      let recipeFiles = results.map(result => result.rows[0]);
+      recipeFiles = recipeFiles.map(file => ({
+        ...file,
+        src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
+      }));
+
+      return res.render('recipes/edit', { recipe, chefs, recipeFiles });
     } catch (err) {
       throw new Error(err);
     }
@@ -103,16 +117,46 @@ module.exports = {
 
   async put(req, res) {
     const keys = Object.keys(req.body);
+    const recipeId = req.body.id;
   
     for (key of keys) {
-      if (req.body[key] != '' || req.body.information == '') 
+      if (req.body[key] == '' && req.body.information == '' && key == 'removed_images') 
        return res.send('Apenas o campo de informações adicionais não é obrigatório');
+    }
+
+    if (req.files.length != 0) {
+      try {
+        const newFilesPromise = req.files.map(file => File.create({ ...file }));
+        const results = await Promise.all(newFilesPromise);
+  
+        const recipeFiles = results.map(result => result.rows[0]);
+        const recipeFilesPromise = recipeFiles.map(file => RecipeFile.create(file.id, recipeId))
+        await  Promise.all(recipeFilesPromise);
+      } catch (err) {
+        throw new Error(err)
+      }
+    }
+
+    if (req.body.removed_images) {
+      try {
+        const removedImages = req.body.removed_images.split(',');
+        const lastIndex = removedImages.length - 1;
+        removedImages.splice(lastIndex, 1);
+  
+        let removedImagesPromise = removedImages.map(id => File.delete(id));
+        await Promise.all(removedImagesPromise);
+  
+        removedImagesPromise = removedImages.map(fileId => RecipeFile.delete(fileId));
+        await Promise.all(removedImagesPromise);
+      } catch (err) {
+        throw new Error(err);
+      }
     }
     
     try {
       await Recipe.update(req.body);
 
-     return res.redirect(`/admin/recipes/${req.body.id}`);
+      return res.redirect(`/admin/recipes/${recipeId}`);
     } catch (err) {
       throw new Error(err);
     }

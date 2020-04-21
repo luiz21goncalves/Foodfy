@@ -258,6 +258,7 @@ section.chef div:nth-child(2) {
   font: var(--text-footer);
   font-size: 12px;
   color: var(--color-4);
+  cursor: pointer;
 }
 
 .recipe-container .paragraphs .recipe-hidden {

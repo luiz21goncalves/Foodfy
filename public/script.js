@@ -40,6 +40,7 @@ const ImagesUpload = {
 
     ImagesUpload.input.files = ImagesUpload.getAllFiles();
   },
+
   hasLimit(event) {
     const { uploadLimit, input, preview } = ImagesUpload;
     const { files: fileList } = input;
@@ -66,6 +67,7 @@ const ImagesUpload = {
 
     return false;
   },
+
   getAllFiles() {
     const dataTransfer = new DataTransfer();
 
@@ -73,6 +75,7 @@ const ImagesUpload = {
 
     return dataTransfer.files;
   },
+
   getContainer(image) {
     const container = document.createElement('div');
     
@@ -85,6 +88,7 @@ const ImagesUpload = {
 
     return container;
   },
+
   getButtonClose() {
     const button = document.createElement('i');
     button.classList.add('material-icons');
@@ -92,6 +96,7 @@ const ImagesUpload = {
 
     return button;
   },
+
   removeImage(event) {
     const imageContainer = event.target.parentNode;
     const imagesArray = Array.from(ImagesUpload.preview.children);
@@ -101,5 +106,20 @@ const ImagesUpload = {
     ImagesUpload.input = ImagesUpload.getAllFiles();
 
     imageContainer.remove();
+  },
+
+  removeOldImage(evet) {
+    const imageDiv = event.target.parentNode;
+
+    if (imageDiv.id) {
+      const removeImage = document.querySelector('input[name="removed_images"]');
+
+      if(removeImage)
+        removeImage.value += `${imageDiv.id},`
+      
+      
+    }
+
+    imageDiv.remove()
   }
 }
