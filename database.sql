@@ -13,7 +13,7 @@ CREATE TABLE "recipe_files" (
 CREATE TABLE "chefs" (
   "id" serial PRIMARY KEY,
   "name" text NOT NULL,
-  "file_id" integer,
+  "file_id" integer NOT NULL,
   "created_at" timestamp NOT NULL
 );
 
@@ -21,8 +21,8 @@ CREATE TABLE "recipes" (
   "id" serial PRIMARY KEY,
   "chef_id" integer NOT NULL,
   "title" text NOT NULL,
-  "ingredients" text NOT NULL,
-  "preparation" text NOT NULL,
+  "ingredients" text[] NOT NULL,
+  "preparation" text[] NOT NULL,
   "information" text,
   "created_at" timestamp NOT NULL
 );

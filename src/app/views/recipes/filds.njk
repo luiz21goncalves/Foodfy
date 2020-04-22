@@ -25,7 +25,7 @@
         name="images_recipes" 
         multiple
         accept="image/*"
-        onchange="ImagesUpload.handleFileInput(event)"
+        onchange="ImagesUploadRecipes.handleFileInput(event)"
       >
 
       <i class="material-icons">
@@ -41,7 +41,7 @@
             <img src="{{ file.src }}" alt="{{ file.name }}">
             <i 
               class="material-icons"
-              onclick="ImagesUpload.removeOldImage(event)"
+              onclick="ImagesUploadRecipes.removeOldImage(event)"
             >
              close
             </i>

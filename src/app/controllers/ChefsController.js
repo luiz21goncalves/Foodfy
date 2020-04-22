@@ -30,17 +30,20 @@ module.exports = {
     const keys = Object.keys(req.body);
 
     for (key of keys) {
-      if (req.body[key] == '') 
+      if (req.body[key] == '' && key != 'removed_images') 
         return res.send('Por favor, preencha todos os dados.')
     }
 
+    if (!req.file)
+      return res.send('Por Favor envie uma imagem');
+
     try {
       let results = await File.create(req.file);
-      const fileId = results.rows[0];
+      const { id } = results.rows[0];
 
       const data = {
         ...req.body,
-        fileId: fileId.id
+        fileId: id
       };
 
       results = await Chef.create(data);
@@ -54,18 +57,23 @@ module.exports = {
 
   async show(req, res) {
     try {
-      let results = await Chef.find(req.params.id);
+      const chefId = req.params.id;
+
+      let results = await Chef.find(chefId);
       const chef = results.rows[0];
   
       if (!chef) return res.send('Chef não encontrado!');
   
-      results = await Chef.findRecipesByChef(req.params.id);
+      results = await Chef.findRecipesByChef(chefId);
       const recipes = results.rows;
 
       results = await File.find(chef.file_id);
-      const chefsFiles = results.rows
+      let chefFile = results.rows[0];
+      chefFile = {
+        ...chefFile,
+        src: `${req.protocol}://${req.headers.host}${chefFile.path.replace('public', '')}`,
+      };
         
-      return res.send({ chef, recipes, chefFile });
       return res.render('chefs/show', { chef, recipes, chefFile });
     } catch (err) {
       throw new Error(err);
@@ -74,12 +82,21 @@ module.exports = {
 
   async edit(req, res) {
     try {
-      const results = await Chef.find(req.params.id);
+      const chefId = req.params.id;
+
+      let results = await Chef.find(chefId);
       const chef = results.rows[0];
+
+      results = await File.find(chefId);
+      let chefFile = results.rows[0];
+      chefFile = {
+        ...chefFile,
+        src: `${req.protocol}://${req.headers.host}${chefFile.path.replace('public', '')}`,
+      };
   
       if (!chef) return res.send('Chef não encontrado!');
   
-      return res.render('chefs/edit', { chef });
+      return res.render('chefs/edit', { chef, chefFile });
     } catch (err) {
       throw new Error(err);
     }
@@ -87,15 +104,55 @@ module.exports = {
 
   async put(req, res) {
     const keys = Object.keys(req.body);
+    const removedImage = req.body.removed_images;
 
     for (key of keys) {
-      if (req.body[key] == '') {
+      if (req.body[key] == '' && key != 'removed_images') {
         return res.send('Por favor, preencha todos os dados!')
       }
     }
 
+    if (!req.file && removedImage)
+      return res.send('Por favor envie uma imagem')
+
+    if (removedImage) {
+      try {
+        await File.delete(removedImage);
+      } catch (err) {
+        throw console.log(err);
+      }
+    }
+
+    let newChefFileID;
+
+    if (req.file) {
+      try {
+        let results = File.create(req.file);
+        const id = await results.rows;
+        return res.send(id)
+        newChefFileID = id;
+      } catch (err) {
+        throw new Error(err);
+      }
+    }
+
+    const results = await Chef.find(req.body.id);
+    const oldChefFileId = results.rows.id;
+    
+    const data = {
+      ...req.body,
+      fileId: oldChefFileId,
+    }
+
+    if (oldChefFileId != newChefFileID) {
+      data = {
+        ...data,
+        fileId: newChefFileID,
+      }
+    }
+
     try {
-      await Chef.update(req.body);
+      await Chef.update(data);
 
       return res.redirect(`/admin/chefs/${req.body.id}`)
     } catch (err) {

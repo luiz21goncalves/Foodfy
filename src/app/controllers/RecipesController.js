@@ -8,14 +8,21 @@ module.exports = {
       let results = await Recipe.all();
       const recipes = results.rows;
 
-      const recipesFilesPromise = await recipes.map(recipe => RecipeFile.find(recipe.id));
-      results = await Promise.all(recipesFilesPromise)
+      const recipesFilesPromise = results.rows.map(recipe => RecipeFile.find(recipe.id));
+      results = await Promise.all(recipesFilesPromise);
 
-      const recipesIdArray = results.map(result => result.rows[0]);
+      const recipesFilesInfo = results.map(result => result.rows[0])
 
-      const recipesFiles = recipesIdArray.map(recipeFile => console.log(recipeFile.file_id))
+      const recipeFilesPromise = recipesFilesInfo.map(fileInfo => File.find(fileInfo.file_id));
+      results = await Promise.all(recipeFilesPromise);
 
-      return res.render('recipes/index', { recipes, recipesIdArray });
+      let recipesFiles = results.map(result => result.rows[0]);
+      recipesFiles = recipesFiles.map(file => ({
+        ...file,
+        src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
+      }));
+
+      return res.render('recipes/index', { recipes, recipesFilesInfo, recipesFiles });
     } catch (err) {
       throw new Error(err);
     }
@@ -36,10 +43,8 @@ module.exports = {
     const keys = Object.keys(req.body);
   
     for (key of keys) {
-      if (req.body[key] != '' || req.body.information == '') {
-      } else {
+      if (req.body[key] == '' && key != 'removed_images' && key != 'information')
         return res.send('Apenas o campo de informações adicionais não é obrigatório')
-      }
     }
 
     if (req.files.length == 0)
@@ -76,7 +81,7 @@ module.exports = {
       results = await Promise.all(recipeFilesPromise);
 
       let recipesFiles = results.map(result => result.rows[0]);
-      recipesFiles = recipeFiles.map(file => ({
+      recipesFiles = recipesFiles.map(file => ({
         ...file,
         src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
       }));
@@ -120,7 +125,7 @@ module.exports = {
     const recipeId = req.body.id;
   
     for (key of keys) {
-      if (req.body[key] == '' && req.body.information == '' && key == 'removed_images') 
+      if (req.body[key] == '' && key != 'information' && key != 'removed_images') 
        return res.send('Apenas o campo de informações adicionais não é obrigatório');
     }
 

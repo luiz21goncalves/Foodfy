@@ -21,11 +21,27 @@
         id="images-input"
         multiple
         accept="image/*"
-        onchange="ImagesUpload.handleFileInput(event)"
+        onchange="ImagesUploadChefs.handleFileInput(event)"
       >
       <i class="material-icons">add</i>
     </div>
 
-    <div id="images-preview"></div>
+    <div id="images-preview">
+
+      {% if chefFile %}
+        <div class="image" id="{{ chefFile.id }}">
+          <img src="{{ chefFile.src }}" alt="{{ chefFile.name }}">
+          <i 
+            class="material-icons"
+            onclick="ImagesUploadChefs.removeOldImage(event)"
+          >
+            close
+          </i>
+        </div>
+      {% endif %}
+
+      <input type="hidden" name="removed_images">
+
+    </div>
   </div>
 </div>

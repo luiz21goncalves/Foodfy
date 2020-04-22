@@ -11,13 +11,21 @@ module.exports = {
       let results = await Recipe.search(filter);
       const recipes = results.rows;
 
-      results = await RecipeFile.all();
-      const recipesFiles = results.rows.map(file => ({
+      const recipesFilesPromise = results.rows.map(recipe => RecipeFile.find(recipe.id));
+      results = await Promise.all(recipesFilesPromise);
+
+      const recipesFilesInfo = results.map(result => result.rows[0])
+
+      const recipeFilesPromise = recipesFilesInfo.map(fileInfo => File.find(fileInfo.file_id));
+      results = await Promise.all(recipeFilesPromise);
+
+      let recipesFiles = results.map(result => result.rows[0]);
+      recipesFiles = recipesFiles.map(file => ({
         ...file,
-        src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
+        src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
       }));
       
-      return res.render('customers/index', { recipes, filter, recipesFiles });
+      return res.render('customers/index', { recipes, filter, recipesFilesInfo, recipesFiles });
     } catch (err) {
       throw new Error(err);
     }
@@ -28,8 +36,11 @@ module.exports = {
       let results = await Chef.all();
       const chefs = results.rows;
 
-      results = await File.all();
-      const chefsFiles = results.rows.map(file => ({
+      const chefsFilesPromise = await chefs.map(chef => File.find(chef.file_id));
+      results = await Promise.all(chefsFilesPromise);
+
+      let chefsFiles = results.map(result => result.rows[0]);
+      chefsFiles = chefsFiles.map(file => ({
         ...file,
         src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
       }));

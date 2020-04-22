@@ -1,7 +1,7 @@
 const db = require('../../config/db');
 
 module.exports = {
-  create({ fileId }, recipeId) {
+  create( fileId , recipeId) {
     try {
       const query = `
         INSERT INTO recipe_files (
@@ -24,7 +24,7 @@ module.exports = {
   all() {
     try {
       return db.query(`
-        SELECT files.*, recipe_files.recipe_id
+        SELECT files.*, recipe_files.recipe_id AS recipe_id
         FROM recipe_files
         LEFT JOIN files ON (recipe_files.file_id = files.id)
         GROUP BY files.id, recipe_files.recipe_id

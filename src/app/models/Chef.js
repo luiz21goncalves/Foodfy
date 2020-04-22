@@ -73,15 +73,15 @@ module.exports = {
     try {
       const query = `
         UPDATE chefs SET
-          name=($1),
-          avatar_url=($2)
+          name=($1)
+          file_id=($2)
         WHERE id = $3
       `;
     
       const values = [
         data.name,
-        data.avatar_url,
-        data.id
+        data.fileId,
+        data.id,
       ];
   
       return db.query(query, values);

@@ -21,10 +21,20 @@
 
         <a href="/recipes/{{ recipe.id }}">
 
-          {% for recipeFile in recipesFiles %}
-            {% if recipeFile.recipe_id == recipe.id %}
-              <img src="{{ recipeFile.src }}" alt="Imagem de {{ recipe.title }}">
+          {% for fileInfo in recipesFilesInfo %}
+
+            {% if fileInfo.recipe_id == recipe.id %}
+
+              {% for file in recipesFiles %}
+
+                {% if file.id == fileInfo.file_id %}
+                  <img src="{{ file.src }}" alt="{{ file.name }}">
+                {% endif %}
+
+              {% endfor %}
+
             {% endif %}
+
           {% endfor %}
 
           <p>{{ recipe.title }}</p>

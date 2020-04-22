@@ -10,18 +10,20 @@
   <div class="recipe-container admin">
 
  
-    {% for recipeFile in recipesFiles %}
-      <img src="{{ recipeFile.src }}" alt="Imagem de {{ recipe.title }}">
+    <img class="images-preview" src="{{ recipeFile.src }}" alt="Imagem de {{ recipe.title }}">
 
-      <div class="images-preview">
-        {% if recipeFile.recipe_id == recipe.id %}
-          <div class="image">
-            <img  src="{{ recipeFile.src }}" alt="Imagem de {{ recipe.title }}">
-          </div>
-        {% endif %}
-      </div>
+    <div id="images-preview">
 
-    {% endfor %}
+      {% for recipeFile in recipesFiles %}
+
+        <div class="image">
+          <img  src="{{ recipeFile.src }}" alt="Imagem de {{ recipe.title }}">
+          <i class="material-icons"></i>
+        </div>
+
+      {% endfor %}
+    </div>
+
 
     <div class="recipe-title">
       <h1>{{ recipe.title }}</h1>
