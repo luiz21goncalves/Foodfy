@@ -103,14 +103,14 @@ module.exports = {
       let results = await Chef.find(chefId);
       const chef = results.rows[0];
 
-      results = await File.find(chefId);
+      if (!chef) return res.send('Chef não encontrado!');
+
+      results = await File.find(chef.file_id);
       let chefFile = results.rows[0];
       chefFile = {
         ...chefFile,
         src: `${req.protocol}://${req.headers.host}${chefFile.path.replace('public', '')}`,
       };
-  
-      if (!chef) return res.send('Chef não encontrado!');
   
       return res.render('chefs/edit', { chef, chefFile });
     } catch (err) {
@@ -179,11 +179,18 @@ module.exports = {
 
   async delete(req, res) {
     try {
-      const results = Chef.findRecipesByChef(req.params.id);
+      const chefId = req.body.id;
+
+      let results = await Chef.findRecipesByChef(chefId);
       const recipes = results.rows;
-  
+
+      results = await Chef.find(chefId);
+      const fileId = results.rows[0].file_id
+
       if (recipes == '') {
-        await Chef.delete(req.body.id);
+        await Chef.delete(chefId);
+
+        await File.delete(fileId)
         
         return res.redirect('/admin/chefs');
       }

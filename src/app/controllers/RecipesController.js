@@ -135,20 +135,11 @@ module.exports = {
         const lastIndex = filesId.length - 1;
         filesId.splice(lastIndex, 1);
 
-        try {
-          const recipeFilesDeletePromise = filesId.map(id => RecipeFile.delete(id));
-          await Promise.all(recipeFilesDeletePromise);
-        } catch (err) {
-          return console.log(err)
-        }
-     
-        try {
-          const filesDeletePromise = filesId.map(id => File.delete(id));
-          await Promise.all(filesDeletePromise);
-        } catch (err) {
-          return console.log(err);
-        }
-
+        const recipeFilesDeletePromise = filesId.map(id => RecipeFile.delete(id));
+        await Promise.all(recipeFilesDeletePromise);
+      
+        const filesDeletePromise = filesId.map(id => File.delete(id));
+        await Promise.all(filesDeletePromise);
 
       } catch (err) {
         throw new Error(err);
@@ -179,8 +170,25 @@ module.exports = {
 
   async delete(req, res) {
     try {
-      await Recipe.delete(req.body.id);
+      const recipeId = req.body.id;
 
+      let results = await RecipeFile.findByRecipeId(recipeId);
+
+      try {
+        const recipeFilesDeletePromise = results.rows.map(item => RecipeFile.delete(item.file_id));
+        await Promise.all(recipeFilesDeletePromise);
+      } catch (err) {
+        throw new Error(err)
+      }
+
+      try {
+        const fileDeletePromise = results.rows.map(item => File.delete(item.file_id));
+        await Promise.all(fileDeletePromise);
+      } catch (err) {
+        throw new Error(err);
+      }
+
+      await Recipe.delete(recipeId);
       return res.redirect('/admin/recipes');
     } catch (err) {
       throw new Error(err);

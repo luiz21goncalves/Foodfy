@@ -498,7 +498,7 @@ header.admin nav a.active {
   position: relative;
 }
 
-.form button.button.button.delete {
+.form button.button.delete {
   position: absolute;
   z-index: 5;
   top: 50px;
