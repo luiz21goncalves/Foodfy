@@ -80,13 +80,13 @@ module.exports = {
       const recipeFilesPromise = results.rows.map(file => File.find(file.file_id));
       results = await Promise.all(recipeFilesPromise);
 
-      let recipesFiles = results.map(result => result.rows[0]);
-      recipesFiles = recipesFiles.map(file => ({
+      let recipeFiles = results.map(result => result.rows[0]);
+      recipeFiles = recipeFiles.map(file => ({
         ...file,
         src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
       }));
 
-      return res.render('recipes/show', { recipe, recipesFiles });
+      return res.render('recipes/show', { recipe, recipeFiles });
     } catch (err) {
       throw new Error(err);
     }

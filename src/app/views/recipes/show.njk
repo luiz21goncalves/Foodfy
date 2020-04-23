@@ -10,18 +10,34 @@
   <div class="recipe-container admin">
 
  
-    <img class="images-preview" src="{{ recipeFile.src }}" alt="Imagem de {{ recipe.title }}">
 
-    <div id="images-preview">
+    <div class="gallery">
 
-      {% for recipeFile in recipesFiles %}
+      <div class="highlight">
 
-        <div class="image">
-          <img  src="{{ recipeFile.src }}" alt="Imagem de {{ recipe.title }}">
-          <i class="material-icons"></i>
-        </div>
+        {% if not recipeFiles[0] %}
+          <img  src="http://placehold.it/900x900?text=RECEITA SEM IMAGEM" alt="Receita sem imagem">
+        {% else %}
+          <img  src="{{ recipeFiles[0].src }}" alt="Imagem de {{ recipeFiles[0].name }}">
+        {% endif %}
 
-      {% endfor %}
+      </div>
+
+      <div class="gallery-preview">
+  
+        {% for file in recipeFiles %}
+            <img  
+              src="{{ file.src }}" 
+              alt="Imagem de {{ file.name }}"
+              {% if loop.index0 == 0 %}
+                class="active"
+              {% endif %}
+              onclick="ImageGallery.setImage(event)"
+            >
+        {% endfor %}
+  
+      </div>
+
     </div>
 
 

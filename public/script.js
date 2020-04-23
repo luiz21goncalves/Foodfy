@@ -1,6 +1,6 @@
 const currentPage = location.pathname;
 const menuItens = document.querySelectorAll('header nav a');
-const filter = document.querySelector('#search')
+const filter = document.querySelector('#search');
 
 for (item of menuItens) {
   if (currentPage.includes(item.getAttribute('href'))) {
@@ -122,7 +122,7 @@ const ImagesUploadRecipes = {
 
     imageDiv.remove()
   }
-}
+};
 
 const ImagesUploadChefs = {
   input: '',
@@ -233,4 +233,18 @@ const ImagesUploadChefs = {
 
     imageDiv.remove()
   }
-}
+};
+
+const ImageGallery = {
+  highlight: document.querySelector('.highlight img'),
+  previews: document.querySelectorAll('.gallery-preview img'),
+  setImage(event) {
+    const { target } = event;
+
+    ImageGallery.previews.forEach(image => image.classList.remove('active'))
+    target.classList.add('active');
+
+    ImageGallery.highlight.src = target.src;
+    ImageGallery.highlight.alt = target.alt;
+  }
+};

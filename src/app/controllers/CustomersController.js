@@ -11,7 +11,7 @@ module.exports = {
       let results = await Recipe.search(filter);
       const recipes = results.rows;
 
-      const recipesFilesPromise = results.rows.map(recipe => RecipeFile.find(recipe.id));
+      const recipesFilesPromise = results.rows.map(recipe => RecipeFile.findByRecipeId(recipe.id));
       results = await Promise.all(recipesFilesPromise);
 
       const recipesFilesInfo = results.map(result => result.rows[0])
@@ -59,7 +59,7 @@ module.exports = {
   
       if (!recipe) return res.send('Receita não encontrada!');
 
-      results = await RecipeFile.find(recipeId);
+      results = await RecipeFile.findByRecipeId(recipeId);
       const recipeFilesPromise = results.rows.map(file => File.find(file.file_id));
 
       results = await Promise.all(recipeFilesPromise);

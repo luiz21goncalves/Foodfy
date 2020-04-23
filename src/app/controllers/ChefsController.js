@@ -1,5 +1,6 @@
 const Chef = require ('../models/Chef');
 const File = require('../models/File');
+const RecipeFile = require('../models/RecipeFile');
 
 module.exports = {
   async index(req, res) {
@@ -73,8 +74,23 @@ module.exports = {
         ...chefFile,
         src: `${req.protocol}://${req.headers.host}${chefFile.path.replace('public', '')}`,
       };
-        
-      return res.render('chefs/show', { chef, recipes, chefFile });
+
+      const recipesFilesInfoPromise = recipes.map(recipe => RecipeFile.findByRecipeId(recipe.id));
+      results = await Promise.all(recipesFilesInfoPromise);
+
+      const recipesFilesInfo = results.map(result => result.rows[0]);
+
+      const recipesFilesPromise = recipesFilesInfo.map(info => File.find(info.file_id));
+      results = await Promise.all(recipesFilesPromise);
+
+      let recipesFiles = results.map(result => result.rows[0]);
+      recipesFiles = recipesFiles.map(file => ({
+        ...file,
+        src: `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
+      }));
+      
+      // return res.send({ chef, recipes, chefFile, recipesFilesInfo, recipesFiles });
+      return res.render('chefs/show', { chef, recipes, chefFile, recipesFilesInfo, recipesFiles });
     } catch (err) {
       throw new Error(err);
     }

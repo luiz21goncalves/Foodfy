@@ -20,7 +20,23 @@
     {% for recipe in recipes %}
 
       <article class="admin">
-        <img src="{{ recipe.image }}" alt="Imagem de {{ recipe.title }}">
+
+      {% for fileInfo in recipesFilesInfo %}
+
+        {% if fileInfo.recipe_id == recipe.id %}
+
+          {% for file in recipesFiles %}
+
+            {% if file.id == fileInfo.file_id %}
+              <img src="{{ file.src }}" alt="Imagem de {{ file.name }}">
+            {% endif %}
+
+          {% endfor %}
+
+        {% endif %}
+
+      {% endfor %}
+
         
         <div>       
           <p>{{ recipe.title }}</p>
