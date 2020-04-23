@@ -73,7 +73,7 @@ module.exports = {
     try {
       const query = `
         UPDATE chefs SET
-          name=($1)
+          name=($1),
           file_id=($2)
         WHERE id = $3
       `;

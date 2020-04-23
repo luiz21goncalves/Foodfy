@@ -115,44 +115,45 @@ module.exports = {
     if (!req.file && removedImage)
       return res.send('Por favor envie uma imagem')
 
-    if (removedImage) {
-      try {
-        await File.delete(removedImage);
-      } catch (err) {
-        throw console.log(err);
-      }
-    }
-
-    let newChefFileID;
+    let newFileID = 0;
 
     if (req.file) {
       try {
-        let results = File.create(req.file);
-        const id = await results.rows;
-        return res.send(id)
-        newChefFileID = id;
+        const results = await File.create(req.file);
+        const {id} = results.rows[0];
+        
+        newFileID = id;
       } catch (err) {
         throw new Error(err);
       }
     }
 
     const results = await Chef.find(req.body.id);
-    const oldChefFileId = results.rows.id;
+    const { file_id } = results.rows[0];
+    const oldFileId = file_id;
     
-    const data = {
+    let data = {
       ...req.body,
-      fileId: oldChefFileId,
-    }
+      fileId: oldFileId,
+    };
 
-    if (oldChefFileId != newChefFileID) {
+    if (oldFileId != newFileID) {
       data = {
         ...data,
-        fileId: newChefFileID,
-      }
+        fileId: newFileID,
+      };
     }
 
     try {
       await Chef.update(data);
+
+      if (removedImage) {
+        try {
+          await File.delete(oldFileId);
+        } catch (err) {
+          throw console.log(err);
+        }
+      }
 
       return res.redirect(`/admin/chefs/${req.body.id}`)
     } catch (err) {

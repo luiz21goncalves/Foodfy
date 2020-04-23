@@ -35,7 +35,7 @@ module.exports = {
     }
   },
 
-  find(id) {
+  findByRecipeId(id) {
     try {
       return db.query(`
         SELECT * 
@@ -49,9 +49,23 @@ module.exports = {
     }
   },
 
-  delete(fileId) {
+  findByFileId(id) {
     try {
-      return db.query(`DELETE FROM recipe_files WHERE file_id = $1`, [fileId]);
+      return db.query(`
+        SELECT * 
+        FROM recipe_files 
+        WHERE recipe_files.file_id = $1
+        ORDER BY recipe_files.file_id`,
+        [id]
+      );
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
+  delete(id) {
+    try {
+      return db.query(`DELETE FROM recipe_files WHERE file_id = $1`, [id]);
     } catch (err) {
       throw new Error(err);
     }

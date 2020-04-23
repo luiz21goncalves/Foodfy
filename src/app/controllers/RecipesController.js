@@ -8,7 +8,7 @@ module.exports = {
       let results = await Recipe.all();
       const recipes = results.rows;
 
-      const recipesFilesPromise = results.rows.map(recipe => RecipeFile.find(recipe.id));
+      const recipesFilesPromise = results.rows.map(recipe => RecipeFile.findByRecipeId(recipe.id));
       results = await Promise.all(recipesFilesPromise);
 
       const recipesFilesInfo = results.map(result => result.rows[0])
@@ -76,7 +76,7 @@ module.exports = {
 
       if (!recipe) return res.send('Receita não encontrada.');
 
-      results = await RecipeFile.find(recipeId);
+      results = await RecipeFile.findByRecipeId(recipeId);
       const recipeFilesPromise = results.rows.map(file => File.find(file.file_id));
       results = await Promise.all(recipeFilesPromise);
 
@@ -104,7 +104,7 @@ module.exports = {
       results = await Recipe.chefSelectOptions();
       const chefs = results.rows;
 
-      results = await RecipeFile.find(recipeId);
+      results = await RecipeFile.findByRecipeId(recipeId);
       const recipeFilesPromise = results.rows.map(file => File.find(file.file_id));
       results = await Promise.all(recipeFilesPromise);
 
@@ -129,7 +129,33 @@ module.exports = {
        return res.send('Apenas o campo de informações adicionais não é obrigatório');
     }
 
-    if (req.files.length != 0) {
+    if (req.body.removed_images) {
+      try {
+        const filesId = req.body.removed_images.split(',');
+        const lastIndex = filesId.length - 1;
+        filesId.splice(lastIndex, 1);
+
+        try {
+          const recipeFilesDeletePromise = filesId.map(id => RecipeFile.delete(id));
+          await Promise.all(recipeFilesDeletePromise);
+        } catch (err) {
+          return console.log(err)
+        }
+     
+        try {
+          const filesDeletePromise = filesId.map(id => File.delete(id));
+          await Promise.all(filesDeletePromise);
+        } catch (err) {
+          return console.log(err);
+        }
+
+
+      } catch (err) {
+        throw new Error(err);
+      }
+    }
+
+    if (req.files != 0) {
       try {
         const newFilesPromise = req.files.map(file => File.create({ ...file }));
         const results = await Promise.all(newFilesPromise);
@@ -137,22 +163,6 @@ module.exports = {
         const recipeFiles = results.map(result => result.rows[0]);
         const recipeFilesPromise = recipeFiles.map(file => RecipeFile.create(file.id, recipeId))
         await  Promise.all(recipeFilesPromise);
-      } catch (err) {
-        throw new Error(err)
-      }
-    }
-
-    if (req.body.removed_images) {
-      try {
-        const removedImages = req.body.removed_images.split(',');
-        const lastIndex = removedImages.length - 1;
-        removedImages.splice(lastIndex, 1);
-  
-        let removedImagesPromise = removedImages.map(id => File.delete(id));
-        await Promise.all(removedImagesPromise);
-  
-        removedImagesPromise = removedImages.map(fileId => RecipeFile.delete(fileId));
-        await Promise.all(removedImagesPromise);
       } catch (err) {
         throw new Error(err);
       }
