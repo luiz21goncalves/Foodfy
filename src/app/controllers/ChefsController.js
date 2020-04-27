@@ -153,7 +153,7 @@ module.exports = {
       fileId: oldFileId,
     };
 
-    if (oldFileId != newFileID) {
+    if (oldFileId != newFileID && newFileID != 0) {
       data = {
         ...data,
         fileId: newFileID,

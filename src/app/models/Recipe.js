@@ -8,8 +8,7 @@ module.exports = {
         SELECT recipes.*, chefs.name AS chef_name
         FROM recipes
         LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-        ORDER BY recipes.id`
-      );
+        ORDER BY recipes.id`);
     } catch (err) {
       throw new Error(err);
     }
@@ -23,22 +22,20 @@ module.exports = {
           title,
           ingredients,
           preparation,
-          information,
-          created_at
-        ) VALUES ($1, $2, $3, $4, $5, $6)
+          information
+        ) VALUES ($1, $2, $3, $4, $5)
         RETURNING id
       `;
-  
+
       const values = [
         data.chef_id,
         data.title,
         data.ingredients,
         data.preparation,
         data.information,
-        date(Date.now()).iso
       ];
-  
-       return db.query(query, values);
+
+      return db.query(query, values);
     } catch (err) {
       throw new Error(err);
     }
@@ -46,7 +43,8 @@ module.exports = {
 
   find(id) {
     try {
-      return db.query(`
+      return db.query(
+        `
         SELECT recipes.*, chefs.name AS chef_name
         FROM recipes
         LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
@@ -85,14 +83,14 @@ module.exports = {
           information=($5)
         WHERE id = $6
       `;
-    
+
       const values = [
         data.chef_id,
         data.title,
         data.ingredients,
         data.preparation,
         data.information,
-        data.id
+        data.id,
       ];
 
       return db.query(query, values);
@@ -115,5 +113,5 @@ module.exports = {
     } catch (err) {
       throw new Error(err);
     }
-  }
-}
+  },
+};

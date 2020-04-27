@@ -14,7 +14,8 @@ CREATE TABLE "chefs" (
   "id" serial PRIMARY KEY,
   "name" text NOT NULL,
   "file_id" integer NOT NULL,
-  "created_at" timestamp NOT NULL
+  "created_at" timestamp DEFAULT (now()),
+  "updated_at" timestamp DEFAULT (now())
 );
 
 CREATE TABLE "recipes" (
@@ -24,7 +25,8 @@ CREATE TABLE "recipes" (
   "ingredients" text[] NOT NULL,
   "preparation" text[] NOT NULL,
   "information" text,
-  "created_at" timestamp NOT NULL
+  "created_at" timestamp DEFAULT (now()),
+  "updated_at" timestamp DEFAULT (now())
 );
 
 ALTER TABLE "recipes" ADD FOREIGN KEY ("chef_id") REFERENCES "chefs" ("id");
