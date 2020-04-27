@@ -38,7 +38,7 @@ module.exports = {
         FROM chefs
         LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
         WHERE recipes.chef_id = $1
-        ORDER BY recipes.id`,
+        ORDER BY recipes.created_at DESC`,
         [id]
       );
     } catch (err) {

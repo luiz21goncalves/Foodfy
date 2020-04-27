@@ -1,0 +1,28 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+  <div class="chef-container">
+
+    {% for chef in chefs %}
+
+      <a href="/chefs/{{ chef.id }}">
+        <div class="chefs">
+
+          {% for chefFile in chefsFiles %}
+            {% if chef.file_id == chefFile.id %}
+              <img src="{{ chefFile.src }}" alt="imagem de {{ chef.name }}"> 
+            {% endif %}
+          {% endfor %}
+
+          <div>
+              <p>{{ chef.name }}</p>
+            <span value="">{{ chef.total }} receitas</span>
+          </div>
+
+       </div>
+      </a>
+
+    {% endfor %}
+
+  </div>
+{% endblock content %}

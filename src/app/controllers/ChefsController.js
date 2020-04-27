@@ -89,7 +89,6 @@ module.exports = {
         src: `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
       }));
       
-      // return res.send({ chef, recipes, chefFile, recipesFilesInfo, recipesFiles });
       return res.render('chefs/show', { chef, recipes, chefFile, recipesFilesInfo, recipesFiles });
     } catch (err) {
       throw new Error(err);

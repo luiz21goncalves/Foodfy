@@ -296,6 +296,10 @@ section.chef div:nth-child(2) {
   margin-left: 20px;
 }
 
+.chef-container a {
+  text-decoration: none;
+}
+
 .chef-container .chefs div p {
   font: var(--text-recipe);
   line-height: initial;
