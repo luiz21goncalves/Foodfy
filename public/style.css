@@ -415,6 +415,10 @@ header.admin nav a.active {
   gap: 20px;
 }
 
+.recipes.admin a {
+  text-decoration: none;
+}
+
 .recipes.admin article {
   display: grid;
   grid-template-columns: 172px 1fr;

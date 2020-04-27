@@ -11,21 +11,20 @@ module.exports = {
       let results = await Recipe.search(filter);
       const recipes = results.rows;
 
-      const recipesFilesPromise = results.rows.map(recipe => RecipeFile.findByRecipeId(recipe.id));
-      results = await Promise.all(recipesFilesPromise);
+      async function getImage(recipeId) {
+        const results = await RecipeFile.find(recipeId);
+        const files = results.rows.map(file => ({
+          ...file,
+          src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
+        }))
 
-      const recipesFilesInfo = results.map(result => result.rows[0])
+        return files[0]
+      }
 
-      const recipeFilesPromise = recipesFilesInfo.map(fileInfo => File.find(fileInfo.file_id));
-      results = await Promise.all(recipeFilesPromise);
-
-      let recipesFiles = results.map(result => result.rows[0]);
-      recipesFiles = recipesFiles.map(file => ({
-        ...file,
-        src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
-      }));
+      const recipesFilesPromise = results.rows.map(recipe => getImage(recipe.id));
+      const recipesFiles = await Promise.all(recipesFilesPromise);
       
-      return res.render('home/index', { recipes, filter, recipesFilesInfo, recipesFiles });
+      return res.render('home/index', { recipes, filter, recipesFiles });
     } catch (err) {
       throw new Error(err);
     }
@@ -59,16 +58,18 @@ module.exports = {
   
       if (!recipe) return res.send('Receita não encontrada!');
 
-      results = await RecipeFile.findByRecipeId(recipeId);
-      const recipeFilesPromise = results.rows.map(file => File.find(file.file_id));
+      async function getImage(recipeId) {
+        const results = await RecipeFile.find(recipeId);
+        const files = results.rows.map(file => ({
+          ...file,
+          src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,  
+        }))
 
-      results = await Promise.all(recipeFilesPromise);
-      const recipeFilesArray = results.map(results => results.rows[0]);
+        return files
+      }
 
-      const recipeFiles = recipeFilesArray.map(file => ({
-        ...file,
-        src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
-      }));
+      const recipeFilesPromise = await getImage(recipeId);
+      const recipeFiles = await Promise.all(recipeFilesPromise);
       
       return res.render('home/show', { recipe, recipeFiles });
     } catch (err) {
@@ -95,21 +96,20 @@ module.exports = {
         src: `${req.protocol}://${req.headers.host}${chefFile.path.replace('public', '')}`,
       };
 
-      const recipesFilesInfoPromise = recipes.map(recipe => RecipeFile.findByRecipeId(recipe.id));
-      results = await Promise.all(recipesFilesInfoPromise);
+      async function getImage(recipeId) {
+        const results = await RecipeFile.find(recipeId);
+        const files = results.rows.map(file => ({
+          ...file,
+          src: `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`  
+        }));
 
-      const recipesFilesInfo = results.map(result => result.rows[0]);
+        return files[0];
+      }
 
-      const recipesFilesPromise = recipesFilesInfo.map(info => File.find(info.file_id));
-      results = await Promise.all(recipesFilesPromise);
-
-      let recipesFiles = results.map(result => result.rows[0]);
-      recipesFiles = recipesFiles.map(file => ({
-        ...file,
-        src: `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
-      }));
-      
-      return res.render('home/recipes-chef', { chef, recipes, chefFile, recipesFilesInfo, recipesFiles });
+      const recipesFilesPromise = recipes.map(recipe => getImage(recipe.id));
+      const recipesFiles = await Promise.all(recipesFilesPromise);
+   
+      return res.render('home/recipes-chef', { chef, recipes, chefFile, recipesFiles });
     } catch (err) {
       throw new Error(err);
     }

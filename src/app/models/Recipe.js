@@ -63,6 +63,7 @@ module.exports = {
         FROM recipes
         LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
         WHERE recipes.title ILIKE '%${filter}%'
+        OR chefs.name ILIKE '%${filter}%'
         ORDER BY recipes.id
       `;
 

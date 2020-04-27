@@ -12,20 +12,11 @@
     {% for recipe in recipes %}
 
       <article>
-        {% for fileInfo in recipesFilesInfo %}
-
-          {% if fileInfo.recipe_id == recipe.id %}
-
-            {% for file in recipesFiles %}
-
-              {% if file.id == fileInfo.file_id %}
-                <img src="{{ file.src }}" alt="{{ file.name }}">
-              {% endif %}
-
-            {% endfor %}
-
+      
+        {% for file in recipesFiles %}
+          {% if file.recipe_id == recipe.id %}
+          <img src="{{ file.src }}" alt="{{ file.name }}">
           {% endif %}
-
         {% endfor %}
         
         <div>       
