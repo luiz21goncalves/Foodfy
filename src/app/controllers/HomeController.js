@@ -6,10 +6,8 @@ const RecipeFile = require('../models/RecipeFile');
 module.exports = {
   async indexRecipes(req, res) {
     try {
-      const { filter = '' } = req.query;
-    
-      let results = await Recipe.search(filter);
-      const recipes = results.rows;
+      const results = await Recipe.all();
+      const recipes = results.rows.filter((recipe, index) => index > 5 ? false : true);
 
       async function getImage(recipeId) {
         const results = await RecipeFile.find(recipeId);
@@ -24,7 +22,7 @@ module.exports = {
       const recipesFilesPromise = results.rows.map(recipe => getImage(recipe.id));
       const recipesFiles = await Promise.all(recipesFilesPromise);
       
-      return res.render('home/index', { recipes, filter, recipesFiles });
+      return res.render('home/index', { recipes, recipesFiles });
     } catch (err) {
       throw new Error(err);
     }
@@ -112,6 +110,34 @@ module.exports = {
       return res.render('home/recipes-chef', { chef, recipes, chefFile, recipesFiles });
     } catch (err) {
       throw new Error(err);
+    }
+  },
+
+  async search (req, res) {
+    try {
+      const { filter } = req.query;
+
+      if (!filter || filter == '') return res.redirect('/recipes')
+  
+      const results = await Recipe.search(filter);
+      const recipes = results.rows;
+
+      async function getImage(recipeId) {
+        const results = await RecipeFile.find(recipeId);
+        const files = results.rows.map(file => ({
+          ...file,
+          src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
+        }))
+
+        return files[0];
+      }
+
+      const recipesFilesPromise = results.rows.map(recipe => getImage(recipe.id));
+      const recipesFiles = await Promise.all(recipesFilesPromise);
+  
+      return res.render('search/index', { filter, recipes, recipesFiles });
+    } catch (err) {
+      console.error('HomeController', err);
     }
   },
 

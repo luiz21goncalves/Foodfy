@@ -10,6 +10,7 @@ routes.get("/", HomeController.redirect);
 routes.get("/about", HomeController.showAbout);
 
 routes.get("/recipes", HomeController.indexRecipes);
+routes.get("/recipes/search", HomeController.search);
 routes.get("/recipes/:id", HomeController.showRecipes);
 
 routes.get("/chefs", HomeController.indexChefs);

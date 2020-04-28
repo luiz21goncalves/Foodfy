@@ -2,23 +2,19 @@ const db = require('../../config/db');
 
 module.exports = {
   create( fileId , recipeId) {
-    try {
-      const query = `
-        INSERT INTO recipe_files (
-          recipe_id,
-          file_id
-        ) VALUES ($1,$2)
-        RETURNING id`;
+    const query = `
+      INSERT INTO recipe_files (
+        recipe_id,
+        file_id
+      ) VALUES ($1,$2)
+      RETURNING id`;
 
-      const values = [
-        recipeId,
-        fileId,
-      ];
+    const values = [
+      recipeId,
+      fileId,
+    ];
 
-      return db.query(query, values);
-    } catch (err) {
-      throw new Error(err);
-    }
+    return db.query(query, values);
   },
 
   all() {
@@ -43,24 +39,16 @@ module.exports = {
   },
 
   findByFileId(id) {
-    try {
-      return db.query(`
-        SELECT * 
-        FROM recipe_files 
-        WHERE recipe_files.file_id = $1
-        ORDER BY recipe_files.file_id`,
-        [id]
-      );
-    } catch (err) {
-      throw new Error(err);
-    }
+    return db.query(`
+      SELECT * 
+      FROM recipe_files 
+      WHERE recipe_files.file_id = $1
+      ORDER BY recipe_files.file_id`,
+      [id]
+    );
   },
 
   delete(id) {
-    try {
-      return db.query(`DELETE FROM recipe_files WHERE file_id = $1`, [id]);
-    } catch (err) {
-      throw new Error(err);
-    }
+    return db.query(`DELETE FROM recipe_files WHERE file_id = $1`, [id]);
   }
 }
