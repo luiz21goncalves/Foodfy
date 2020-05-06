@@ -2,29 +2,14 @@
 
 {% block content %}
 
-  <h2 class="filter-text">Buscando por "{{ filter }}"</h2>
+  <div class="container recipes search">
+
+    <h2 class="filter-text">Buscando por "{{ filter }}"</h2>
   
-  <div class="recipes">
-    
-    {% for recipe in recipes %}
-      <article>
+    <div class="recipe">
+      {% include "parts/recipes.njk" %}
+    </div>
 
-        <a href="/recipes/{{ recipe.id }}">
-
-          {% for file in recipesFiles %}
-            {% if recipe.id == file.recipe_id %}
-              <img src="{{ file.src }}" alt="{{ file.name }}">
-            {% endif %}
-          {% endfor %}
-
-          <p>{{ recipe.title }}</p>
-
-          <span>por {{ recipe.chef_name }}</span>
-
-        </a>
-
-      </article>
-    {% endfor %}
   </div>
 
 {% endblock content %}

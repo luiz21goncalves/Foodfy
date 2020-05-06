@@ -1,16 +1,19 @@
 {% extends "layout.njk" %}
 
 {% block content %}
-  <div class="chef-profile">
-    <img src="{{ chefFile.src }}" alt="">
-    <h1>{{ chef.name }}</h1>
-    <span>{{ chef.total }} receitas</span>
-  </div>
+ 
+  <div class="conatiner search">
+    <div class="chef-profile">
+      <img src="{{ chefFile.src }}" alt="">
+      <h1>{{ chef.name }}</h1>
+      <span>{{ chef.total }} receitas</span>
+    </div>
 
-  <h3 class="filter-text">Receitas</h3>
+    <h3 class="filter-text">Receitas</h3>
 
-  <div class="recipes">
-    {% include "parts/recipes.njk" %}
+    <div class="recipe">
+      {% include "parts/recipes.njk" %}
+    </div>
   </div>
 
 {% endblock content %}
