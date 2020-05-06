@@ -1,0 +1,22 @@
+{% for recipe in recipes %}
+
+  <a href="/recipes/{{ recipe.id }}">
+
+    <article class="admin">
+
+      {% for file in recipesFiles%}
+        {% if file.recipe_id == recipe.id %}
+          <img src="{{ file.src }}" alt="Imagem de {{ file.name }}">
+        {% endif %}
+      {% endfor %}
+
+      <div>
+        <p>{{ recipe.title }}</p>
+        <span>por {{ chef.name }}</span>
+      </div>
+      
+    </article>
+
+  </a>
+  
+{% endfor %}

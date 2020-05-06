@@ -1,0 +1,29 @@
+<header>
+  <div class="links">
+  
+    <a href="/">
+      <img src="/assets/logo.png" alt="Logo Foodfy">
+    </a>
+    
+    <nav>
+      <a href="/about">Sobre</a>
+      <a href="/recipes">Receitas</a>
+      <a href="/chefs">Chefs</a>
+    </nav>
+
+  </div>
+
+  <div class="actions">
+    <form id="search" action="/recipes/search" method="get">
+      <input 
+        type="text" 
+        name="filter"
+        placeholder="Buscar uma receita"
+        value="{{ filter }}"
+      >
+      <button class="button" type="submit">Filtrar</button>
+    </form>
+
+    <a href="" class="button">login</a>
+  </div>
+</header>

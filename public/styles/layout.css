@@ -1,0 +1,134 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  font-family: Helvetica, sans-serif;
+  color: #111
+}
+
+.button {
+  font-size: 16px;
+  font-weight: bold;
+
+  text-decoration: none;
+
+  color: #fff;
+  background: #6558c3;
+  
+  padding: 9px 20px;
+
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button.delete {
+  font-size: 16px;
+  font-weight: bold;
+
+  text-decoration: none;
+
+  color: #fff;
+  background: #dc4747;
+  
+  padding: 9px 20px;
+
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+header {
+  margin: 0 230px;
+  height: 65px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+header .links {
+  display: flex;
+  align-items: center;
+}
+
+header .links > a {
+  margin-right: 120px
+}
+
+header .links a {
+  text-decoration: none;
+
+  font-size: 16px;
+  color: #111;
+}
+
+header .links nav a + a {
+  margin-left: 30px;
+}
+
+header .links nav a.active {
+  font-weight: bold;
+}
+
+header .actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header .actions form {
+  margin-right: 30px;
+  opacity: 0;
+  overflow: hidden;
+  transition: 200ms;
+}
+
+header .actions form.active {
+  display: initial;
+  opacity: 1;
+  overflow: initial;
+}
+
+header .actions form input {
+  max-width: 100%;
+  margin-right: 10px;
+  font-size: 16px;
+  padding: 8px 16px;
+  border: 1px solid #777;
+  border-radius: 4px;
+}
+
+main {
+  width: 100%;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
+
+.container {
+  margin: 50px 230px;
+  width: 100%;
+  max-width: 940px;
+}
+
+footer {
+  background: #eee;
+  display: flex;
+  justify-content: center;
+}
+
+footer p {
+  font-size: 14px;
+  padding: 23px 0;
+  color: #999;
+}

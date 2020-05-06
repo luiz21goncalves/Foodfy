@@ -22,7 +22,7 @@ module.exports = {
       const recipesFilesPromise = results.rows.map(recipe => getImage(recipe.id));
       const recipesFiles = await Promise.all(recipesFilesPromise);
       
-      return res.render('home/index', { recipes, recipesFiles });
+      return res.render('home/recipes', { recipes, recipesFiles });
     } catch (err) {
       throw new Error(err);
     }
