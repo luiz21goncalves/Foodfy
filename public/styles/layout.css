@@ -87,7 +87,7 @@ header .actions {
 }
 
 header .actions form {
-  margin-right: 30px;
+  margin-right: 20px;
   opacity: 0;
   overflow: hidden;
   transition: 200ms;
@@ -101,7 +101,7 @@ header .actions form.active {
 
 header .actions form input {
   max-width: 100%;
-  margin-right: 10px;
+  margin-right: 8px;
   font-size: 16px;
   padding: 8px 16px;
   border: 1px solid #777;
