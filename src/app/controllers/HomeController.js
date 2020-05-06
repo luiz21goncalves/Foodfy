@@ -107,7 +107,7 @@ module.exports = {
       const recipesFilesPromise = recipes.map(recipe => getImage(recipe.id));
       const recipesFiles = await Promise.all(recipesFilesPromise);
    
-      return res.render('home/recipes-chef', { chef, recipes, chefFile, recipesFiles });
+      return res.render('home/chef-recipes', { chef, recipes, chefFile, recipesFiles });
     } catch (err) {
       throw new Error(err);
     }

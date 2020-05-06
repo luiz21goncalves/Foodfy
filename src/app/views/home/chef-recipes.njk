@@ -2,18 +2,20 @@
 
 {% block content %}
  
-  <div class="conatiner search">
+  <div class="container recipes chefs-recipes">
+
     <div class="chef-profile">
       <img src="{{ chefFile.src }}" alt="">
       <h1>{{ chef.name }}</h1>
       <span>{{ chef.total }} receitas</span>
     </div>
 
-    <h3 class="filter-text">Receitas</h3>
+    <h2>Receitas</h2>
 
     <div class="recipe">
       {% include "parts/recipes.njk" %}
     </div>
+
   </div>
 
 {% endblock content %}

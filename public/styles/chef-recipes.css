@@ -1,0 +1,31 @@
+.container.chefs-recipes .chef-profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.container.chefs-recipes .chef-profile img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  object-position: 50% 50%;
+  border-radius: 50%;
+  margin-bottom: 30px;
+}
+
+.container.chefs-recipes .chef-profile h1 {
+  font-size: 36px;
+  margin-bottom: 4px;
+}
+
+.container.chefs-recipes .chef-profile span {
+  font-size: 20px;
+  color: #777;
+}
+
+.container.chefs-recipes h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
