@@ -102,8 +102,8 @@ header .actions form.active {
 header .actions form input {
   max-width: 100%;
   margin-right: 8px;
-  font-size: 16px;
-  padding: 8px 16px;
+  font-size: 14px;
+  padding: 10px 15px;
   border: 1px solid #ddd;
   border-radius: 4px;
 }

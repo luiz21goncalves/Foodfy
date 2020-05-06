@@ -21,7 +21,6 @@ module.exports = {
       GROUP BY chefs.id`,
       [id]
     );
- 
   },
 
   findRecipesByChef(id) {
@@ -50,7 +49,6 @@ module.exports = {
     ];
 
     return db.query (query, values);
-  
   },
 
   update(data) {

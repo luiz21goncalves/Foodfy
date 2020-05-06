@@ -19,6 +19,11 @@ module.exports = {
     return db.query(query, values);
   },
 
+
+  find(id) {
+    return db.query(`SELECT * FROM files WHERE id = $1`, [id]);
+  },
+
   async delete(id) {
     try {
       const results = await db.query(`SELECT * FROM files WHERE id = $1`, [id]);
@@ -30,9 +35,5 @@ module.exports = {
     } catch (err) {
       console.error('File delete', err)
     }
-  },
-
-  find(id) {
-    return db.query(`SELECT * FROM files WHERE id = $1`, [id]);
   },
 };
