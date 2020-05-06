@@ -640,30 +640,3 @@ form .item .images-input {
 
 /* === RECIPE GALLERY === */
 
-.gallery .highlight img {
-  max-width: 940px;
-  width: 100%;
-  height: 280px;
-  border-radius: 15px;
-  margin-bottom: 8px;
-}
-
-.gallery .gallery-preview {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.gallery .gallery-preview img {
-  width: 50px;
-  height: 50px;
-
-  border-radius: 4px;
-  margin-left: 10px;
-
-  opacity: 0.5;
-  transition: 200ms;
-}
-
-.gallery .gallery-preview img.active ,.gallery .gallery-preview img:hover {
-  opacity: 1;
-}

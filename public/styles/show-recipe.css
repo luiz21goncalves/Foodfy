@@ -1,0 +1,49 @@
+.container.show-recipe .recipe-info {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.container.show-recipe .recipe-info h1 {
+  font-size: 36px;
+  margin-bottom: 4px;
+}
+
+.container.show-recipe .recipe-info p {
+  font-size: 20px;
+  color: #777;
+}
+
+.container.show-recipe .paragraphs + .paragraphs {
+  margin-top: 30px;
+}
+
+.container.show-recipe .paragraphs :nth-child(1) {
+  margin-bottom: 10px;
+}
+
+.container.show-recipe .paragraphs :nth-child(1) h3 {
+  font-size: 24px;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.container.show-recipe .paragraphs :nth-child(1) a {
+  font-size: 12px;
+  color: #999;
+}
+
+.container.show-recipe .paragraphs .recipe-hidden.active {
+  display: none;
+}
+
+.container.show-recipe .paragraphs .recipe-hidden ul li,
+.container.show-recipe .paragraphs .recipe-hidden p {
+  font-size: 18px;
+  line-height: 28px;
+  color: #444;
+}
+
+.container.show-recipe .paragraphs ul {
+  list-style-type: '- ';
+  list-style-position: inside;
+}

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-  <div class="recipe-container">
+  <div class="container show-recipe">
   
     
     <div class="gallery">
@@ -34,7 +34,7 @@
 
     </div>
 
-    <div class="recipe-title">
+    <div class="recipe-info">
       <h1>{{ recipe.title }}</h1>
       <p>por {{ recipe.chef_name }}</p>
     </div>
@@ -45,13 +45,14 @@
         <a class="btn-hidden">ESCONDER</a>
       </div>
 
-      <ul>
+
         <div class="recipe-hidden">
-          {% for ingredient in recipe.ingredients %}
-            <li>{{ingredient}}</li>
-          {% endfor %}
+          <ul>
+            {% for ingredient in recipe.ingredients %}
+              <li>{{ingredient}}</li>
+            {% endfor %}
+          </ul>
         </div>
-      </ul>
     </div>
 
     <div class="paragraphs">
@@ -61,9 +62,11 @@
       </div>
 
       <div class="recipe-hidden">
-        {% for phrase in recipe.preparation %}
-          <p>{{ phrase }}</p>
-        {% endfor %}
+        <ul>
+          {% for phrase in recipe.preparation %}
+            <li>{{ phrase }}</li>
+          {% endfor %}
+        </ul>
       </div>
     </div>
 
