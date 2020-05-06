@@ -1,0 +1,29 @@
+.container.recipes h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.container.recipes .recipe {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.container.recipes .recipe article img {
+  width: 300px;
+  height: 140px;
+  border-radius: 15px;
+}
+
+.container.recipes .recipe article p {
+  margin-top: 20px;
+  margin-bottom: 5px;
+
+  font-size: 18px;
+  color: #111;
+}
+
+.container.recipes .recipe article span {
+  font-size: 14px;
+  color: #777;
+}
