@@ -1,9 +1,9 @@
 const express = require("express");
 const routes = express.Router();
-const multer = require("./app/middlewares/multer");
-const RecipesController = require("./app/controllers/RecipesController");
-const ChefsController = require("./app/controllers/ChefsController");
-const HomeController = require("./app/controllers/HomeController");
+const multer = require("../app/middlewares/multer");
+const RecipesController = require("../app/controllers/RecipesController");
+const ChefsController = require("../app/controllers/ChefsController");
+const HomeController = require("../app/controllers/HomeController");
 
 routes.get("/", HomeController.redirect);
 

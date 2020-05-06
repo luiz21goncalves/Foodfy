@@ -6,8 +6,6 @@ for (item of menuItens) {
   if (currentPage.includes(item.getAttribute('href'))) {
     if (currentPage == '/recipes' || currentPage.includes('recipes/search')) {
       filter.classList.add('active')
-
-      document.querySelector('h2.filter-text').setAttribute('style', 'margin-top: 50px;')
     }
     item.classList.add('active')
   }
