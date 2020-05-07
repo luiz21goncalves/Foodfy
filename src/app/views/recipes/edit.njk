@@ -5,32 +5,34 @@
 
   <div class="container admin">
 
-   
-      <form method="POST" action="/admin/recipes?_method=DELETE" id="form-delete">
-        <input type="hidden" name="id" value="{{ recipe.id }}">
-        
-        <button class="button delete" type="submit">Deletar</button>
-      </form>
+    <form method="POST" action="/admin/recipes?_method=PUT" enctype="multipart/form-data">
+      
+      <div class="actions">
+        <h2>Editando receita: {{ recipe.title }}</h2>  
 
-      <form method="POST" action="/admin/recipes?_method=PUT" enctype="multipart/form-data">
-        
-        <div class="actions">
-          <h2>Editando receita: {{ recipe.title }}</h2>  
+        <div>
+          <form method="POST" action="/admin/recipes?_method=DELETE" id="form-delete">
+            <input type="hidden" name="id" value="{{ recipe.id }}">
+            <button class="button delete" type="submit">Deletar</button>
+          </form>
+          
           <button class="button" type="submit">Salvar recita</button>
         </div>
 
-        <div class="fields">
-          {% include "recipes/filds.njk" %}
-        </div>
+      </div>
 
-        <input 
-          type="hidden"
-          name="id" 
-          value="{{ recipe.id }}"
-        >
-      </form>
-    
-    
+      <div class="fields">
+        {% include "recipes/filds.njk" %}
+      </div>
+
+      <input 
+        type="hidden"
+        name="id" 
+        value="{{ recipe.id }}"
+      >
+
+    </form>
+
   </div>
 
 {% include "confirm.njk" %}

@@ -10,8 +10,8 @@
 }
 
 /* REECIPE CREATE */
-.container.admin form .fields select,
-.container.admin form .fields input, .container.admin form .fields textarea {
+.container.admin .fields .item select,
+.container.admin .fields .item input, .container.admin .fields .item textarea {
   width: 100%;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -24,17 +24,17 @@
   resize: vertical;
 }
 
-.container.admin form .fields .item {
+.container.admin .fields .item {
   margin-bottom: 30px;
 }
 
-.container.admin form .fields .item div:nth-child(1) {
+.container.admin .fields .item div:nth-child(1) {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
-.container.admin form .fields .item a {
+.container.admin .fields .item a {
   color: #6558C3;
   font-weight: bold;
   font-size: 16px;

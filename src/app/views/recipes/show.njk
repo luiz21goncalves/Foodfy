@@ -2,77 +2,80 @@
 
 {% block content %}
 
-  <div class="actions">
-    <h2>Receita: {{ recipe.title }}</h2>
-    <a href="/admin/recipes/{{ recipe.id }}/edit" class="button">Editar Receita</a>
-  </div>
+  <div class="container recipe admin">
 
-  <div class="recipe-container admin">
-
- 
-
-    <div class="gallery">
-
-      <div class="highlight">
-
-        {% if not recipeFiles[0] %}
-          <img  src="http://placehold.it/900x900?text=RECEITA SEM IMAGEM" alt="Receita sem imagem">
-        {% else %}
-          <img  src="{{ recipeFiles[0].src }}" alt="Imagem de {{ recipeFiles[0].name }}">
-        {% endif %}
-
-      </div>
-
-      <div class="gallery-preview">
-  
-        {% for file in recipeFiles %}
-            <img  
-              src="{{ file.src }}" 
-              alt="Imagem de {{ file.name }}"
-              {% if loop.index0 == 0 %}
-                class="active"
-              {% endif %}
-              onclick="ImageGallery.setImage(event)"
-            >
-        {% endfor %}
-  
-      </div>
-
+    <div class="actions">
+      <h2>Receita: {{ recipe.title }}</h2>
+      <a href="/admin/recipes/{{ recipe.id }}/edit" class="button">Editar Receita</a>
     </div>
 
+    <div class="recipe-container">
 
-    <div class="recipe-title">
-      <h1>{{ recipe.title }}</h1>
-      <p>por {{ recipe.chef_name }}</p>
-    </div>
+  
 
-    <div class="paragraphs">
-      <h3>Ingredientes</h3>
+      <div class="gallery">
 
-      <ul>
-        <div>
-            {% for ingredient in recipe.ingredients %}
-              <li>{{ingredient}}</li>
-            {% endfor %}
+        <div class="highlight">
+
+          {% if not recipeFiles[0] %}
+            <img  src="http://placehold.it/900x900?text=RECEITA SEM IMAGEM" alt="Receita sem imagem">
+          {% else %}
+            <img  src="{{ recipeFiles[0].src }}" alt="Imagem de {{ recipeFiles[0].name }}">
+          {% endif %}
+
         </div>
-      </ul>
-    </div>
 
-    <div class="paragraphs">
-      <h3>Modo de preparo</h3>
+        <div class="gallery-preview">
+    
+          {% for file in recipeFiles %}
+              <img  
+                src="{{ file.src }}" 
+                alt="Imagem de {{ file.name }}"
+                {% if loop.index0 == 0 %}
+                  class="active"
+                {% endif %}
+                onclick="ImageGallery.setImage(event)"
+              >
+          {% endfor %}
+    
+        </div>
 
-      <div>
-        {% for phrase in recipe.preparation %}
-          <p>{{ phrase }}</p>
-        {% endfor %}
       </div>
-    </div>
 
-    <div class="paragraphs">
-      <h3>Informações adicionais</h3>
 
-      <div>
-        <p>{{ recipe.information }}</p>
+      <div class="recipe-title">
+        <h1>{{ recipe.title }}</h1>
+        <p>por {{ recipe.chef_name }}</p>
+      </div>
+
+      <div class="paragraphs">
+        <h3>Ingredientes</h3>
+
+        <ul>
+          <div>
+              {% for ingredient in recipe.ingredients %}
+                <li>{{ingredient}}</li>
+              {% endfor %}
+          </div>
+        </ul>
+      </div>
+
+      <div class="paragraphs">
+        <h3>Modo de preparo</h3>
+
+        <div>
+          {% for phrase in recipe.preparation %}
+            <p>{{ phrase }}</p>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="paragraphs">
+        <h3>Informações adicionais</h3>
+
+        <div>
+          <p>{{ recipe.information }}</p>
+        </div>
       </div>
     </div>
   </div>

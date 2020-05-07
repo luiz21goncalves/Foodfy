@@ -2,10 +2,12 @@
 
 {% block content %}
 
-  <div class="actions">
-    <h2>Chef: {{ chef.name }}</h2>
-    <a href="/admin/chefs/{{ chef.id }}/edit" class="button">Editar chef</a>
-  </div>
+  <div class="container recipes admin">
+
+    <div class="actions">
+      <h2>Chef: {{ chef.name }}</h2>
+      <a href="/admin/chefs/{{ chef.id }}/edit" class="button">Editar chef</a>
+    </div>
 
     <div class="chef-profile">
       <img src="{{ chefFile.src }}" alt="">
@@ -13,30 +15,31 @@
       <span>{{ chef.total }} receitas</span>
     </div>
 
-  <h3 class="filter-text">Receitas</h3>
+    <h3 class="filter-text">Receitas</h3>
 
-  <div class="recipes admin">
+    <div class="recipes admin">
 
-    {% for recipe in recipes %}
+      {% for recipe in recipes %}
 
-      <article class="admin">
+        <article class="admin">
 
-        {% for file in recipesFiles %}
-          {% if file.recipe_id == recipe.id %}
-              <img src="{{ file.src }}" alt="Imagem de {{ file.name }}">
-          {% endif %}
-        {% endfor %}
-        
-        <div>       
-          <p>{{ recipe.title }}</p>
-          <span>por {{ chef.name }}</span>
-          <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
-        </div>
-        
-      </article>
+          {% for file in recipesFiles %}
+            {% if file.recipe_id == recipe.id %}
+                <img src="{{ file.src }}" alt="Imagem de {{ file.name }}">
+            {% endif %}
+          {% endfor %}
+          
+          <div>       
+            <p>{{ recipe.title }}</p>
+            <span>por {{ chef.name }}</span>
+            <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
+          </div>
+          
+        </article>
 
-    {% endfor %}
-    
+      {% endfor %}
+      
+    </div>
   </div>
 
 {% endblock content %}

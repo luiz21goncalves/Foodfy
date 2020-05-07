@@ -3,30 +3,38 @@
 
 {% block content %}
 
-<div class="form">
+  <div class="container admin">
 
-  <form method="POST" action="/admin/chefs?_method=DELETE" id="form-delete">
-    <input type="hidden" name="id" value="{{ chef.id }}">
-    <button class="button delete" type="submit">Deletar</button>
-  </form>
+    <form method="POST" action="/admin/chefs?_method=PUT" enctype="multipart/form-data">
 
-  <form method="POST" action="/admin/chefs?_method=PUT" enctype="multipart/form-data">
+      <div class="actions">
 
-    <div class="actions">
-      <h2>Editando chef</h2>  
-      <button class="button" type="submit">Salvar chef</button>
-    </div>
+        <h2>Editando chef</h2>
 
-    {% include "chefs/filds.njk" %}
+        <div>
+          <form method="POST" action="/admin/chefs?_method=DELETE" id="form-delete">
+            <input type="hidden" name="id" value="{{ chef.id }}">
+            <button class="button delete" type="submit">Deletar</button>
+          </form>
 
-    <input 
-      type="hidden"
-      name="id" 
-      value="{{ chef.id }}"
-    >
-  </form>
+           <button class="button" type="submit">Salvar chef</button>
+        </div>
 
-</div>
+      </div>
+
+      <div class="fields">
+        {% include "chefs/filds.njk" %}
+      </div>
+
+
+      <input 
+        type="hidden"
+        name="id" 
+        value="{{ chef.id }}"
+      >
+    </form>
+
+  </div>
 
 {% include "confirm.njk" %}
 
