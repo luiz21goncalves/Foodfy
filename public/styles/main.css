@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   border: 0;
+  outline: none;
   box-sizing: border-box;
   font-family: Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -28,6 +29,16 @@ main {
 
 .button {
   background: #6558C3;
+  border-radius: 4px;
+  color: #fff;
+  padding: 9px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+}
+.button.delete {
+  background: #DC4747;
   border-radius: 4px;
   color: #fff;
   padding: 9px 20px;

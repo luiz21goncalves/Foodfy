@@ -3,16 +3,20 @@
 
 {% block content %}
 
-  <form method="POST" action="/admin/chefs" enctype="multipart/form-data">
+  <div class="container admin">
+    <form method="POST" action="/admin/chefs" enctype="multipart/form-data">
 
-    <div class="actions">
-      <h2>Criando chef</h2>
-      <button class="button" type="submit">Salvar chef</button>
-    </div>
+      <div class="actions">
+        <h2>Criando chef</h2>
+        <button class="button" type="submit">Salvar chef</button>
+      </div>
+      
+      <div class="fields">
+        {% include "chefs/filds.njk" %}
+      </div>
 
-    {% include "chefs/filds.njk" %}
-
-  </form>
+    </form>
+  </div>
 
 
 {% endblock content %}

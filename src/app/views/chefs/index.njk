@@ -2,34 +2,38 @@
 
 {% block content %}
 
-  <div class="actions">
-    <h2>Gerenciar chefs</h2>
-    <a class="button" href="/admin/chefs/create">Novo chef</a>
-  </div>
+  <div class="container admin">
 
-  <div class="chef-container admin">
+    <div class="actions">
+      <h2>Gerenciar chefs</h2>
+      <a class="button" href="/admin/chefs/create">Novo chef</a>
+    </div>
 
-    {% for chef in chefs %}
+    <div class="chefs-container">
 
-      <div class="chefs">
+      {% for chef in chefs %}
 
-      {% for chefFile in chefsFiles %}
+        <div class="chef">
 
-        {% if chefFile.id == chef.file_id %}
-          <img src="{{ chefFile.src }}" alt="imagem de {{ chef.name }}">
-        {% endif %}
+        {% for chefFile in chefsFiles %}
 
-      {% endfor %}
+          {% if chefFile.id == chef.file_id %}
+            <img src="{{ chefFile.src }}" alt="imagem de {{ chef.name }}">
+          {% endif %}
+
+        {% endfor %}
+          
+          <div>
+            <p>{{ chef.name }}</p>
+            <a href="chefs/{{ chef.id }}">Visualizar</a>
+          </div>
         
-        <div>
-          <p>{{ chef.name }}</p>
-          <a href="chefs/{{ chef.id }}">Visualizar</a>
         </div>
-      
-      </div>
-      
-    {% endfor %}
+        
+      {% endfor %}
 
+    </div>
+    
   </div>
 
 {% endblock content %}
