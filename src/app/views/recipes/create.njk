@@ -3,7 +3,7 @@
 
 {% block content %}
 
-  <div class="container">
+  <div class="container admin">
 
     <form method="POST" action="/admin/recipes" enctype="multipart/form-data">
 
@@ -12,7 +12,9 @@
         <button class="button" type="submit">Salvar recita</button>
       </div>
 
-      {% include "recipes/filds.njk" %}
+      <div class="fields">
+        {% include "recipes/filds.njk" %}
+      </div>
 
     </form>
 

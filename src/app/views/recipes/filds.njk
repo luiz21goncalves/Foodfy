@@ -1,7 +1,5 @@
 <div class="item">
-  <div>
-    <p>Nome da receita</p>
-  </div>
+  <div>Nome da receita</div>
 
   <div>
     <input 
@@ -13,9 +11,7 @@
 </div>
 
 <div class="item">
-  <div>
-    <p>Imagem da receita</p>
-  </div>
+  <div>Imagem da receita</div>
   
   <div class="images-input">
     <div id="images-upload">
@@ -55,9 +51,7 @@
 </div>
 
 <div class="item">
-  <div>
-    <p>Chef</p>
-  </div>
+  <div>Chef</div>
 
   <div>
     <select name="chef_id">
@@ -74,9 +68,9 @@
 </div>
 
 <div class="item">
-  <div id="ingredients">
-    <p>Ingredientes</p>
+  <div>Ingredientes</div>
 
+  <div id="ingredients">
     {% if recipe.ingredients %}
       {% for ingredient in recipe.ingredients %}
         <div class="ingredient">
@@ -90,13 +84,13 @@
     {% endif %}
   </div>
 
-  <button type="button" class="add-ingredient">Adicionar novo ingrediente</button>
+  <a type="button" class="add-ingredient">Adicionar novo ingrediente</a>
 </div>
 
 <div class="item">
-  <div id="preparation">
-    <p>Modo de preparo</p>
+  <div>Modo de preparo</div>
 
+  <div id="preparation">
     {% if recipe.preparation %}
       {% for preparate in recipe.preparation %}
         <div class="preparation">
@@ -108,16 +102,14 @@
         <input type="text" name="preparation[]" value="{{ preparate }}">
       </div>
     {% endif %}
-    
   </div>
-  <button type="button" class="add-preparation">Adicionar novo passo</button>
+
+  <a type="button" class="add-preparation">Adicionar novo passo</a>
 </div>
 
 
 <div class="item">
-  <div>
-    <p>Informações adicionais</p>
-  </div>
+  <div>Informações adicionais</div>
 
   <div>
     <textarea name="information" cols="30" rows="10">{{ recipe.information }}</textarea>

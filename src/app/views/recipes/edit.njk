@@ -3,9 +3,9 @@
 
 {% block content %}
 
-  <div class="container">
+  <div class="container admin">
 
-    <div class="form">
+   
       <form method="POST" action="/admin/recipes?_method=DELETE" id="form-delete">
         <input type="hidden" name="id" value="{{ recipe.id }}">
         
@@ -13,12 +13,15 @@
       </form>
 
       <form method="POST" action="/admin/recipes?_method=PUT" enctype="multipart/form-data">
+        
         <div class="actions">
           <h2>Editando receita: {{ recipe.title }}</h2>  
           <button class="button" type="submit">Salvar recita</button>
         </div>
 
-        {% include "recipes/filds.njk" %}
+        <div class="fields">
+          {% include "recipes/filds.njk" %}
+        </div>
 
         <input 
           type="hidden"
@@ -26,7 +29,7 @@
           value="{{ recipe.id }}"
         >
       </form>
-    </div>
+    
     
   </div>
 
