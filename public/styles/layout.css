@@ -4,6 +4,8 @@
   border: 0;
   outline: none;
   box-sizing: border-box;
+  font-family: Helvetica, sans-serif;
+  color: #111
 }
 
 body {
@@ -12,9 +14,6 @@ body {
 
   display: flex;
   flex-direction: column;
-
-  font-family: Helvetica, sans-serif;
-  color: #111
 }
 
 .button {
@@ -45,67 +44,6 @@ body {
 
   border-radius: 4px;
   cursor: pointer;
-}
-
-header {
-  margin: 0 230px;
-  height: 65px;
-
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-}
-
-header .links {
-  display: flex;
-  align-items: center;
-}
-
-header .links > a {
-  margin-right: 120px
-}
-
-header .links a {
-  text-decoration: none;
-
-  font-size: 16px;
-  color: #111;
-}
-
-header .links nav a + a {
-  margin-left: 30px;
-}
-
-header .links nav a.active {
-  font-weight: bold;
-}
-
-header .actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-header .actions form {
-  margin-right: 20px;
-  opacity: 0;
-  overflow: hidden;
-  transition: 200ms;
-}
-
-header .actions form.active {
-  display: initial;
-  opacity: 1;
-  overflow: initial;
-}
-
-header .actions form input {
-  max-width: 100%;
-  margin-right: 8px;
-  font-size: 14px;
-  padding: 10px 15px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
 }
 
 main {

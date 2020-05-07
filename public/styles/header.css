@@ -1,0 +1,88 @@
+header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.header {
+  margin: 50px 230px;
+  width: 100%;
+  max-width: 940px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+header .links {
+  display: flex;
+  align-items: center;
+}
+
+header .links > a {
+  margin-right: 120px
+}
+
+header .links a {
+  text-decoration: none;
+
+  font-size: 16px;
+  color: #111;
+}
+
+header .links nav a + a {
+  margin-left: 30px;
+}
+
+header .links nav a.active {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+header .actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header .actions form {
+  margin-right: 20px;
+  opacity: 0;
+  overflow: hidden;
+  transition: 200ms;
+}
+
+header .actions form.active {
+  display: initial;
+  opacity: 1;
+  overflow: initial;
+}
+
+header .actions form input {
+  max-width: 100%;
+  margin-right: 8px;
+  font-size: 14px;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* ADMIN */
+
+header.admin {
+  background: #111;
+  height: 80px;
+  display: flex;
+  align-items: center;
+}
+
+header.admin a {
+  color: #999;
+  font-size: 15px;
+  text-decoration: none;
+  text-transform: uppercase;
+  align-self: center;
+}
+
+header.admin a.active {
+  color: #fff;
+}

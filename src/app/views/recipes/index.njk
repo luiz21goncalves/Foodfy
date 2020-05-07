@@ -2,33 +2,37 @@
 
 {% block content %}
 
-  <div class="actions">
-    <h2>Gerenciar recitas</h2>
-    <a class="button" href="/admin/recipes/create">Nova receita</a>
-  </div>
+  <div class="container recipes admin">
 
-  <div class="recipes admin">
+    <div class="actions">
+      <h2>Gerenciar recitas</h2>
+      <a class="button" href="/admin/recipes/create">Nova receita</a>
+    </div>
 
-    {% for recipe in recipes %}
+    <div class="recipe">
 
-      <article>
+      {% for recipe in recipes %}
+
+        <article>
+        
+          {% for file in recipesFiles %}
+            {% if file.recipe_id == recipe.id %}
+            <img src="{{ file.src }}" alt="{{ file.name }}">
+            {% endif %}
+          {% endfor %}
+          
+          <div>       
+            <p>{{ recipe.title }}</p>
+            <span>por {{ recipe.chef_name }}</span>
+            <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
+          </div>
+          
+        </article>
+
+      {% endfor %}
       
-        {% for file in recipesFiles %}
-          {% if file.recipe_id == recipe.id %}
-          <img src="{{ file.src }}" alt="{{ file.name }}">
-          {% endif %}
-        {% endfor %}
-        
-        <div>       
-          <p>{{ recipe.title }}</p>
-          <span>por {{ recipe.chef_name }}</span>
-          <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
-        </div>
-        
-      </article>
-
-    {% endfor %}
-    
+    </div>
+  
   </div>
 
 

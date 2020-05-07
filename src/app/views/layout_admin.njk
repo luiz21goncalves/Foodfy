@@ -1,28 +1,41 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <title>Foodfy - Admin</title>
     {% include "styles.njk" %}
   </head>
   
   <body>
+
     <header class="admin">
-      <a href="/admin">
-        <img src="/assets/logo_white.png" alt="Foodfy logo">
-      </a>
-      <nav>
-        <a href="/admin/recipes">Receitas</a>
-        <a href="/admin/chefs">Chefs</a>
-      </nav>
-      
+      <div class="header">
+
+        <div class="links">
+          <a href="/admin">
+            <img src="/assets/logo_white.png" alt="Foodfy logo">
+          </a>
+
+          <nav>
+            <a href="/admin/recipes">Receitas</a>
+            <a href="/admin/chefs">Chefs</a>
+          </nav>
+        </div>
+
+        <a href="/logout">sair</a>
+
+      </div>
     </header>
  
     <main>
+
       {% block content %}
       {% endblock content %}
+      
     </main>
 
     <script src="/script.js"></script>
 
   </body>
+
 </html>
