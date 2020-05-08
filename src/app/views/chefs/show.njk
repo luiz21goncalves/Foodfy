@@ -2,7 +2,7 @@
 
 {% block content %}
 
-  <div class="container recipes admin">
+  <div class="container chefs recipes admin">
 
     <div class="actions">
       <h2>Chef: {{ chef.name }}</h2>
@@ -15,13 +15,13 @@
       <span>{{ chef.total }} receitas</span>
     </div>
 
-    <h3 class="filter-text">Receitas</h3>
+    <h2>Receitas</h2>
 
-    <div class="recipes admin">
+    <div class="recipe-container admin">
 
       {% for recipe in recipes %}
 
-        <article class="admin">
+        <article>
 
           {% for file in recipesFiles %}
             {% if file.recipe_id == recipe.id %}
