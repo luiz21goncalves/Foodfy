@@ -115,7 +115,7 @@ module.exports = {
           src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
         }))
 
-        return files;s
+        return files;
       }
 
       const filesPromise = await getImage(recipeId);
@@ -130,7 +130,7 @@ module.exports = {
   async put(req, res) {
     const keys = Object.keys(req.body);
     const recipeId = req.body.id;
-  
+
     for (key of keys) {
       if (req.body[key] == '' && key != 'information' && key != 'removed_images') 
        return res.send('Apenas o campo de informações adicionais não é obrigatório');
@@ -165,7 +165,6 @@ module.exports = {
         throw new Error(err);
       }
     }
-    
     try {
       await Recipe.update(req.body);
 
@@ -179,7 +178,7 @@ module.exports = {
     try {
       const recipeId = req.body.id;
 
-      let results = await RecipeFile.findByRecipeId(recipeId);
+      let results = await RecipeFile.find(recipeId);
 
       try {
         const recipeFilesDeletePromise = results.rows.map(item => RecipeFile.delete(item.file_id));

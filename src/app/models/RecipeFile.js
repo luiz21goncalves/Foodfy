@@ -38,16 +38,6 @@ module.exports = {
     );
   },
 
-  findByFileId(id) {
-    return db.query(`
-      SELECT * 
-      FROM recipe_files 
-      WHERE recipe_files.file_id = $1
-      ORDER BY recipe_files.file_id`,
-      [id]
-    );
-  },
-
   delete(id) {
     return db.query(`DELETE FROM recipe_files WHERE file_id = $1`, [id]);
   }

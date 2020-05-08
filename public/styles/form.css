@@ -120,3 +120,11 @@
   opacity: 1;
   background: rgba(255, 255, 255, 0.7);
 }
+
+/* FORM DELETE */
+#form-delete button {
+  position: absolute;
+  top: 136px;
+  right: 341px;
+  z-index: 5;
+}

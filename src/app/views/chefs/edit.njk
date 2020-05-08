@@ -5,21 +5,17 @@
 
   <div class="container admin">
 
+    <form method="POST" action="/admin/chefs?_method=DELETE" id="form-delete">
+      <input type="hidden" name="id" value="{{ chef.id }}">
+      <button class="button delete" type="submit">Deletar</button>
+    </form>
+
     <form method="POST" action="/admin/chefs?_method=PUT" enctype="multipart/form-data">
 
       <div class="actions">
-
         <h2>Editando chef</h2>
 
-        <div>
-          <form method="POST" action="/admin/chefs?_method=DELETE" id="form-delete">
-            <input type="hidden" name="id" value="{{ chef.id }}">
-            <button class="button delete" type="submit">Deletar</button>
-          </form>
-
-           <button class="button" type="submit">Salvar chef</button>
-        </div>
-
+        <button class="button" type="submit">Salvar chef</button>
       </div>
 
       <div class="fields">

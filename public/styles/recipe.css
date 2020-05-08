@@ -1,6 +1,7 @@
 .container.recipes .recipe-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
 .container.recipes .recipe-container article img {
@@ -35,6 +36,7 @@
   width: 172px;
   height: 80px;
   border-radius: 8px;
+  margin-bottom: 0;
   margin-right: 20px;
   object-fit: cover;
   object-position: 50% 50%;
@@ -46,4 +48,53 @@
   font-weight: bold;
   text-decoration: none;
   margin-top: 10px;
+}
+
+/* RECIPE ADMIN SHOW */
+.container.recipe .recipe-info {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.container.recipe .recipe-info h1 {
+  font-size: 36px;
+  margin-bottom: 4px;
+}
+
+.container.recipe .recipe-info p {
+  font-size: 20px;
+  color: #777;
+}
+
+.container.recipe .paragraphs + .paragraphs {
+  margin-top: 40px;
+}
+
+.container.recipe .paragraphs strong, .container.recipe .paragraphs div h3 {
+  display: inline-block;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.container.recipe .paragraphs ul {
+  list-style-type: '- ';
+  list-style-position: inside;
+}
+
+.container.recipe .paragraphs ul li, .container.recipe .paragraphs p {
+  font-size: 18px;
+  line-height: 28px;
+  color: #444;
+}
+
+.container.recipe .paragraphs div a {
+  font-size: 14px;
+  color: #777;
+  text-transform: uppercase;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.container.recipe .paragraphs .recipe-hidden.active {
+  display: none;
 }

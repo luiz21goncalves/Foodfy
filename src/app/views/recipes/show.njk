@@ -11,8 +11,6 @@
 
     <div class="recipe-container">
 
-  
-
       <div class="gallery">
 
         <div class="highlight">
@@ -43,13 +41,13 @@
       </div>
 
 
-      <div class="recipe-title">
+      <div class="recipe-info">
         <h1>{{ recipe.title }}</h1>
         <p>por {{ recipe.chef_name }}</p>
       </div>
 
       <div class="paragraphs">
-        <h3>Ingredientes</h3>
+        <strong>Ingredientes</strong>
 
         <ul>
           <div>
@@ -61,7 +59,7 @@
       </div>
 
       <div class="paragraphs">
-        <h3>Modo de preparo</h3>
+        <strong>Modo de preparo</strong>
 
         <div>
           {% for phrase in recipe.preparation %}
@@ -71,7 +69,7 @@
       </div>
 
       <div class="paragraphs">
-        <h3>Informações adicionais</h3>
+        <strong>Informações adicionais</strong>
 
         <div>
           <p>{{ recipe.information }}</p>
