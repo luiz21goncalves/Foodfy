@@ -20,6 +20,12 @@ module.exports = {
       return res.render('chefs/index', { chefs, chefsFiles });
     } catch (err) {
       console.error('ChefsController index',err);
+
+      return res.render('chefs/index', { 
+        chefs, 
+        chefsFiles, 
+        error: 'Erro inisperado, tente novamente!'
+      });
     }
   },
 
@@ -32,11 +38,17 @@ module.exports = {
 
     for (key of keys) {
       if (req.body[key] == '' && key != 'removed_images') 
-        return res.send('Por favor, preencha todos os dados.')
+        return res.render('chefs/create', {
+          chef: req.body,
+          error:'Por favor, preencha todos os dados!'
+        });
     }
 
     if (!req.file)
-      return res.send('Por Favor envie uma imagem');
+      return res.render('chefs/create', {
+        chef: req.body,
+        error:'Por Favor, envie pelo menos uma imagem!'
+      });
 
     try {
       let results = await File.create(req.file);
@@ -53,6 +65,11 @@ module.exports = {
       return res.redirect(`chefs/${chefId}`);
     } catch (err) {
       console.error('ChefsController post',err);
+
+      return res.render('chefs/create', {
+        chef: req.body,
+        error: 'Erro inisperado, tente novamente!'
+      });
     }
   },
 
@@ -63,7 +80,9 @@ module.exports = {
       let results = await Chef.find(chefId);
       const chef = results.rows[0];
   
-      if (!chef) return res.send('Chef não encontrado!');
+      if (!chef) return res.render('chefs/index', {
+        error:'Chef não encontrado!'
+      });
   
       results = await Chef.findRecipesByChef(chefId);
       const recipes = results.rows;
@@ -91,6 +110,10 @@ module.exports = {
       return res.render('chefs/show', { chef, recipes, chefFile, recipesFiles });
     } catch (err) {
       console.error('ChefsController',err);
+
+      return res.render('chefs/index' , {
+        error: 'Erro inisperado, tente novamente!'
+      });
     }
   },
 
@@ -101,7 +124,9 @@ module.exports = {
       let results = await Chef.find(chefId);
       const chef = results.rows[0];
 
-      if (!chef) return res.send('Chef não encontrado!');
+      if (!chef) return res.render('chef/index', {
+        error: 'Chef não encontrado!'
+      });
 
       results = await File.find(chef.file_id);
       let chefFile = results.rows[0];
@@ -112,7 +137,11 @@ module.exports = {
   
       return res.render('chefs/edit', { chef, chefFile });
     } catch (err) {
-      throw new Error(err);
+      console.eror('ChefsController edit', err);
+
+      return res.render('chef/index', {
+        error: 'Erro inesperado, tente novamente!'
+      });
     }
   },
 
@@ -122,12 +151,18 @@ module.exports = {
 
     for (key of keys) {
       if (req.body[key] == '' && key != 'removed_images') {
-        return res.send('Por favor, preencha todos os dados!')
+        return res.render('chefs/edit', {
+          chef: req.body,
+          error:'Por favor, preencha todos os dados!'
+        });
       }
     }
 
     if (!req.file && removedImage)
-      return res.send('Por favor envie uma imagem')
+      return res.render('chefs/edit', {
+        chef: req.body,
+        error: 'Por favor envie uma imagem'
+      });
 
     let newFileID = 0;
 
@@ -171,7 +206,12 @@ module.exports = {
 
       return res.redirect(`/admin/chefs/${req.body.id}`)
     } catch (err) {
-      throw new Error(err);
+      console.error('ChefsController put', err);
+
+      return res.render('chefs/edit', {
+        chef: req.body,
+        error: 'Erro inesperado, tente novamente!'
+      });
     }
   },
 
@@ -193,9 +233,17 @@ module.exports = {
         return res.redirect('/admin/chefs');
       }
   
-      return res.send(`Esse chefe possui pelo menos uma receita cadastrada! Delete suas receitas antes de tentar novamente.`)
+      return res.render('chefs/edit', {
+        chef: req.body,
+        error: `Esse chefe possui pelo menos uma receita cadastrada! Delete suas receitas antes de tentar novamente.`
+      });
     } catch (err) {
-      throw new Error(err);
+      console.error('chefs/edit', err);
+
+      return res.render('chefs/edit', {
+        chef: req.body,
+        error: 'Error inesperado, tente novamente!'
+      });
     }
   }
 }
