@@ -31,18 +31,23 @@ module.exports = {
   async indexChefs(req, res) {
     try {
       let results = await Chef.all();
-      const chefs = results.rows;
+      let chefs = results.rows;
 
-      const chefsFilesPromise = await chefs.map(chef => File.find(chef.file_id));
-      results = await Promise.all(chefsFilesPromise);
+      async function getImage(chef) {
+        const results = await File.find(chef.file_id);
 
-      let chefsFiles = results.map(result => result.rows[0]);
-      chefsFiles = chefsFiles.map(file => ({
-        ...file,
-        src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
-      }));
+        const files = results.rows.map(file => ({
+          ...file,
+          src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
+        }));
+
+        return { ...chef, file: files[0] };
+      }
+
+      const filesPromise = await chefs.map(chef => getImage(chef));
+      chefs = await Promise.all(filesPromise);
       
-      return res.render('home/chefs', { chefs, chefsFiles });
+      return res.render('home/chefs', { chefs });
     } catch (err) {
       throw new Error(err);
     }

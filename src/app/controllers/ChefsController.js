@@ -6,18 +6,23 @@ module.exports = {
   async index(req, res) {
     try {
       let results = await Chef.all();
-      const chefs = results.rows;
+      let chefs = results.rows;
 
-      const chefsFilesPromise = await chefs.map(chef => File.find(chef.file_id));
-      results = await Promise.all(chefsFilesPromise);
-
-      let chefsFiles = results.map(result => result.rows[0]);
-      chefsFiles = chefsFiles.map(file => ({
-        ...file,
-        src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`,
-      }));
+      async function getImage(chef) {
+        const results = await File.find(chef.file_id);
       
-      return res.render('chefs/index', { chefs, chefsFiles });
+        const files = results.rows.map(file => ({
+          ...file,
+          src: `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
+        }));
+      
+        return { ...chef, file: files[0] };
+      };
+
+      const filesPromise = await chefs.map(chef => getImage(chef));
+      chefs = await Promise.all(filesPromise);
+      
+      return res.render('chefs/index', { chefs });
     } catch (err) {
       console.error('ChefsController index',err);
 
@@ -102,7 +107,7 @@ module.exports = {
         }))
 
         return files[0];
-      }
+      };
 
       const recipesFilesPromise = recipes.map(recipe => getImage(recipe.id));
       const recipesFiles = await Promise.all(recipesFilesPromise);
@@ -235,7 +240,7 @@ module.exports = {
   
       return res.render('chefs/edit', {
         chef: req.body,
-        error: `Esse chefe possui pelo menos uma receita cadastrada! Delete suas receitas antes de tentar novamente.`
+        error: 'Esse chefe possui pelo menos uma receita cadastrada! Delete suas receitas antes de tentar novamente.'
       });
     } catch (err) {
       console.error('chefs/edit', err);
