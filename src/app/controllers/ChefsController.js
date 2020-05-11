@@ -8,7 +8,7 @@ module.exports = {
       let results = await Chef.all();
       let chefs = results.rows;
 
-      async function getImage(chef) {
+      async function getChefImage(chef) {
         const results = await File.find(chef.file_id);
       
         const files = results.rows.map(file => ({
@@ -19,7 +19,7 @@ module.exports = {
         return { ...chef, file: files[0] };
       };
 
-      const filesPromise = await chefs.map(chef => getImage(chef));
+      const filesPromise = await chefs.map(chef => getChefImage(chef));
       chefs = await Promise.all(filesPromise);
       
       return res.render('chefs/index', { chefs });
@@ -83,11 +83,24 @@ module.exports = {
       const chefId = req.params.id;
 
       let results = await Chef.find(chefId);
-      const chef = results.rows[0];
+      let chef = results.rows[0];
   
       if (!chef) return res.render('chefs/index', {
         error:'Chef não encontrado!'
       });
+
+      async function getChefImage(chef) {
+        const results = await File.find(chef.file_id);
+      
+        const files = results.rows.map(file => ({
+          ...file,
+          src: `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
+        }));
+      
+        return { ...chef, file: files[0] };
+      };
+
+      chef = await getChefImage(chef);
   
       results = await Chef.findRecipesByChef(chefId);
       const recipes = results.rows;
@@ -99,7 +112,7 @@ module.exports = {
         src: `${req.protocol}://${req.headers.host}${chefFile.path.replace('public', '')}`,
       };
 
-      async function getImage(recipeId) {
+      async function getRecipeImage(recipeId) {
         const results = await RecipeFile.find(recipeId);
         const files = results.rows.map(file => ({
           ...file,
@@ -108,11 +121,11 @@ module.exports = {
 
         return files[0];
       };
-
-      const recipesFilesPromise = recipes.map(recipe => getImage(recipe.id));
+      
+      const recipesFilesPromise = recipes.map(recipe => getRecipeImage(recipe.id));
       const recipesFiles = await Promise.all(recipesFilesPromise);
       
-      return res.render('chefs/show', { chef, recipes, chefFile, recipesFiles });
+      return res.render('chefs/show', { chef, recipes, recipesFiles });
     } catch (err) {
       console.error('ChefsController',err);
 
@@ -127,24 +140,31 @@ module.exports = {
       const chefId = req.params.id;
 
       let results = await Chef.find(chefId);
-      const chef = results.rows[0];
+      let chef = results.rows[0];
 
       if (!chef) return res.render('chef/index', {
         error: 'Chef não encontrado!'
       });
 
-      results = await File.find(chef.file_id);
-      let chefFile = results.rows[0];
-      chefFile = {
-        ...chefFile,
-        src: `${req.protocol}://${req.headers.host}${chefFile.path.replace('public', '')}`,
+      async function getChefImage(chef) {
+        const results = await File.find(chef.file_id);
+      
+        const files = results.rows.map(file => ({
+          ...file,
+          src: `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
+        }));
+      
+        return { ...chef, file: files[0] };
       };
-  
-      return res.render('chefs/edit', { chef, chefFile });
-    } catch (err) {
-      console.eror('ChefsController edit', err);
 
-      return res.render('chef/index', {
+      chef = await getChefImage(chef);
+    
+      return res.render('chefs/edit', { chef });
+    } catch (err) {
+      console.error('ChefsController edit', err);
+
+      return res.render('chefs/edit', {
+        chef,
         error: 'Erro inesperado, tente novamente!'
       });
     }
@@ -224,7 +244,10 @@ module.exports = {
     try {
       const chefId = req.body.id;
 
-      let results = await Chef.findRecipesByChef(chefId);
+      let results = await Chef.find(chefId);
+      let chef = results.rows[0];
+
+      results = await Chef.findRecipesByChef(chefId);
       const recipes = results.rows;
 
       results = await Chef.find(chefId);
@@ -237,16 +260,29 @@ module.exports = {
         
         return res.redirect('/admin/chefs');
       }
-  
+
+      async function getChefImage(chef) {
+        const results = await File.find(chef.file_id);
+      
+        const files = results.rows.map(file => ({
+          ...file,
+          src: `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
+        }));
+      
+        return { ...chef, file: files[0] };
+      };
+
+      chef = await getChefImage(chef);
+
       return res.render('chefs/edit', {
-        chef: req.body,
+        chef,
         error: 'Esse chefe possui pelo menos uma receita cadastrada! Delete suas receitas antes de tentar novamente.'
       });
     } catch (err) {
       console.error('chefs/edit', err);
 
       return res.render('chefs/edit', {
-        chef: req.body,
+        chef,
         error: 'Error inesperado, tente novamente!'
       });
     }

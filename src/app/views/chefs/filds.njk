@@ -28,9 +28,9 @@
 
     <div id="images-preview">
 
-      {% if chefFile %}
-        <div class="image" id="{{ chefFile.id }}">
-          <img src="{{ chefFile.src }}" alt="{{ chefFile.name }}">
+      {% if chef.file %}
+        <div class="image" id="{{ chef.file.id }}">
+          <img src="{{ chef.file.src }}" alt="imagem de {{ chef.name }}">
           <i 
             class="material-icons"
             onclick="ImagesUploadChefs.removeOldImage(event)"
