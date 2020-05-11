@@ -21,11 +21,15 @@ module.exports = {
 
       const recipesFilesPromise = recipes.map(recipe => getRecipeImage(recipe));
       recipes = await Promise.all(recipesFilesPromise);
-      console.log(recipes)
 
       return res.render('home/recipes', { recipes });
     } catch (err) {
-      throw new Error(err);
+      console.error('HomeController indexRecieps', err);
+
+      return res.render('home/recipes', { 
+        recipes,
+        error: 'Error inesperado, tente novamente!'
+      });
     }
   },
 
@@ -50,7 +54,12 @@ module.exports = {
       
       return res.render('home/chefs', { chefs });
     } catch (err) {
-      throw new Error(err);
+      console.error('HomeController indexChefs', err);
+
+      return res.render('home/chefs', { 
+        chefs,
+        error: 'Error inesperado, tente novamente!'
+      });
     }
   },
 
@@ -60,8 +69,10 @@ module.exports = {
 
       let results = await Recipe.find(recipeId);
       let recipe = results.rows[0];
-  
-      if (!recipe) return res.send('Receita não encontrada!');
+      
+      if (!recipe) return res.render('home/recipes', { 
+        error: 'Receita não encontrada!'
+      });
 
       async function getRecipeImage(recipe) {
         const results = await RecipeFile.find(recipe.id);
@@ -71,13 +82,18 @@ module.exports = {
         }))
 
         return { ...recipe, files };
-      }
+      };
 
       recipe = await getRecipeImage(recipe);
       
       return res.render('home/show', { recipe });
     } catch (err) {
-      throw new Error(err);
+      console.error('HomeController showRecipes', err);
+      
+      return res.render('home/show', { 
+        recipe,
+        error: 'Error inesperado, tente novamente!'
+      });
     }
   },
 
@@ -88,7 +104,9 @@ module.exports = {
       let results = await Chef.find(chefId);
       let chef = results.rows[0];
   
-      if (!chef) return res.send('Chef não encontrado!');
+      if (!chef) return res.render( 'home/chefs', {
+        error: 'Chef não encontrado!'
+      });
 
       async function getChefImage(chef) {
         const results = await File.find(chef.file_id);
@@ -121,7 +139,13 @@ module.exports = {
    
       return res.render('home/chef-recipes', { chef, recipes });
     } catch (err) {
-      throw new Error(err);
+      console.error('HomeController showChef', err);
+
+      return res.render('home/chef-recipes', {
+        chef,
+        recipes,
+        error: 'Error inesperado, tente novamente!'
+      });
     }
   },
 
@@ -150,6 +174,12 @@ module.exports = {
       return res.render('search/index', { filter, recipes });
     } catch (err) {
       console.error('HomeController', err);
+
+      return res.render('search/index', {
+        filter,
+        recipes,
+        error: 'Error inesperado, tente novamente!'
+      });
     }
   },
 
