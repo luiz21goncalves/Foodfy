@@ -30,9 +30,7 @@
     </div>
 
     <div id="images-preview">
-      {% if recipeFiles %}
-
-        {% for file in recipeFiles %}
+        {% for file in recipe.files %}
           <div class="image" id="{{ file.id }}">
             <img src="{{ file.src }}" alt="{{ file.name }}">
             <i 
@@ -45,7 +43,6 @@
         {% endfor %}
 
         <input type="hidden" name="removed_images">
-      {% endif %}
     </div>
   </div>
 </div>

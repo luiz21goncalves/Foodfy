@@ -28,7 +28,6 @@ module.exports = {
 
       return res.render('chefs/index', { 
         chefs, 
-        chefsFiles, 
         error: 'Erro inisperado, tente novamente!'
       });
     }
@@ -103,33 +102,28 @@ module.exports = {
       chef = await getChefImage(chef);
   
       results = await Chef.findRecipesByChef(chefId);
-      const recipes = results.rows;
+      let recipes = results.rows;
 
-      results = await File.find(chef.file_id);
-      let chefFile = results.rows[0];
-      chefFile = {
-        ...chefFile,
-        src: `${req.protocol}://${req.headers.host}${chefFile.path.replace('public', '')}`,
-      };
-
-      async function getRecipeImage(recipeId) {
-        const results = await RecipeFile.find(recipeId);
+      async function getRecipeImage(recipe) {
+        const results = await RecipeFile.find(recipe.id);
         const files = results.rows.map(file => ({
           ...file,
           src: `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
         }))
 
-        return files[0];
+        return { ...recipe, files: files[0] };
       };
+
+      const recipesFilesPromise = recipes.map(recipe => getRecipeImage(recipe));
+      recipes = await Promise.all(recipesFilesPromise);
       
-      const recipesFilesPromise = recipes.map(recipe => getRecipeImage(recipe.id));
-      const recipesFiles = await Promise.all(recipesFilesPromise);
-      
-      return res.render('chefs/show', { chef, recipes, recipesFiles });
+      return res.render('chefs/show', { chef, recipes });
     } catch (err) {
       console.error('ChefsController',err);
 
-      return res.render('chefs/index' , {
+      return res.render('chefs/show' , {
+        chef,
+        recipes,
         error: 'Erro inisperado, tente novamente!'
       });
     }

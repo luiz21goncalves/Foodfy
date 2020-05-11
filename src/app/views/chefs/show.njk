@@ -20,26 +20,19 @@
     <div class="recipe-container admin">
 
       {% for recipe in recipes %}
-
         <article>
-
-          {% for file in recipesFiles %}
-            {% if file.recipe_id == recipe.id %}
-                <img src="{{ file.src }}" alt="Imagem de {{ file.name }}">
-            {% endif %}
-          {% endfor %}
-          
+          <img src="{{ recipe.files.src }}" alt="Imagem de {{ recipe.files.name }}">
+      
           <div>       
             <p>{{ recipe.title }}</p>
             <span>por {{ chef.name }}</span>
             <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
           </div>
-          
         </article>
-
       {% endfor %}
       
     </div>
+
   </div>
 
 {% endblock content %}

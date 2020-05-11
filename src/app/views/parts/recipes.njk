@@ -3,11 +3,7 @@
     <article>
 
       <a href="/recipes/{{ recipe.id }}">
-        {% for file in recipesFiles%}
-          {% if file.recipe_id == recipe.id %}
-            <img src="{{ file.src }}" alt="Imagem de {{ file.name }}">
-          {% endif %}
-        {% endfor %}
+        <img src="{{ recipe.files.src }}" alt="Imagem de {{ recipe.title }}">
       </a>
 
       <p>{{ recipe.title }}</p>
