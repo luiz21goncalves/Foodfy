@@ -25,7 +25,7 @@ async function checkIfChefExists(id) {
 async function post(req, res, next) {
   const fillAllFields = checkAllFields(req.body);
 
-  if (fillAllFields) return res.render('chefs/create', fillAllFields);
+  if (fillAllFields) return res.render('chefs/create', fillAllFields)
 
   if (!req.file) return res.render('chefs/create', {
     chef: req.body,
@@ -35,12 +35,12 @@ async function post(req, res, next) {
   next()
 };
 
-async function checkChefs(req, res, next) {
-  const checkChefs = await checkIfChefExists(req.params.id || req.body.id);
+async function checkChef(req, res, next) {
+  const checkChef = await checkIfChefExists(req.params.id || req.body.id);
 
-  if(checkChefs.error) return res.render('chefs/index', checkChefs);
+  if(checkChef.error) return res.render('chefs/index', checkChef);
 
-  req.chef = checkChefs;
+  req.chef = checkChef;
 
   next();
 };
@@ -61,6 +61,6 @@ async function put(req, res, next) {
 
 module.exports = {
   post,
-  checkChefs,
+  checkChef,
   put,
 }

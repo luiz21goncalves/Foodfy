@@ -8,10 +8,6 @@ module.exports = {
       let results = await Recipe.all();
       let recipes = results.rows;
 
-      if (!recipes) return res.render('recipes/index', {
-        error: 'Não foram encontradas receitas'
-      });
-
       async function getRecipeImage(recipe) {
         const results = await RecipeFile.find(recipe.id);
         const files = results.rows.map(file => ({
@@ -52,21 +48,6 @@ module.exports = {
   },
 
   async post(req ,res) {
-    const keys = Object.keys(req.body);
-  
-    for (key of keys) {
-      if (req.body[key] == '' && key != 'removed_images' && key != 'information')
-        return res.render('recipes/create', {
-          recipe: req.body,
-          error :'Apenas o campo de informações adicionais não é obrigatório'
-        });
-    }
-
-    if (req.files.length == 0) return res.render('recipes/create', {
-      recipe: req.body,
-      error: 'Envie pelo menos uma imagem.'
-    });
-    
     try {
       let results = await Recipe.create(req.body);
       const recipeId =  results.rows[0].id
@@ -91,14 +72,7 @@ module.exports = {
 
   async show(req, res) {
     try {
-      const recipeId = req.params.id;
-
-      let results = await Recipe.find(recipeId);
-      let recipe = results.rows[0];
-
-      if (!recipe) return res.render('recipes/index', {
-        error: 'Receita não encontrada!'
-      })
+      let recipe = req.recipe;
 
       async function getRecipeImage(recipe) {
         const results = await RecipeFile.find(recipe.id);
