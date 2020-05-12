@@ -2,24 +2,26 @@ const Chef = require ('../models/Chef');
 const File = require('../models/File');
 const RecipeFile = require('../models/RecipeFile');
 
+async function getChefImage(chef, req) {
+  const results = await File.find(chef.file_id);
+
+  const files = results.rows.map(file => ({
+    ...file,
+    src: `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
+  }));
+
+  return { ...chef, file: files[0] };
+};
+
 module.exports = {
   async index(req, res) {
     try {
       let results = await Chef.all();
       let chefs = results.rows;
 
-      async function getChefImage(chef) {
-        const results = await File.find(chef.file_id);
-      
-        const files = results.rows.map(file => ({
-          ...file,
-          src: `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
-        }));
-      
-        return { ...chef, file: files[0] };
-      };
+      req.chefs = chefs;
 
-      const filesPromise = await chefs.map(chef => getChefImage(chef));
+      const filesPromise = await chefs.map(chef => getChefImage(chef, req));
       chefs = await Promise.all(filesPromise);
       
       return res.render('chefs/index', { chefs });
@@ -38,22 +40,6 @@ module.exports = {
   },
 
   async post(req, res) {
-    const keys = Object.keys(req.body);
-
-    for (key of keys) {
-      if (req.body[key] == '' && key != 'removed_images') 
-        return res.render('chefs/create', {
-          chef: req.body,
-          error:'Por favor, preencha todos os dados!'
-        });
-    }
-
-    if (!req.file)
-      return res.render('chefs/create', {
-        chef: req.body,
-        error:'Por Favor, envie pelo menos uma imagem!'
-      });
-
     try {
       let results = await File.create(req.file);
       const { id } = results.rows[0];
@@ -79,29 +65,11 @@ module.exports = {
 
   async show(req, res) {
     try {
-      const chefId = req.params.id;
+      let chef = req.chef;
 
-      let results = await Chef.find(chefId);
-      let chef = results.rows[0];
-  
-      if (!chef) return res.render('chefs/index', {
-        error:'Chef não encontrado!'
-      });
+      chef = await getChefImage(chef, req);
 
-      async function getChefImage(chef) {
-        const results = await File.find(chef.file_id);
-      
-        const files = results.rows.map(file => ({
-          ...file,
-          src: `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
-        }));
-      
-        return { ...chef, file: files[0] };
-      };
-
-      chef = await getChefImage(chef);
-  
-      results = await Chef.findRecipesByChef(chefId);
+      const results = await Chef.findRecipesByChef(chef.id);
       let recipes = results.rows;
 
       async function getRecipeImage(recipe) {
@@ -131,27 +99,9 @@ module.exports = {
 
   async edit(req, res) {
     try {
-      const chefId = req.params.id;
+      let chef = req.chef;
 
-      let results = await Chef.find(chefId);
-      let chef = results.rows[0];
-
-      if (!chef) return res.render('chef/index', {
-        error: 'Chef não encontrado!'
-      });
-
-      async function getChefImage(chef) {
-        const results = await File.find(chef.file_id);
-      
-        const files = results.rows.map(file => ({
-          ...file,
-          src: `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
-        }));
-      
-        return { ...chef, file: files[0] };
-      };
-
-      chef = await getChefImage(chef);
+      chef = await getChefImage(chef, req);
     
       return res.render('chefs/edit', { chef });
     } catch (err) {
@@ -165,62 +115,32 @@ module.exports = {
   },
 
   async put(req, res) {
-    const keys = Object.keys(req.body);
-    const removedImage = req.body.removed_images;
-
-    for (key of keys) {
-      if (req.body[key] == '' && key != 'removed_images') {
-        return res.render('chefs/edit', {
-          chef: req.body,
-          error:'Por favor, preencha todos os dados!'
-        });
-      }
-    }
-
-    if (!req.file && removedImage)
-      return res.render('chefs/edit', {
-        chef: req.body,
-        error: 'Por favor envie uma imagem'
-      });
-
-    let newFileID = 0;
-
-    if (req.file) {
-      try {
-        const results = await File.create(req.file);
-        const {id} = results.rows[0];
-        
-        newFileID = id;
-      } catch (err) {
-        throw new Error(err);
-      }
-    }
-
-    const results = await Chef.find(req.body.id);
-    const { file_id } = results.rows[0];
-    const oldFileId = file_id;
-    
-    let data = {
-      ...req.body,
-      fileId: oldFileId,
-    };
-
-    if (oldFileId != newFileID && newFileID != 0) {
-      data = {
-        ...data,
-        fileId: newFileID,
-      };
-    }
-
     try {
+      const removedImage = req.body.removed_images;
+
+      const results = await Chef.find(req.body.id);
+      const { file_id } = results.rows[0];
+      const oldFileId = file_id;
+      
+      let data = {
+        ...req.body,
+        fileId: oldFileId,
+      };
+
+      if (req.file) {
+        const results = await File.create(req.file);
+        const { id } = results.rows[0];
+        
+        data = {
+          ...data,
+          fileId: id,
+        };
+      }
+
       await Chef.update(data);
 
       if (removedImage) {
-        try {
-          await File.delete(oldFileId);
-        } catch (err) {
-          throw console.log(err);
-        }
+        await File.delete(oldFileId);
       }
 
       return res.redirect(`/admin/chefs/${req.body.id}`)
@@ -255,18 +175,7 @@ module.exports = {
         return res.redirect('/admin/chefs');
       }
 
-      async function getChefImage(chef) {
-        const results = await File.find(chef.file_id);
-      
-        const files = results.rows.map(file => ({
-          ...file,
-          src: `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
-        }));
-      
-        return { ...chef, file: files[0] };
-      };
-
-      chef = await getChefImage(chef);
+      chef = await getChefImage(chef, req);
 
       return res.render('chefs/edit', {
         chef,

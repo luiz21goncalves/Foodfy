@@ -183,11 +183,4 @@ module.exports = {
     }
   },
 
-  showAbout (req, res) {
-    return res.render("home/about");
-  },
-
-  redirect (req, res) {
-    return res.redirect('/recipes');
-  }
 }
