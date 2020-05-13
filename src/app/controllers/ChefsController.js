@@ -100,6 +100,7 @@ module.exports = {
   async edit(req, res) {
     try {
       let chef = req.chef;
+      console.log(chef)
 
       chef = await getChefImage(chef, req);
     
@@ -182,7 +183,7 @@ module.exports = {
         error: 'Esse chefe possui pelo menos uma receita cadastrada! Delete suas receitas antes de tentar novamente.'
       });
     } catch (err) {
-      console.error('chefs/edit', err);
+      console.error('ChefsController delete', err);
 
       return res.render('chefs/edit', {
         chef,

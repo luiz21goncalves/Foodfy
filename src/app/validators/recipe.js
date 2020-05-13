@@ -44,9 +44,18 @@ async function checkRecipe(req, res, next) {
   req.recipe = checkRecipe;
 
   next();
-}
+};
+
+async function put(req, res, next) {
+  const fillAllFields = checkAllFields(req.body);
+
+  if (fillAllFields) return res.render('recipes/create', fillAllFields);
+
+  next();
+};
 
 module.exports = {
   post,
   checkRecipe,
+  put,
 };

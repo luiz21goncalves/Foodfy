@@ -85,6 +85,6 @@ module.exports = {
   },
 
   chefSelectOptions() {
-    return db.query(`SELECT name, id FROM chefs`);
+    return db.query(`SELECT name, id FROM chefs ORDER BY id`);
   },
 };

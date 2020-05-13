@@ -2,23 +2,23 @@ const Recipe = require('../models/Recipe');
 const File = require('../models/File');
 const RecipeFile = require('../models/RecipeFile');
 
+async function getRecipeImage(recipe, req) {
+  const results = await RecipeFile.find(recipe.id);
+  const files = results.rows.map(file => ({
+    ...file,
+    src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
+  }))
+  
+  return { ...recipe, files };
+};
+
 module.exports = {
   async index(req ,res) {
     try {
       let results = await Recipe.all();
       let recipes = results.rows;
 
-      async function getRecipeImage(recipe) {
-        const results = await RecipeFile.find(recipe.id);
-        const files = results.rows.map(file => ({
-          ...file,
-          src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
-        }))
-        
-        return { ...recipe, files: files[0] };
-      }
-
-      const filesPromise = await results.rows.map(recipe => getRecipeImage(recipe));
+      const filesPromise = await results.rows.map(recipe => getRecipeImage(recipe, req));
       recipes = await Promise.all(filesPromise);
 
       return res.render('recipes/index', { recipes });
@@ -26,6 +26,7 @@ module.exports = {
       console.error('RecipeController inde', err);
 
       return res.render('recipes/index', {
+        recipes,
         error: 'Erro inesperado tente novamente!'
       });
     }
@@ -74,17 +75,7 @@ module.exports = {
     try {
       let recipe = req.recipe;
 
-      async function getRecipeImage(recipe) {
-        const results = await RecipeFile.find(recipe.id);
-        const files = results.rows.map(file => ({
-          ...file,
-          src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
-        }))
-
-        return { ...recipe, files };
-      }
-
-      recipe = await getRecipeImage(recipe);
+      recipe = await getRecipeImage(recipe, req);
  
       return res.render('recipes/show', { recipe });
     } catch (err) {
@@ -99,29 +90,12 @@ module.exports = {
 
   async edit(req, res) {
     try {
-      const recipeId = req.params.id;
-
-      let results = await Recipe.find(recipeId);
-      let recipe = results.rows[0];
-
-      if (!recipe) return res.render('recipes/index', {
-        error: 'Receita não encontrada!'
-      });
+      let recipe = req.recipe;
 
       results = await Recipe.chefSelectOptions();
       const chefs = results.rows;
 
-      async function getRecipeImage(recipe) {
-        const results = await RecipeFile.find(recipe.id)
-        const files = results.rows.map(file => ({
-          ...file,
-          src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
-        }))
-
-        return { ...recipe, files };
-      }
-
-      recipe = await getRecipeImage(recipe);
+      recipe = await getRecipeImage(recipe, req);
 
       return res.render('recipes/edit', { recipe, chefs });
     } catch (err) {
@@ -136,18 +110,9 @@ module.exports = {
   },
 
   async put(req, res) {
-    const keys = Object.keys(req.body);
-    const recipeId = req.body.id;
-
-    for (key of keys) {
-      if (req.body[key] == '' && key != 'information' && key != 'removed_images') 
-       return res.render('recipes/edit', {
-        recipe: req.body,
-        error:'Apenas o campo de informações adicionais não é obrigatório'
-      });
-    }
-
     try {
+      const recipeId = req.body.id;
+      
       if (req.body.removed_images) {
         const filesId = req.body.removed_images.split(',');
         const lastIndex = filesId.length - 1;
@@ -184,12 +149,9 @@ module.exports = {
 
   async delete(req, res) {
     try {
-      const recipeId = req.body.id;
+      const recipe = req.recipe;
 
-      let results = await Recipe.find(recipeId);
-      const recipe = results.rows
-
-      results = await RecipeFile.find(recipeId);
+      const results = await RecipeFile.find(recipeId);
 
       const recipeFilesDeletePromise = results.rows.map(item => RecipeFile.delete(item.file_id));
       await Promise.all(recipeFilesDeletePromise);

@@ -9,8 +9,20 @@ routes.get('/', ChefsController.index);
 routes.get('/create', ChefsController.create);
 routes.get('/:id', ChefValidator.checkChef, ChefsController.show);
 routes.get('/:id/edit', ChefValidator.checkChef, ChefsController.edit);
-routes.post('/', multer.single('images_chefs'), ChefValidator.post, ChefsController.post);
-routes.put('/', multer.single('images_chefs'), ChefValidator.put, ChefsController.put);
-routes.delete('/',ChefValidator.checkChef, ChefsController.delete);
+
+routes.post(
+  '/', 
+  multer.single('images_chefs'), 
+  ChefValidator.post,
+  ChefsController.post
+);
+routes.put(
+  '/', 
+  multer.single('images_chefs'), 
+  ChefValidator.put, 
+  ChefsController.put
+);
+
+routes.delete('/', ChefValidator.checkChef, ChefsController.delete);
 
 module.exports = routes;

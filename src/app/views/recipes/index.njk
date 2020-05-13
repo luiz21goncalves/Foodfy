@@ -13,7 +13,7 @@
 
       {% for recipe in recipes %}
         <article>
-          <img src="{{ recipe.files.src }}" alt="{{ recipe.files.name }}">
+          <img src="{{ recipe.files[0].src }}" alt="{{ recipe.files[0].name }}">
 
           <div>       
             <p>{{ recipe.title }}</p>
