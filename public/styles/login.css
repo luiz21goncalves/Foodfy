@@ -33,6 +33,10 @@
   padding: 15px 14px;
 }
 
+.container.login form.login .item div:nth-child(2) input.error {
+  border-color: #FF3131 ;
+}
+
 .container.login form.login .item :nth-child(2) input::placeholder {
   color: #999;
 }
