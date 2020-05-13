@@ -5,11 +5,13 @@ const home = require('./home');
 const recipe = require('./recipe');
 const chef = require('./chef');
 const session = require('./session');
+const user = require('./user');
 
 routes.use('/', home);
 routes.use('/admin', session);
 routes.use('/admin/recipes', recipe);
 routes.use('/admin/chefs', chef);
+routes.use('/admin/users', user);
 
 routes.get('/', (req, res) => res.redirect('/recipes'));
 routes.get('/about', (req, res) => res.render('home/about'));
