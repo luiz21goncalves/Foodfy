@@ -12,8 +12,6 @@ module.exports = {
       });
     });
 
-
-
     const results = await db.query(query);
 
     return results.rows[0];

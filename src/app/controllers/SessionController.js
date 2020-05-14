@@ -6,7 +6,9 @@ module.exports = {
   },
 
   login(req, res) {
-    return res.send(req.user);
+    console.log(req.session);
+
+    return res.redirect('/admin');
   },
 
   formForgot(req, res) {
