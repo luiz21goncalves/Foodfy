@@ -36,7 +36,7 @@ CREATE TABLE "recipes" (
 CREATE TABLE "users" (
   "id" serial PRIMARY KEY,
   "name" text NOT NULL,
-  "email" text NOT NULL,
+  "email" text UNIQUE NOT NULL,
   "password" text NOT NULL,
   "reset_token" text,
   "reset_token_expires" text,

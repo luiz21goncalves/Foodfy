@@ -5,7 +5,7 @@
   <div class="container login">
     <h2>Iniciar Sessão</h2>
 
-    <form class="login" action="" method="">
+    <form class="login" action="/admin/login" method="post">
       <div class="item">
         <div>Email</div>
 
@@ -14,6 +14,7 @@
             type="email" 
             name="email" 
             placeholder="Digite seu email"
+            value="{{ user.email }}"
             {% if error %}
               class="error"
             {% endif %} 

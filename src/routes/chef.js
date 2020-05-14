@@ -2,27 +2,27 @@ const express = require('express');
 const routes = express.Router();
 const multer = require('../app/middlewares/multer');
 
-const ChefsController = require('../app/controllers/ChefsController');
+const ChefController = require('../app/controllers/ChefController');
 const ChefValidator = require('../app/validators/chef');
 
-routes.get('/', ChefsController.index);
-routes.get('/create', ChefsController.create);
-routes.get('/:id', ChefValidator.checkChef, ChefsController.show);
-routes.get('/:id/edit', ChefValidator.checkChef, ChefsController.edit);
+routes.get('/', ChefController.index);
+routes.get('/create', ChefController.create);
+routes.get('/:id', ChefValidator.checkChef, ChefController.show);
+routes.get('/:id/edit', ChefValidator.checkChef, ChefController.edit);
 
 routes.post(
   '/', 
   multer.single('images_chefs'), 
   ChefValidator.post,
-  ChefsController.post
+  ChefController.post
 );
 routes.put(
   '/', 
   multer.single('images_chefs'), 
   ChefValidator.put, 
-  ChefsController.put
+  ChefController.put
 );
 
-routes.delete('/', ChefValidator.checkChef, ChefsController.delete);
+routes.delete('/', ChefValidator.checkChef, ChefController.delete);
 
 module.exports = routes;

@@ -2,28 +2,28 @@ const express = require('express');
 const routes = express.Router();
 const multer = require('../app/middlewares/multer');
 
-const RecipesController = require('../app/controllers/RecipesController');
+const RecipeController = require('../app/controllers/RecipeController');
 const RecipeValidator = require('../app/validators/recipe');
 
-routes.get('/', RecipesController.index);
-routes.get('/create', RecipesController.create);
-routes.get('/:id', RecipeValidator.checkRecipe, RecipesController.show);
-routes.get('/:id/edit', RecipeValidator.checkRecipe, RecipesController.edit);
+routes.get('/', RecipeController.index);
+routes.get('/create', RecipeController.create);
+routes.get('/:id', RecipeValidator.checkRecipe, RecipeController.show);
+routes.get('/:id/edit', RecipeValidator.checkRecipe, RecipeController.edit);
 
 routes.post(
   '/', 
   multer.array('images_recipes', 5), 
   RecipeValidator.post, 
-  RecipesController.post
+  RecipeController.post
 );
 
 routes.put(
   '/', 
   multer.array('images_recipes', 5), 
   RecipeValidator.put, 
-  RecipesController.put
+  RecipeController.put
 );
 
-routes.delete('/', RecipeValidator.checkRecipe, RecipesController.delete);
+routes.delete('/', RecipeValidator.checkRecipe, RecipeController.delete);
 
 module.exports = routes;
