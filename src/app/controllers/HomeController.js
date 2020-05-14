@@ -13,7 +13,7 @@ async function getRecipeImage(recipe, req) {
   return { ...recipe, files };
 };
 
-async function getChefImage(chef) {
+async function getChefImage(chef, req) {
   const results = await File.find(chef.file_id);
 
   const files = results.rows.map(file => ({
