@@ -1,0 +1,22 @@
+.container .about + .about {
+  margin-top: 30px;
+}
+
+.container .about h2, .container .about strong {
+  margin-bottom: 20px;
+  display: block;
+}
+
+.container .about strong {
+  font-size: 20px;
+}
+
+.container .about p {
+  font-size: 18px;
+  line-height: 28px;
+  color: #444;
+}
+
+.container .about p + p {
+  margin-top: 20px;
+}

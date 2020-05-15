@@ -1,8 +1,25 @@
-<section class="banner">
-  <div>
-    <h1>As melhores Recitas</h1>
-    <p>Aprenda a construir os melhores pratos com receitas criadas pro profissionais do mundo inteiro.</p>
-  </div>
+{% macro banner(boolean) %}
 
-  <img src="/assets/chef.png" alt="desenho de um chef">
-</section>
+  {% if boolean == "true" %}
+    <section class="banner">
+      <div>
+        <h1>As melhores Recitas</h1>
+        <p>Aprenda a construir os melhores pratos com receitas criadas pro profissionais do mundo inteiro.</p>
+      </div>
+
+      <img src="/assets/chef.png" alt="desenho de um chef">
+    </section>
+  {% endif %}
+
+  {% if boolean != "true" %}
+    <section class="banner">
+      <div>
+        <h1>Receita não encontrada...</h1>
+        <p>Não se prepcupe <a href="/">clique aqui</a> e retorne para página inicial.</p>
+      </div>
+
+      <img src="/assets/chef.png" alt="desenho de um chef">
+    </section>
+  {% endif %}
+
+{% endmacro %}

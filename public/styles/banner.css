@@ -25,6 +25,11 @@
   color: rgba(0, 0, 0, 0.7);
 }
 
+.banner div:first-child p a {
+  color: #333;
+  font-weight: bold;
+}
+
 .banner img {
   align-self: flex-end;
   margin-right: 100px;

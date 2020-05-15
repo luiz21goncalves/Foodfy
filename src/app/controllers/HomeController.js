@@ -24,4 +24,12 @@ module.exports = {
 
     return res.render('home/index', { recipes });
   },
+
+  about(req, res) {
+    return res.render('home/about');
+  },
+
+  async chefs(req, res) {
+    
+  }
 };

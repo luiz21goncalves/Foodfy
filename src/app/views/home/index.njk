@@ -1,8 +1,9 @@
 {% extends "layout.njk" %}
+{% import "parts/banner.njk" as section %}
 
 {% block content %}
 
-  {% include "parts/banner.njk" %}
+  {{ section.banner("true") }}
 
   <div class="container">
     <h2>Adicionas recentemente</h2>
