@@ -44,7 +44,6 @@ module.exports = {
     let recipe = await Recipe.findOne(recipeId);
 
     recipe = await getRecipeImage(recipe, req);
-    console.log(recipe)
 
     return res.render('home/recipe', {recipe});
   },
