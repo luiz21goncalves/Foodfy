@@ -11,5 +11,9 @@ module.exports = {
     `;
 
     return db.query(query, [recipeId]);
-  }
+  },
+
+  findOne(id) {
+    return db.query(`SELECT * FROM files WHERE id = $1`, [id]);
+  },
 };
