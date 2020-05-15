@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Foodfy</title>
+    {% include "styles.njk" %}
+  </head>
+
+  <body>
+    {% include "parts/header.njk" %}
+
+    <main>
+      {% block content %}
+      {% endblock content %}
+    </main>
+
+    <footer>
+      <p>Todos os direitos reservados, receitas Foodfy</p>
+    </footer>
+  </body>
+
+</html>
