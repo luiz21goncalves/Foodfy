@@ -2,13 +2,25 @@
 
 {% block content %}
 
-<div class="banner">
-  <div>
-    <h1>As melhores Recitas</h1>
-    <p>Aprenda a construir os melhores pratos com receitas criadas pro profissionais do mundo inteiro.</p>
-  </div>
+  {% include "parts/banner.njk" %}
 
-  <img src="/assets/chef.png" alt="desenho de um chef">
-</div>
+  <div class="container">
+    <h2>Adicionas recentemente</h2>
+
+    <div class="recipes">
+      {% for recipe in recipes %}
+
+        <article>
+          <img src="{{ recipe.files[0].src }}" alt="{{ recipe.files[0].name }}">
+
+          <div>
+            <p>{{ recipe.title }}</p>
+            <span>{{ recipe.chef_name }}</span>
+          </div>
+        </article>
+        
+      {% endfor %}
+    </div>
+  </div>
 
 {% endblock content %}
