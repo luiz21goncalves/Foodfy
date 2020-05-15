@@ -13,7 +13,7 @@
   <div class="paragraphs">
     <div>
      <Strong>Ingredientes</Strong>
-     <button>esconder</button>
+     <button onclick="HiddenDiv.apply(this)">esconder</button>
     </div>
 
     <div class="hide">
@@ -28,7 +28,7 @@
   <div class="paragraphs">
     <div>
      <Strong>Modo de preparo</Strong>
-     <button>esconder</button>
+     <button onclick="HiddenDiv.apply(this)">esconder</button>
     </div>
 
     <div class="hide">
@@ -41,7 +41,9 @@
   <div class="paragraphs">
     <div>
      <Strong>Informações adicionais</Strong>
-     <button>esconder</button>
+     {% if recipe.information %}
+      <button onclick="HiddenDiv.apply(this)">esconder</button>
+     {% endif %}
     </div>
 
     <div class="hide">

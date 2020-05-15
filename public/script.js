@@ -5,3 +5,23 @@ for (item of menuItems) {
   if (currentPage.includes(item.getAttribute('href')))
     item.classList.add('active');
 }
+
+
+
+const HiddenDiv = {
+  hidden: false,
+  apply(button) {
+    const div = button.parentNode.parentNode.querySelector('.hide')
+    HiddenDiv.hidden ? HiddenDiv.remove(div, button) : HiddenDiv.add(div, button)
+  },
+  add(div, button) {
+    div.classList.add('active');
+    button.innerHTML = 'mostrar';
+    HiddenDiv.hidden = true;
+  },
+  remove(div, button) {
+    div.classList.remove('active');
+    button.innerHTML = 'esconder';
+    HiddenDiv.hidden = false;
+  }
+};
