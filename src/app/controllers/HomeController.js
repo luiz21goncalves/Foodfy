@@ -31,10 +31,8 @@ async function getChefImage(chef, req) {
 module.exports = {
   async index(req, res) {
     const results = await Recipe.all();
-    let recipes = results.rows;
-
-    const filesPromiese = recipes.map(recipe => getRecipeImage(recipe, req));
-    recipes = await Promise.all(filesPromiese);
+    let recipesFilesPromiese = results.rows.map(recipe => getRecipeImage(recipe, req));
+    const recipes = await Promise.all(recipesFilesPromiese);
 
     return res.render('home/index', { recipes });
   },
@@ -42,11 +40,19 @@ module.exports = {
   async recipe(req, res) {
     const recipeId = req.params.id;
     const results = await Recipe.findOne(recipeId);
-    let recipe = results.rows[0];
-
-    recipe = await getRecipeImage(recipe, req);
+    const recipe = await getRecipeImage(results.rows[0], req);
 
     return res.render('home/recipe', {recipe});
+  },
+
+  async search(req, res) {
+    const { filter } = req.query;
+    
+    const results = await Recipe.search(filter);
+    const recipesFilesPromise = results.rows.map(recipe => getRecipeImage(recipe, req));
+    const recipes = await Promise.all(recipesFilesPromise);
+
+    return res.render('home/search', { filter, recipes});
   },
 
   async chefs(req, res) {

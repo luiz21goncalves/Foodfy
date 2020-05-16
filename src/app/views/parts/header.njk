@@ -9,8 +9,13 @@
       <a href="/chefs">Chefs</a>
     </nav>
     <div>
-      <form action="/recipes/search" method="post">
-        <input type="text" name="filter" placeholder="Buscar uma receita">
+      <form action="/recipes/search" method="get">
+        <input 
+          type="text" 
+          name="filter" 
+          placeholder="Buscar uma receita"
+          value="{{ filter }}"
+        >
         <button class="button" type="submit">Buscar</button>
       </form>
     </div>

@@ -30,4 +30,14 @@ module.exports = {
 
     return db.query(query, [id]);
   },
+
+  search(filter) {
+    return db.query(`
+      SELECT recipes.*, chefs.name AS chef_name
+      FROM recipes
+      LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
+      WHERE recipes.title ILIKE '%${filter}%'
+      ORDER BY recipes.created_at DESC
+    `);
+  }
 }

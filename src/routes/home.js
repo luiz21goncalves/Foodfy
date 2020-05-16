@@ -6,6 +6,7 @@ const RecipeValidator = require('../app/validators/recipe');
 const ChefValidator = require('../app/validators/chef');
 
 routes.get('/recipes', HomeController.index);
+routes.get('/recipes/search', RecipeValidator.search, HomeController.search);
 routes.get('/recipes/:id', RecipeValidator.checkRecipe, HomeController.recipe);
 
 routes.get('/chefs', HomeController.chefs);
