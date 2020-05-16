@@ -3,8 +3,8 @@ const menuItems = document.querySelectorAll('header nav a');
 
 for (item of menuItems) {
   if (currentPage.includes(item.getAttribute('href'))) {
-    if (currentPage.includes('recipes')) {
-      const form = document.querySelector('header .content div form');
+    if (currentPage.includes('search') || currentPage == '/recipes') {
+      const form = document.querySelector('header .content div #search');
       form.classList.add('active');
     }
 

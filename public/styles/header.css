@@ -1,14 +1,13 @@
 header {
-  margin: 0 auto;
   margin-bottom: 50px;
-  max-width: 940px;
   width: 100%;
   height: 62px;
 }
 
 header .content {
+  max-width: 940px;
+  margin: 0 auto;
   margin-top: 31px;
-  width: 100%;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -16,6 +15,11 @@ header .content {
 header .content nav {
   display: flex;
   align-items: center;
+}
+
+header .content nav a:first-child {
+  width: 91px;
+  height: 27px;
 }
 
 header .content nav img {
@@ -42,18 +46,18 @@ header .content nav a + a {
   margin-left: 30px;
 }
 
-header .content form {
+header .content form#search {
   opacity: 0;
   visibility: hidden;
   transition: 400ms;
 }
 
-header .content form.active {
+header .content form#search.active {
   opacity: 1;
   visibility: initial;
 }
 
-header .content form input {
+header .content form#search input {
   max-width: 246px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -61,4 +65,43 @@ header .content form input {
   margin-right: 8px;
   font-size: 14px;
   color: #999;
+}
+
+/* HEADER ADMIN */
+
+header.admin {
+  background: #111;
+  max-width: 100%;
+  margin: 0 auto;
+  margin-bottom: 50px;
+  display: flex;
+  align-items: center;
+}
+
+header.admin .content {
+  margin-top: 0;
+  width: 100%;
+  align-items: center;
+}
+
+header.admin .content nav a:first-child {
+  margin-right: 50px;
+}
+
+header.admin .content nav a,
+header.admin .content form button {
+  font-size: 15px;
+  font-weight: bold;
+  color: #999;
+  text-transform: uppercase;
+}
+
+header.admin .content nav a:hover, header.admin .content nav a.active,
+header.admin .content form button:hover  {
+  color: #fff;
+}
+
+header.admin .content form button {
+  background: none;
+  cursor: pointer;
 }
