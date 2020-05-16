@@ -39,5 +39,9 @@ module.exports = {
       WHERE recipes.title ILIKE '%${filter}%'
       ORDER BY recipes.created_at DESC
     `);
+  },
+
+  ChefSelectionOptions() {
+    return db.query(`SELECT name, id FROM chefs`);
   }
 }

@@ -22,4 +22,26 @@ module.exports = {
 
     return res.render('recipe/index', { recipes });
   },
+
+  async create(req, res) {
+    const results = await Recipe.ChefSelectionOptions();
+    const chefs = results.rows
+
+    return res.render('recipe/create', { chefs });
+  },
+
+  async post(req, res) {
+    return res.send(req.body);
+  },
+
+  async show(req, res) {
+    const recipeId = req.params.id;
+    let results = await Recipe.findOne(recipeId);
+    const recipe = await getRecipeImage(results.rows[0], req);
+
+    results = await Recipe.ChefSelectionOptions();
+    const chefs = results.rows
+
+    return res.render('recipe/edit', { recipe, chefs });
+  }
 }

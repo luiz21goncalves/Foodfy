@@ -1,0 +1,108 @@
+<div class="item">
+  <label>Nome da receita</label>
+  
+  <div class="input">
+    <input type="text" name="title" value="{{ recipe.title }}">
+  </div>
+</div>
+
+<div class="item">
+  <label>Imagem da receita</label>
+
+  <div class="images-input">
+    <div id="images-upload">
+      <input 
+        id="images-input"
+        type="file" 
+        name="images_recipes" 
+        multiple
+        accept="image/*"
+        onchange="ImagesUploadRecipes.handleFileInput(event)"
+      >
+      <i class="material-icons">add</i>
+    </div>
+
+    <div id="images-preview">
+      {% for file in recipe.files %}
+        <div class="image" id="{{ file.id }}">
+          <img src="{{ file.src }}" alt="{{ file.name }}">
+          <i 
+            class="material-icons"
+            onclick="ImagesUploadRecipes.removeOldImage(event)"
+          >
+            close
+          </i>
+        </div>
+      {% endfor %}
+
+      <input type="hidden" name="removed_images">
+    </div>
+  </div>
+</div>
+
+<div class="item">
+  <label>Chef</label>
+
+  <div class="input">
+    <select name="chef_id">
+      {% for chef in chefs %}
+        <option 
+          value="{{ chef.id }}"
+          {% if recipe.chef_id == chef.id %}
+            selected
+          {% endif %}
+        >
+          {{ chef.name }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<div class="item">
+  <label>Ingredientes</label>
+
+  <div>
+    {% if recipe.ingredients %}
+      {% for ingredient in recipe.ingredients %}
+        <div class="copy">
+          <input type="text" name="ingredients[]" value="{{ ingredient }}">
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="copy">
+        <input type="text" name="ingredients[]" value="{{ ingredient }}">
+      </div>
+    {% endif %}
+  </div>
+
+  <a onclick="addInput(this)">Adicionar novo ingrediente</a>
+</div>
+
+<div class="item">
+  <label>Modo de preparo</label>
+
+  <div>
+    {% if recipe.preparation %}
+      {% for preparate in recipe.preparation %}
+        <div class="copy">
+          <input type="text" name="preparation[]" value="{{ preparate }}">
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="copy">
+        <input type="text" name="preparation[]" value="{{ preparate }}">
+      </div>
+    {% endif %}
+  </div>
+
+  <a onclick="addInput(this)">Adicionar novo passo</a>
+</div>
+
+<div class="item">
+  <label>Informações adicionais</label>
+
+  <div>
+    <textarea name="information" cols="30" rows="10">{{ recipe.information }}</textarea>
+  </div>
+</div>

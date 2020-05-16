@@ -1,0 +1,26 @@
+{% extends "admin.njk" %}
+
+{% block content %}
+
+<div class="container admin">
+  <form id="form-delete" action="/admin/recipes" method="post">
+    <input type="hidden" value="{{ recipe.id }}">
+  </form>
+
+  <form action="/admin/recipes" method="post" enctype="multipart/form-data">
+    <div class="actions">
+      <h2>Editando receita</h2>
+      <div>
+        <button class="button delete">Deletar</button>
+        <button type="submit" class="button">Salva receita</button>
+      </div>
+    </div>
+
+    <div class="fields">
+      {% include "recipe/fields.njk" %}
+    </div>
+  </form>
+
+</div>
+
+{% endblock content %}

@@ -29,6 +29,11 @@ img {
   cursor: pointer;
 }
 
+.button.delete {
+  background: #DC4747;
+  margin-right: 10px;
+}
+
 .container {
   width: 100%;
   margin-bottom: 50px;

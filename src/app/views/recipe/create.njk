@@ -1,0 +1,17 @@
+{% extends "admin.njk" %}
+
+{% block content %}
+
+<div class="container admin">
+  <form action="/admin/recipes" method="post" enctype="multipart/form-data">
+    <div class="actions">
+      <h2>Criando Receita</h2>
+      <button type="submit" class="button">Salvar receita</button>
+    </div>
+    <div class="fields">
+      {% include "recipe/fields.njk" %}
+    </div>
+  </form>
+</div>
+
+{% endblock content %}

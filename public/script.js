@@ -29,3 +29,16 @@ const HiddenDiv = {
     HiddenDiv.hidden = false;
   }
 };
+
+function addInput(button) {
+  const divItem = button.parentNode;
+  const div = divItem.querySelector('div')
+  const fieldContainer = divItem.querySelectorAll('.copy');
+
+  const newField = fieldContainer[fieldContainer.length - 1].cloneNode(true);
+
+  if (newField.children[0].value == '') return false;
+
+  newField.children[0].value = "";
+  div.appendChild(newField);
+}

@@ -102,8 +102,15 @@
 
 /* INDEX RECIPES ADMIN */
 
-.container.admin h2 {
+.container.admin .actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 30px;
+}
+
+.container.admin .actions h2 {
+  margin: 0;
 }
 
 .container.admin .recipes {
