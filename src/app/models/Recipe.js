@@ -12,7 +12,7 @@ module.exports = {
     return db.query(query);
   },
 
-  async findOne(id) {
+  findOne(id) {
     let query = `
       SELECT recipes.*, chefs.name AS chef_name
       FROM recipes
@@ -28,8 +28,6 @@ module.exports = {
     //   });
     // });
 
-    const results = await db.query(query, [id]);
-
-    return results.rows[0];
+    return db.query(query, [id]);
   },
 }

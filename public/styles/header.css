@@ -10,11 +10,16 @@ header .content {
   margin-top: 31px;
   width: 100%;
   display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+header .content nav {
+  display: flex;
   align-items: center;
 }
 
-header .content nav {
-  margin-left: 120px;
+header .content nav img {
+  margin-right: 120px;
 }
 
 header .content nav a {
@@ -35,4 +40,25 @@ header .content nav a.active {
 
 header .content nav a + a {
   margin-left: 30px;
+}
+
+header .content form {
+  opacity: 0;
+  visibility: hidden;
+  transition: 400ms;
+}
+
+header .content form.active {
+  opacity: 1;
+  visibility: initial;
+}
+
+header .content form input {
+  max-width: 246px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px 15px;
+  margin-right: 8px;
+  font-size: 14px;
+  color: #999;
 }

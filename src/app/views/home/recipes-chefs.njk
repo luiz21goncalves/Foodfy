@@ -1,0 +1,32 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+
+  <div class="container">
+    <div class="chef-datail">
+      <img src="{{chef.files[0].src}}" alt="{{ chef.files[0].name }}">
+      <h1>{{ chef.name }}</h1>
+      <p>{{ chef.total }} receitas </p>
+    </div>
+
+    <h2>Receitas</h2>
+
+    <div class="recipes">
+      {% for recipe in recipes %}
+
+        <article>
+          <a href="/recipes/{{recipe.id}}">
+            <img src="{{ recipe.files[0].src }}" alt="{{ recipe.files[0].name }}">
+          </a>
+
+          <div>
+            <p>{{ recipe.title }}</p>
+            <span>{{ chef.name }}</span>
+          </div>
+        </article>
+        
+      {% endfor %}
+    </div>
+  </div>
+
+{% endblock content %}

@@ -5,13 +5,19 @@
 <div class="container">
 
   <div class="chefs">
+    {% for chef in chefs %}
 
-  {% for chef in chefs %}
-    <article>
+      <article>
+        <a href="/chefs/{{ chef.id }}">
+          <img src="{{ chef.files[0].src }}" alt="{{ chef.files[0].name }}">
+        </a>
+        <div>
+          <p>{{ chef.name }}</p>
+          <span>{{ chef.total }} receitas</span>
+        </div>
+      </article>
       
-    </article>
-  {% endfor %}
-
+    {% endfor %}
   </div>
 
 </div>

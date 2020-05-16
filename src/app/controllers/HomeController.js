@@ -41,7 +41,8 @@ module.exports = {
 
   async recipe(req, res) {
     const recipeId = req.params.id;
-    let recipe = await Recipe.findOne(recipeId);
+    const results = await Recipe.findOne(recipeId);
+    let recipe = results.rows[0];
 
     recipe = await getRecipeImage(recipe, req);
 
@@ -59,7 +60,15 @@ module.exports = {
   },
 
   async chefShow(req, res) {
-    
+    let chef = req.chef;
+    chef = await getChefImage(chef, req);
+
+    const results = await Chef.findRecipeByChef(chef.id);
+    let recipes = results.rows;
+    const recipesFilesPromise = recipes.map(recipe => getRecipeImage(recipe, req))
+    recipes = await Promise.all(recipesFilesPromise);
+
+    return res.render('home/recipes-chefs', {chef, recipes});
   },
 
   about(req, res) {

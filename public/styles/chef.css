@@ -1,0 +1,52 @@
+.container .chefs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.container .chefs article {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 20px;
+  align-items: center;
+}
+
+.container .chefs article img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+}
+
+.container .chefs article p {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.container .chefs article span {
+  font-size: 14px;
+  color: #666;
+}
+
+/* CHEF DATAIL */
+
+.container .chef-datail {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.container .chef-datail img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin-bottom: 30px;
+}
+
+.container .chef-datail h1 {
+  font-size: 36px;
+  margin-bottom: 4px;
+}
+
+.container .chef-datail p {
+  font-size: 20px;
+  color: #777;
+}

@@ -2,11 +2,15 @@ const currentPage = location.pathname;
 const menuItems = document.querySelectorAll('header nav a');
 
 for (item of menuItems) {
-  if (currentPage.includes(item.getAttribute('href')))
+  if (currentPage.includes(item.getAttribute('href'))) {
+    if (currentPage.includes('recipes')) {
+      const form = document.querySelector('header .content div form');
+      form.classList.add('active');
+    }
+
     item.classList.add('active');
+  }
 }
-
-
 
 const HiddenDiv = {
   hidden: false,

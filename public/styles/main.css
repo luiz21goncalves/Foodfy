@@ -19,6 +19,16 @@ img {
   object-position: center;
 }
 
+.button {
+  background: #6558C3;
+  border-radius: 4px;
+  padding: 9px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+}
+
 .container {
   width: 100%;
   margin-bottom: 50px;
