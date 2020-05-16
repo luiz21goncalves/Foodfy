@@ -58,6 +58,9 @@ module.exports = {
     return res.render('home/chef', {chefs});
   },
 
+  async chefShow(req, res) {
+    
+  },
 
   about(req, res) {
     return res.render('home/about');
