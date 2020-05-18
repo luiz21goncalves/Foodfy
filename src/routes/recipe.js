@@ -8,6 +8,7 @@ const RecipeValidator = require('../app/validators/recipe');
 routes.get('/', RecipeController.index);
 routes.get('/create', RecipeController.create);
 routes.get('/:id', RecipeController.show);
+routes.get('/:id/edit', RecipeValidator.edit,RecipeController.edit);
 
 routes.post('/', multer.array('images_recipes', 5), RecipeValidator.post,RecipeController.post);
 

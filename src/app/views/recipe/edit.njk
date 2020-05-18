@@ -3,11 +3,11 @@
 {% block content %}
 
 <div class="container admin">
-  <form id="form-delete" action="/admin/recipes" method="post">
+  <form id="form-delete" action="/admin/recipes?_method=DELETE" method="post">
     <input type="hidden" value="{{ recipe.id }}">
   </form>
 
-  <form action="/admin/recipes" method="post" enctype="multipart/form-data">
+  <form action="/admin/recipes?_method=PUt" method="post" enctype="multipart/form-data">
     <div class="actions">
       <h2>Editando receita</h2>
       <div>

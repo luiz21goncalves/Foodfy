@@ -45,6 +45,17 @@ async function post(req, res, next) {
     });
 
   next();
+};
+
+async function edit(req, res, next) {
+  const recipe = await checkRecipeExist(req.params.id);
+
+  if (!recipe)
+    return res.render('home/recipe', recipe);
+
+  req.recipe = recipe;
+
+  next();
 }
 
 function search(req, res, next) {
@@ -58,5 +69,6 @@ function search(req, res, next) {
 module.exports = {
   checkRecipe,
   post,
+  edit,
   search,
 };

@@ -6,7 +6,7 @@
   <div class="actions">
     <h2>Receita: {{ recipe.title }}</h2>
 
-    <a href="admin/recipes/{{ recipe.id }}" class="button">Editar receita</a>
+    <a href="/admin/recipes/{{ recipe.id }}/edit" class="button">Editar receita</a>
   </div>
 
   <img src="{{ recipe.files[0].src }}" alt="{{ recipe.files[0].name }}">

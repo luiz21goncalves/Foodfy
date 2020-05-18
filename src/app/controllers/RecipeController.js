@@ -69,14 +69,26 @@ module.exports = {
       let results = await Recipe.findOne(recipeId);
       const recipe = await getRecipeImage(results.rows[0], req);
   
-      results = await Recipe.ChefSelectionOptions();
-      const chefs = results.rows
-  
-      return res.render('recipe/show', { recipe, chefs });
+      return res.render('recipe/show', { recipe });
     } catch (err) {
       console.error('RecipeController show', err);
 
+      return res.render('recipe/edit', { recipe });
+    }
+  },
+
+  async edit(req, res) {
+    try {
+      const recipe = await getRecipeImage(req.recipe, req);
+
+      const results = await Recipe.ChefSelectionOptions();
+      const chefs = results.rows
+
+      return res.render('recipe/edit', { recipe, chefs })
+    } catch(err) {
+      console.log('RecipeController edit', err);
+
       return res.render('recipe/edit', { recipe, chefs });
     }
-  }
+  },
 }
