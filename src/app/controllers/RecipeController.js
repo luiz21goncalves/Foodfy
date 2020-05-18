@@ -59,7 +59,10 @@ module.exports = {
     } catch (err) {
       console.error('RecipeController post', err);
 
-      return res.render('recipe/create', { recipe: req.body });
+      return res.render('recipe/create', { 
+        recipe: req.body,
+        error: 'Erro inesperado, tente novamente!'
+      });
     }
   },
 
@@ -73,7 +76,7 @@ module.exports = {
     } catch (err) {
       console.error('RecipeController show', err);
 
-      return res.render('recipe/edit', { recipe });
+      return res.render('recipe/show', { recipe });
     }
   },
 
@@ -93,31 +96,45 @@ module.exports = {
   },
 
   async put(req, res) {
-    const recipeId = req.body.id;
+    try {
+      const recipeId = req.body.id;
 
-    if (req.body.removed_files) {
-      const filesId = req.body.removed_images.split(',');
-      const lastIndex = filesId.length - 1;
-      filesId.splice(lastIndex, 1);
+      if (req.body.removed_images) {
+        const filesId = req.body.removed_images.split(',');
+        const lastIndex = filesId.length - 1;
+        filesId.splice(lastIndex, 1);
+  
+        const recipeFilesDeletePromise = filesId.map(id => RecipeFile.delete(id));
+        await Promise.all(recipeFilesDeletePromise);
+  
+        const filesDeletePromise = filesId.map(id => File.delete(id));
+        await Promise.all(filesDeletePromise);
+      }
+  
+      if (req.files != 0) {
+        const  filesPormise = req.files.map(file => File.create({ ...file }));
+        const results = await Promise.all(filesPormise);
+        
+        const recipeFiles = results.map(result => result.rows[0]);
+        const recipeFilesPromise = recipeFiles.map(file => RecipeFile.create(file.id, recipeId));
+        await Promise.all(recipeFilesPromise);
+      }
+  
+      await  Recipe.update(req.body);
+  
+      return res.redirect(`/admin/recipes/${recipeId}`);
+    } catch (err) {
+      console.error('RecipeController put', err);
 
-      const recipeFilesDeletePromise = filesId.map(id => RecipeFile.delete(id));
-      await Promise.all(recipeFilesDeletePromise);
+      const results = await Recipe.ChefSelectionOptions();
+      const chefs = results.rows
 
-      const filesDeletePromise = filesId.map(id => File.delete(id));
-      await Promise.all(filesDeletePromise);
+      return res.render('recipe/edit', {
+        recipe: req.body,
+        chefs,
+        error: 'Erro inesperado, tente novamente!'
+      });
     }
-
-    if (req.files != 0) {
-      const  filesPormise = req.files.map(file => File.create({ ...file }));
-      const results = await Promise.all(filesPormise);
-
-      const recipeFilesPromise = results.rows.map(file => RecipeFile.create(file.id, recipeId));
-      await Promise.all(recipeFilesPromise);
-    }
-
-    await  Recipe.update(req.body);
-
-    return res.redirect(`/admin/recipes/${recipeId}`);
   },
 
   async delete(req, res) {
@@ -134,13 +151,14 @@ module.exports = {
   
       await Recipe.delete(recipe.id);
   
-      return res.render('recipe/index', {
-        success: 'Receita deletada.'
-      });
+      return res.redirect('/admin/recipes');
     } catch  (err) {
       console.error('RecipeController delete', err);
 
-      res.render('recipe/edit', { recipe });
+      res.render('recipe/edit', { 
+        recipe,
+        error: 'Erro inesperado, tente novamente!'
+      });
     }
   },
 }
