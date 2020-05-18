@@ -1,6 +1,18 @@
 const db = require('../../config/db');
 
 module.exports = {
+  create(data) {
+    const query = `
+      INSERT INTO files (
+        name,
+        path
+      ) VALUES ($1, $2)
+      RETURNING id
+    `;
+
+    return db.query(query, [data.filename, data.path]);
+  },
+
   findByRecipe(recipeId) {
     const query = `
       SELECT files.*, recipe_files.recipe_id AS recipe_id

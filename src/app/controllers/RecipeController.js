@@ -1,5 +1,6 @@
 const Recipe = require('../models/Recipe');
 const File = require('../models/File');
+const RecipeFile = require('../models/RecipeFile');
 
 async function getRecipeImage(recipe, req) {
   const results = await File.findByRecipe(recipe.id);
@@ -16,32 +17,66 @@ async function getRecipeImage(recipe, req) {
 
 module.exports = {
   async index(req, res) {
-    const results = await Recipe.all();
-    const filesPromise = results.rows.map(recipe => getRecipeImage(recipe, req));
-    const recipes = await Promise.all(filesPromise);
+    try {
+      const results = await Recipe.all();
+      const filesPromise = results.rows.map(recipe => getRecipeImage(recipe, req));
+      const recipes = await Promise.all(filesPromise);
 
-    return res.render('recipe/index', { recipes });
+      return res.render('recipe/index', { recipes });
+    } catch(err) {
+      console.error('RecipeController index', err);
+
+      return res.render('recipe/index', { recipes });
+    }
   },
 
   async create(req, res) {
-    const results = await Recipe.ChefSelectionOptions();
-    const chefs = results.rows
+    try {
+      const results = await Recipe.ChefSelectionOptions();
+      const chefs = results.rows
+  
+      return res.render('recipe/create', { chefs });
+    } catch (err) {
+      console.error('RecipeController create', err);
 
-    return res.render('recipe/create', { chefs });
+      return res.render('recipe/edit', { chefs });
+    }
   },
 
   async post(req, res) {
-    return res.send(req.body);
+    try {
+      let results = await Recipe.create(req.body);
+      const recipeId = results.rows[0].id;
+
+      const filesPromise = req.files.map(file => File.create({ ...file }));
+      results = await Promise.all(filesPromise);
+
+      const recipeFilesId = results.map(result => result.rows[0])
+      const recipeFilesPromise = recipeFilesId.map(file => RecipeFile.create(file.id, recipeId));
+      await Promise.all(recipeFilesPromise);
+      
+      return res.redirect(`recipes/${recipeId}`);
+    } catch (err) {
+      console.error('RecipeController post', err);
+
+      return res.render('recipe/create', { recipe: req.body });
+    }
   },
 
   async show(req, res) {
-    const recipeId = req.params.id;
-    let results = await Recipe.findOne(recipeId);
-    const recipe = await getRecipeImage(results.rows[0], req);
+    try {
+      const recipeId = req.params.id;
+      let results = await Recipe.findOne(recipeId);
+      const recipe = await getRecipeImage(results.rows[0], req);
+  
+      results = await Recipe.ChefSelectionOptions();
+      const chefs = results.rows
+  
+      return res.render('recipe/show', { recipe, chefs });
+    } catch (err) {
+      console.error('RecipeController show', err);
 
-    results = await Recipe.ChefSelectionOptions();
-    const chefs = results.rows
-
-    return res.render('recipe/edit', { recipe, chefs });
+      return res.render('recipe/edit', { recipe, chefs });
+    }
   }
 }
