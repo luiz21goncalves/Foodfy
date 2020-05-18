@@ -51,8 +51,8 @@ module.exports = {
       const filesPromise = req.files.map(file => File.create({ ...file }));
       results = await Promise.all(filesPromise);
 
-      const recipeFilesId = results.map(result => result.rows[0])
-      const recipeFilesPromise = recipeFilesId.map(file => RecipeFile.create(file.id, recipeId));
+      const filesId = results.map(result => result.rows[0])
+      const recipeFilesPromise = filesId.map(file => RecipeFile.create(file.id, recipeId));
       await Promise.all(recipeFilesPromise);
       
       return res.redirect(`recipes/${recipeId}`);
@@ -90,5 +90,34 @@ module.exports = {
 
       return res.render('recipe/edit', { recipe, chefs });
     }
+  },
+
+  async put(req, res) {
+    const recipeId = req.body.id;
+
+    if (req.body.removed_files) {
+      const filesId = req.body.removed_images.split(',');
+      const lastIndex = filesId.length - 1;
+      filesId.splice(lastIndex, 1);
+
+      const recipeFilesDeletePromise = filesId.map(id => RecipeFile.delete(id));
+      await Promise.all(recipeFilesDeletePromise);
+
+      const filesDeletePromise = filesId.map(id => File.delete(id));
+      await Promise.all(filesDeletePromise);
+    }
+
+    if (req.files != 0) {
+      const  filesPormise = req.files.map(file => File.create({ ...file }));
+      const results = await Promise.all(filesPormise);
+
+      const recipeFiles = results.map(result => result.rows[0]);
+      const recipeFilesPromise = recipeFiles.map(file => RecipeFile.create(file.id, recipeId));
+      await Promise.all(recipeFilesPromise);
+    }
+
+    await  Recipe.update(req.body);
+
+    return res.redirect(`/admin/recipes/${recipeId}`);
   },
 }

@@ -29,6 +29,8 @@ async function checkRecipe(req, res, next) {
   if (!recipe)
     return res.render('home/recipe', recipe);
 
+  req.recipe = recipe;
+
   next();
 };
 
@@ -47,16 +49,14 @@ async function post(req, res, next) {
   next();
 };
 
-async function edit(req, res, next) {
-  const recipe = await checkRecipeExist(req.params.id);
+async function put(req, res, next) {
+  const fillAllFields = checkAllFields(req.body);
 
-  if (!recipe)
-    return res.render('home/recipe', recipe);
-
-  req.recipe = recipe;
+  if (fillAllFields)
+    return res.render('recipe/edit', fillAllFields);
 
   next();
-}
+};
 
 function search(req, res, next) {
   const { filter } = req.query;
@@ -69,6 +69,6 @@ function search(req, res, next) {
 module.exports = {
   checkRecipe,
   post,
-  edit,
+  put,
   search,
 };

@@ -31,7 +31,32 @@ module.exports = {
       data.title,
       data.ingredients,
       data.preparation,
-      data.informatiton,
+      data.information,
+    ];
+
+    return db.query(query, values);
+  },
+
+  update(data) {
+    const query = `
+      UPDATE recipes SET
+        chef_id=($1),
+        user_id=($2),
+        title=($3),
+        ingredients=($4),
+        preparation=($5),
+        information=($6)
+      WHERE id = $7
+    `;
+
+    const values = [
+      data.chef_id,
+      data.user_id || 1,
+      data.title,
+      data.ingredients,
+      data.preparation,
+      data.information,
+      data.id,
     ];
 
     return db.query(query, values);
@@ -44,14 +69,6 @@ module.exports = {
       LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
       WHERE recipes.id = $1
     `;
-
-    // Object.keys(filters).map(key => {
-    //   query = `${query} ${key}`
-
-    //   Object.keys(filters[key]).map(field => {
-    //     query = `${query} ${field} = '${filters[key][field]}'`
-    //   });
-    // });
 
     return db.query(query, [id]);
   },
