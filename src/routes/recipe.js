@@ -12,5 +12,6 @@ routes.get('/:id/edit', RecipeValidator.checkRecipe,RecipeController.edit);
 
 routes.post('/', multer.array('images_recipes', 5), RecipeValidator.post,RecipeController.post);
 routes.put('/', multer.array('images_recipes', 5), RecipeValidator.put,RecipeController.put);
+routes.delete('/', RecipeValidator.checkRecipe, RecipeController.delete)
 
 module.exports = routes;

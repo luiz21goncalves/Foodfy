@@ -24,7 +24,7 @@ async function checkRecipeExist(id) {
 }
 
 async function checkRecipe(req, res, next) {
-  const recipe = await checkRecipeExist(req.params.id);
+  const recipe = await checkRecipeExist(req.params.id || req.body.id);
   
   if (!recipe)
     return res.render('home/recipe', recipe);

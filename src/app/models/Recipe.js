@@ -83,6 +83,10 @@ module.exports = {
     `);
   },
 
+  delete(id) {
+    return db.query(`DELETE FROM recipes WHERE id = $1`, [id]);
+  },
+
   ChefSelectionOptions() {
     return db.query(`SELECT name, id FROM chefs`);
   }

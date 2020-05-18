@@ -86,7 +86,7 @@ module.exports = {
 
       return res.render('recipe/edit', { recipe, chefs })
     } catch(err) {
-      console.log('RecipeController edit', err);
+      console.error('RecipeController edit', err);
 
       return res.render('recipe/edit', { recipe, chefs });
     }
@@ -111,13 +111,36 @@ module.exports = {
       const  filesPormise = req.files.map(file => File.create({ ...file }));
       const results = await Promise.all(filesPormise);
 
-      const recipeFiles = results.map(result => result.rows[0]);
-      const recipeFilesPromise = recipeFiles.map(file => RecipeFile.create(file.id, recipeId));
+      const recipeFilesPromise = results.rows.map(file => RecipeFile.create(file.id, recipeId));
       await Promise.all(recipeFilesPromise);
     }
 
     await  Recipe.update(req.body);
 
     return res.redirect(`/admin/recipes/${recipeId}`);
+  },
+
+  async delete(req, res) {
+    try {
+      const recipe = req.recipe;
+
+      const results = await RecipeFile.find(recipe.id);
+  
+      const recipeFilesDeletePromise = results.rows.map(item => RecipeFile.delete(item.file_id));
+      await Promise.all(recipeFilesDeletePromise);
+  
+      const filesDeletePromise = results.rows.map(item => File.delete(item.file_id));
+      await Promise.all(filesDeletePromise);
+  
+      await Recipe.delete(recipe.id);
+  
+      return res.render('recipe/index', {
+        success: 'Receita deletada.'
+      });
+    } catch  (err) {
+      console.error('RecipeController delete', err);
+
+      res.render('recipe/edit', { recipe });
+    }
   },
 }

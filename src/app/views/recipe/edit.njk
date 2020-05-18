@@ -4,14 +4,14 @@
 
 <div class="container admin">
   <form id="form-delete" action="/admin/recipes?_method=DELETE" method="post">
-    <input type="hidden" value="{{ recipe.id }}">
+    <input type="hidden" name="id" value="{{ recipe.id }}">
   </form>
 
   <form action="/admin/recipes?_method=PUt" method="post" enctype="multipart/form-data">
     <div class="actions">
       <h2>Editando receita</h2>
       <div>
-        <button class="button delete">Deletar</button>
+        <a onclick="submit()" class="button delete">Deletar</a>
         <button type="submit" class="button">Salva receita</button>
       </div>
     </div>
@@ -28,5 +28,7 @@
   </form>
 
 </div>
+
+{% include "confirm.njk" %}
 
 {% endblock content %}
