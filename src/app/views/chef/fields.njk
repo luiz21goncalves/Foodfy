@@ -1,0 +1,41 @@
+<div class="item">
+  <label>Nome</label>
+  
+  <div class="input">
+    <input type="text" name="name" value="{{ chef.name }}">
+  </div>
+</div>
+
+<div class="item">
+  <label>Avatar</label>
+
+  <div class="images-input">
+    <div id="images-upload">
+      <input 
+        id="images-input"
+        type="file" 
+        name="images_chefs" 
+        multiple
+        accept="image/*"
+        onchange="ImagesUploadChefs.handleFileInput(event)"
+      >
+      <i class="material-icons">add</i>
+    </div>
+
+    <div id="images-preview">
+      {% for file in chef.files %}
+        <div class="image" id="{{ file.id }}">
+          <img src="{{ file.src }}" alt="{{ file.name }}">
+          <i 
+            class="material-icons"
+            onclick="ImagesUploadChefs.removeOldImage(event)"
+          >
+            close
+          </i>
+        </div>
+      {% endfor %}
+
+      <input type="hidden" name="removed_images">
+    </div>
+  </div>
+</div>

@@ -56,6 +56,7 @@ module.exports = {
   },
 
   async edit(req, res) {
-    return res.render('chef/edit');
+    const chef = await getChefImage(req.chef, req);
+    return res.render('chef/edit', { chef });
   }
 };
