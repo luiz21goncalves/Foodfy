@@ -93,6 +93,9 @@
 }
 
 /* INDEX RECIPES ADMIN */
+.container.admin h2 {
+  margin-bottom: 30px;
+}
 
 .container.admin .actions {
   display: flex;
