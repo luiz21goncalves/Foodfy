@@ -9,7 +9,24 @@
     <a href="/admin/recipes/{{ recipe.id }}/edit" class="button">Editar receita</a>
   </div>
 
-  <img src="{{ recipe.files[0].src }}" alt="{{ recipe.files[0].name }}">
+  <div class="gallery">
+    <div class="highlight">
+      <img src="{{ recipe.files[0].src }}" alt="{{ recipe.files[0].name }}">
+    </div>
+
+    <div class="gallery-preview">
+      {% for file in recipe.files %}
+        <img
+          src="{{ file.src }}" 
+          alt="{{ file.name }}"
+          onclick="Gallery.setImage(event)"
+          {% if loop.index0 == 0 %}
+            class="active"
+          {% endif %}
+        >
+      {% endfor %}
+    </div>
+  </div>
 
   <div class="recipe-info">
     <h1>{{ recipe.title }}</h1>

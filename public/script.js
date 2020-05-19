@@ -263,3 +263,17 @@ const ImagesUploadChefs = {
     imageDiv.remove()
   }
 };
+
+const Gallery = {
+  highlight: document.querySelector('.highlight img'),
+  images: document.querySelectorAll('.gallery-preview img'),
+  setImage(event) {
+    const { target } = event;
+
+    Gallery.images.forEach(image => image.classList.remove('active'));
+    target.classList.add('active');
+
+    Gallery.highlight.src = target.src;
+    Gallery.highlight.alt = target.alt;
+  },
+};
