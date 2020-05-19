@@ -3,6 +3,11 @@
 {% block content %}
 <div class="container admin">
 
+  <div class="actions">
+    <h2>Gerenciar chefs</h2>
+    <a href="/admin/chefs/create" class="button">Novo chef</a>
+  </div>
+
   <div class="chefs">
     {% for chef in chefs %}
 

@@ -45,6 +45,10 @@ module.exports = {
     }
   },
 
+  create(req, res) {
+    return res.render('chef/create');
+  },
+
   async show(req, res) {
     const chef = await getChefImage(req.chef, req);
 
@@ -58,5 +62,5 @@ module.exports = {
   async edit(req, res) {
     const chef = await getChefImage(req.chef, req);
     return res.render('chef/edit', { chef });
-  }
+  },
 };
