@@ -27,11 +27,7 @@ module.exports = {
 
     const values = [
       data.chef_id,
-<<<<<<< HEAD
       data.user_id ||1,
-=======
-      data.user_id || 1,
->>>>>>> refactoring
       data.title,
       data.ingredients,
       data.preparation,
