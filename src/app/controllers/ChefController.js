@@ -68,7 +68,13 @@ module.exports = {
       results = await Chef.create(name, fileId)
       const chefId = results.rows[0].id
 
-      return res.redirect(`/admin/chefs/${chefId}`)
+      results = await Chef.findOne(chefId);
+      const chef = await getChefImage(results.rows[0], req);
+
+      return res.render('chef/show', {
+        chef,
+        success: `O chef ${chef.name} foi criado com sucesso.`
+      });
     } catch (err) {
       console.error('ChefController post', err);
 
@@ -98,14 +104,23 @@ module.exports = {
         data = { ...data, fileId: id };
       }
 
-      console.log(data)
-
       await Chef.update(data);
 
       if (removedImges) 
         await File.delete(removedImges);
 
-      return res.redirect(`/admin/chefs/${chefId}`);
+      let results = await Chef.findOne(chefId);
+      const chef = await getChefImage(results.rows[0], req);
+
+      results = await Chef.findRecipeByChef(chefId);
+      const recipesFilesPromise = results.rows.map(recipe => getRecipeImage(recipe, req));
+      const recipes = await Promise.all(recipesFilesPromise);
+
+      return res.render('chef/show', {
+        chef,
+        recipes,
+        success: `O chef ${chef.name} foi alterado com sucesso.`
+      });
     } catch (err) {
       console.error('ChefController put', err);
 
@@ -127,12 +142,12 @@ module.exports = {
         await File.delete(chef.file_id);
 
         const results = await Chef.all();
-        const filesPromise = results.rows.map(chef => getRecipeImage(chef, req));
+        const filesPromise = results.rows.map(chef => getChefImage(chef, req));
         const chefs = await Promise.all(filesPromise);
   
         return res.render('chef/index', {
           chefs,
-          success: `Chef ${chef.name} deletado com sucesso.`
+          success: `o chef ${chef.name} deletado com sucesso.`
         });
       }
 
@@ -150,5 +165,5 @@ module.exports = {
         error: 'Erro inesperado, tente novamente.'
       })
     }
-  }
+  },
 };

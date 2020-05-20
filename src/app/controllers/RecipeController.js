@@ -54,8 +54,14 @@ module.exports = {
       const filesId = results.map(result => result.rows[0])
       const recipeFilesPromise = filesId.map(file => RecipeFile.create(file.id, recipeId));
       await Promise.all(recipeFilesPromise);
+
+      results = await Recipe.findOne(recipeId);
+      const recipe = await getRecipeImage(results.rows[0], req)
       
-      return res.redirect(`/admin/recipes/${recipeId}`);
+      return res.render('recipe/show', { 
+        recipe,
+        success: `A receita ${recipe.title} foi criada com sucesso.`
+      });
     } catch (err) {
       console.error('RecipeController post', err);
 
@@ -97,7 +103,6 @@ module.exports = {
 
   async put(req, res) {
     try {
-      console.log(req.body)
       const recipeId = req.body.id;
 
       if (req.body.removed_images) {
