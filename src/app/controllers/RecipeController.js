@@ -97,6 +97,7 @@ module.exports = {
 
   async put(req, res) {
     try {
+      console.log(req.body)
       const recipeId = req.body.id;
 
       if (req.body.removed_images) {

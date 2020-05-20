@@ -23,12 +23,10 @@ async function checkAllFields(body) {
   }
 };
 
-async function checkForImages(files) {
+function checkForImages(files) {
   if (files.length == 0) {
-    const chefs = await polulateChefSelection();
 
     return {
-      chefs,
       error: 'Envie pelo menos uma imagem.'
     }
   }
@@ -75,11 +73,16 @@ async function post(req, res, next) {
   
   const thereIsImage = await checkForImages(req.files);
 
-  if (thereIsImage)
+  if (thereIsImage) {
+    const chefs = await polulateChefSelection();
+
     return res.render('recipe/create', { 
-      ... thereIsImage,
+      ...thereIsImage,
+      chefs,
       recipe: req.body,
     });
+  }
+   
 
   next();
 };
@@ -92,13 +95,23 @@ async function put(req, res, next) {
       ...fillAllFields,
     });
 
-  const thereIsImage = await checkIfImagesExists(req.files);
+  const thereIsImage = await checkForImages(req.files);
 
-  if (thereIsImage)
+  const recipe = await getRecipeImage(req.body, req);
+
+  const removedImages = req.body.removed_images.split(',');
+  const lastIndex = removedImages.length - 1;
+  removedImages.splice(lastIndex, 1);
+
+  if (thereIsImage && removedImages.length >= recipe.files.length) {
+    const chefs = await polulateChefSelection();
+
     return  res.render('recipe/edit', {
-      ...thereIsImage,
-      recipe: req.body,
+      error: 'Envie pelo menos uma imagem',
+      recipe: {...recipe, ...req.body},
+      chefs
     });
+  }
 
   next();
 };
