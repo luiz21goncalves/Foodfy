@@ -1,194 +1,170 @@
-const Chef = require ('../models/Chef');
+const Chef = require('../models/Chef');
 const File = require('../models/File');
-const RecipeFile = require('../models/RecipeFile');
 
-async function getChefImage(chef, req) {
-  const results = await File.find(chef.file_id);
-
+async function getRecipeImage(recipe, req) {
+  const results = await File.findByRecipe(recipe.id);
   const files = results.rows.map(file => ({
     ...file,
-    src: `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
+    src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
   }));
+  
+  return {
+    ...recipe,
+    files
+  }
+};
 
-  return { ...chef, file: files[0] };
+async function getChefImage(chef, req) {
+  const results = await File.findOne(chef.file_id);
+  const files = results.rows.map(file => ({
+    ...file,
+    src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
+  }));
+  
+  return {
+    ...chef,
+    files
+  }
 };
 
 module.exports = {
   async index(req, res) {
     try {
-      let results = await Chef.all();
+      const results = await Chef.all();
       let chefs = results.rows;
-
-      req.chefs = chefs;
-
-      const filesPromise = await chefs.map(chef => getChefImage(chef, req));
+  
+      const filesPromise = chefs.map(chef => getChefImage(chef, req));
       chefs = await Promise.all(filesPromise);
-      
-      return res.render('chefs/index', { chefs });
+  
+      return res.render('chef/index', { chefs });
     } catch (err) {
-      console.error('ChefsController index',err);
+      console.error('ChefsController index', err);
 
-      return res.render('chefs/index', { 
-        chefs, 
-        error: 'Erro inisperado, tente novamente!'
-      });
+      return res.render('chef/index', { chefs });
     }
   },
 
   create(req, res) {
-    return res.render('chefs/create');
-  },
-
-  async post(req, res) {
-    try {
-      let results = await File.create(req.file);
-      const { id } = results.rows[0];
-
-      const data = {
-        ...req.body,
-        fileId: id
-      };
-
-      results = await Chef.create(data);
-      const chefId = results.rows[0].id;
-  
-      return res.redirect(`chefs/${chefId}`);
-    } catch (err) {
-      console.error('ChefsController post',err);
-
-      return res.render('chefs/create', {
-        chef: req.body,
-        error: 'Erro inisperado, tente novamente!'
-      });
-    }
+    return res.render('chef/create');
   },
 
   async show(req, res) {
+    const chef = await getChefImage(req.chef, req);
+
+    const results = await Chef.findRecipeByChef(chef.id);
+    const recipesFilesPromise = results.rows.map(recipe => getRecipeImage(recipe, req));
+    const recipes = await Promise.all(recipesFilesPromise);
+
+    return res.render('chef/show', { chef, recipes });
+  },
+  
+  async post(req, res) {
     try {
-      let chef = req.chef;
+      const { name } = req.body
 
-      chef = await getChefImage(chef, req);
-
-      const results = await Chef.findRecipesByChef(chef.id);
-      let recipes = results.rows;
-
-      async function getRecipeImage(recipe) {
-        const results = await RecipeFile.find(recipe.id);
-        const files = results.rows.map(file => ({
-          ...file,
-          src: `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
-        }))
-
-        return { ...recipe, files: files[0] };
-      };
-
-      const recipesFilesPromise = recipes.map(recipe => getRecipeImage(recipe));
-      recipes = await Promise.all(recipesFilesPromise);
+      let results = await  File.create(...req.files);
+      const fileId = results.rows[0].id
       
-      return res.render('chefs/show', { chef, recipes });
-    } catch (err) {
-      console.error('ChefsController',err);
+      results = await Chef.create(name, fileId)
+      const chefId = results.rows[0].id
 
-      return res.render('chefs/show' , {
+      results = await Chef.findOne(chefId);
+      const chef = await getChefImage(results.rows[0], req);
+
+      return res.render('chef/show', {
         chef,
-        recipes,
-        error: 'Erro inisperado, tente novamente!'
+        success: `O chef ${chef.name} foi criado com sucesso.`
+      });
+    } catch (err) {
+      console.error('ChefController post', err);
+
+      return res.render('chef/create', {
+        chef: req.body,
+        error: 'Erro inesperado, tente novamente.'
       });
     }
   },
 
   async edit(req, res) {
-    try {
-      let chef = req.chef;
-      console.log(chef)
-
-      chef = await getChefImage(chef, req);
-    
-      return res.render('chefs/edit', { chef });
-    } catch (err) {
-      console.error('ChefsController edit', err);
-
-      return res.render('chefs/edit', {
-        chef,
-        error: 'Erro inesperado, tente novamente!'
-      });
-    }
+    const chef = await getChefImage(req.chef, req);
+    return res.render('chef/edit', { chef });
   },
 
   async put(req, res) {
     try {
-      const removedImage = req.body.removed_images;
+      const removedImges = req.body.removed_images;
+      let { id: chefId, file_id: fileId } = req.chef;
 
-      const results = await Chef.find(req.body.id);
-      const { file_id } = results.rows[0];
-      const oldFileId = file_id;
-      
-      let data = {
-        ...req.body,
-        fileId: oldFileId,
-      };
+      let data = { ...req.body, fileId };
 
-      if (req.file) {
-        const results = await File.create(req.file);
+      if (req.files && removedImges) {
+        const results = await File.create(...req.files);
         const { id } = results.rows[0];
-        
-        data = {
-          ...data,
-          fileId: id,
-        };
+
+        data = { ...data, fileId: id };
       }
 
       await Chef.update(data);
 
-      if (removedImage) {
-        await File.delete(oldFileId);
-      }
+      if (removedImges) 
+        await File.delete(removedImges);
+      
+      results = await Chef.findOne(chefId);
+      const chef = await getChefImage(results.rows[0], req);
 
-      return res.redirect(`/admin/chefs/${req.body.id}`)
-    } catch (err) {
-      console.error('ChefsController put', err);
+      results = await Chef.findRecipeByChef(chefId);
+      const recipesFilesPromise = results.rows.map(recipe => getRecipeImage(recipe, req));
+      const recipes = await Promise.all(recipesFilesPromise);
 
-      return res.render('chefs/edit', {
-        chef: req.body,
-        error: 'Erro inesperado, tente novamente!'
+      return res.render('chef/show', {
+        chef,
+        recipes,
+        success: `O chef ${chef.name} foi atualizado com sucesso.`
       });
+    } catch (err) {
+      console.error('ChefController put', err);
+
+      return res.render('chef/edit', {
+        error: 'Erro inesperado, tente novamanete.',
+        chef: req.body
+      })
     }
   },
 
   async delete(req, res) {
     try {
-      const chefId = req.body.id;
+      const chef = req.chef;
 
-      let results = await Chef.find(chefId);
-      let chef = results.rows[0];
+      const results = await Chef.findRecipeByChef(chef.id);
+      const recipes =  results.rows;
+  
+      if (recipes.length == 0) {
+        await Chef.delete(chef.id);
+        await File.delete(chef.file_id);
 
-      results = await Chef.findRecipesByChef(chefId);
-      const recipes = results.rows;
-
-      results = await Chef.find(chefId);
-      const fileId = results.rows[0].file_id
-
-      if (recipes == '') {
-        await Chef.delete(chefId);
-
-        await File.delete(fileId)
-        
-        return res.redirect('/admin/chefs');
+        const results = await Chef.all();
+        const filesPromise = results.rows.map(chef => getChefImage(chef, req));
+        const chefs = await Promise.all(filesPromise);
+  
+        return res.render('chef/index', {
+          chefs,
+          success: `o chef ${chef.name} deletado com sucesso.`
+        });
       }
 
       chef = await getChefImage(chef, req);
 
-      return res.render('chefs/edit', {
+      return res.render('chef/edit', {
         chef,
-        error: 'Esse chefe possui pelo menos uma receita cadastrada! Delete suas receitas antes de tentar novamente.'
-      });
+        error: 'Esse chef não pode ser deletado, pois possui pelo menos receita cadastrada!'
+      })
     } catch (err) {
-      console.error('ChefsController delete', err);
+      console.error('ChefController delete', err);
 
-      return res.render('chefs/edit', {
+      return res.render('chef/edit', {
         chef,
-        error: 'Error inesperado, tente novamente!'
-      });
+        error: 'Erro inesperado, tente novamente.'
+      })
     }
-  }
-}
+  },
+};

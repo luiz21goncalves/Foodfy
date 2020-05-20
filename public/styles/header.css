@@ -1,98 +1,107 @@
-header.admin {
-  background: #111;
+header {
+  margin-bottom: 50px;
   width: 100%;
-  min-height: 80px;
-  display: flex;
-  align-items: center;
+  height: 62px;
 }
 
-header.admin .links {
-  width: 100%;
-  max-width: 940px;
-  height: 100%;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-}
-
-header.admin .links a {
-  font-size: 15px;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-weight: bold;
-  color: #999;
-  height: 17px;
-}
-
-header.admin .links a.active {
-  color: #fff;
-}
-
-header.admin .links nav {
-  height: 17px;
-  margin-left: 50px;
-}
-
-header.admin .links nav a + a {
-  margin-left: 30px;
-}
-
-header.admin .links a.logout {
-  margin-left: auto;
-}
-
-/* HOME */
 header .content {
-  display: flex;
-  justify-content: space-between;
-  margin: 0 auto;
-  margin-top: 26px;
   max-width: 940px;
+  margin: 0 auto;
+  margin-top: 31px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
 }
-
-header .content .links {
+header .content nav {
   display: flex;
   align-items: center;
 }
 
-header .content .links a, header .content .actions a {
-  font-size: 16px;
-  color: #111;
-  text-decoration: none;
+header .content nav a:first-child {
+  width: 91px;
+  height: 27px;
 }
 
-header .content .links a.active, header .content .actions a:hover {
-  font-weight: bold;
-}
-
-header .content .links a img {
+header .content nav img {
   margin-right: 120px;
 }
 
-header .content .links a + a {
+header .content nav a {
+  font-size: 16px;
+  color: #111;
+
+  transition: 400ms;
+}
+
+header .content nav a:hover {
+  font-weight: bold;
+  color: #333
+}
+
+header .content nav a.active {
+  font-weight: bold;
+}
+
+header .content nav a + a {
   margin-left: 30px;
 }
 
-header .content .actions {
+header .content form#search {
+  opacity: 0;
+  visibility: hidden;
+  transition: 400ms;
+}
+
+header .content form#search.active {
+  opacity: 1;
+  visibility: initial;
+}
+
+header .content form#search input {
+  max-width: 246px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px 15px;
+  margin-right: 8px;
+  font-size: 14px;
+  color: #999;
+}
+
+/* HEADER ADMIN */
+
+header.admin {
+  background: #111;
+  max-width: 100%;
+  margin: 0 auto;
+  margin-bottom: 50px;
   display: flex;
   align-items: center;
 }
 
-header .content .actions input {
-  font-size: 14px;
+header.admin .content {
+  margin-top: 0;
+  width: 100%;
+  align-items: center;
+}
+
+header.admin .content nav a:first-child {
+  margin-right: 50px;
+}
+
+header.admin .content nav a,
+header.admin .content form button {
+  font-size: 15px;
+  font-weight: bold;
   color: #999;
-  padding: 10px 15px;
-  border: 1px solid #ddd;
-  margin-right: 8px;
+  text-transform: uppercase;
 }
 
-header .content .actions button.button {
-  margin-right: 30px;
+header.admin .content nav a:hover, header.admin .content nav a.active,
+header.admin .content form button:hover  {
+  color: #fff;
 }
 
-header .content .actions form {
-  display: none;
-}
-header .content .actions form.active { 
-  display: initial;
+header.admin .content form button {
+  background: none;
+  cursor: pointer;
 }

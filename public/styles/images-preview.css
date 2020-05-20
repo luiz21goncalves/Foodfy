@@ -1,0 +1,46 @@
+.container.admin .fields .item .images-input {
+  display: flex;
+}
+.container.admin .fields .item #images-preview {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.container.admin .fields .item #images-preview .image {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  z-index: 5;
+}
+
+.container.admin .fields .item #images-preview .image img {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+}
+
+.container.admin .fields .item #images-preview .image i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #DC4747 ;
+  background-color: rgba(255, 255, 255, 0.75);
+  opacity: 0;
+  transition: 400ms;
+}
+
+.container.admin .fields .item #images-preview .image:hover i {
+  opacity: 1;
+  cursor: pointer;
+}

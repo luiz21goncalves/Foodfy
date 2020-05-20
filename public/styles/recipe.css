@@ -1,59 +1,45 @@
-.container.recipes .recipe-container {
+.container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.container .recipes {
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 30px 20px;
 }
 
-.container.recipes .recipe-container article img {
+.container .recipes article {
+  display: grid;
+  gap: 20px 0;
+}
+
+.container .recipes article a {
   width: 300px;
   height: 140px;
-  border-radius: 15px;
-  margin-bottom: 20px;
-  object-fit: cover;
-  object-position: 50% 50%;
 }
 
-.container.recipes .recipe-container article p {
+.container .recipes article img {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+}
+
+.container .recipes article div p {
   font-size: 18px;
   margin-bottom: 5px;
 }
 
-.container.recipes .recipe-container article span {
+.container .recipes article div span {
   font-size: 14px;
   color: #777;
 }
 
-/* RECIPES-CHEFS ADMIN */
-.container.recipes .recipe-container.admin {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.container.recipes .recipe-container.admin article {
-  display: flex;
-}
-
-.container.recipes .recipe-container.admin article img {
-  width: 172px;
-  height: 80px;
-  border-radius: 8px;
-  margin-bottom: 0;
-  margin-right: 20px;
-  object-fit: cover;
-  object-position: 50% 50%;
-}
-
-.container.recipes .recipe-container.admin article a {
-  display: block;
-  font-size: 14px;
-  font-weight: bold;
-  text-decoration: none;
-  margin-top: 10px;
-}
-
-/* RECIPE ADMIN SHOW */
+/* SHOW */
 .container.recipe .recipe-info {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 }
 
 .container.recipe .recipe-info h1 {
@@ -61,40 +47,92 @@
   margin-bottom: 4px;
 }
 
-.container.recipe .recipe-info p {
-  font-size: 20px;
+.container.recipe .recipe-info span {
+  font-size: 24px;
   color: #777;
 }
 
 .container.recipe .paragraphs + .paragraphs {
+  width: 100%;
   margin-top: 40px;
 }
 
-.container.recipe .paragraphs strong, .container.recipe .paragraphs div h3 {
-  display: inline-block;
-  font-size: 24px;
+.container.recipe .paragraphs div:nth-child(1) {
   margin-bottom: 20px;
 }
 
-.container.recipe .paragraphs ul {
-  list-style-type: '- ';
-  list-style-position: inside;
+.container.recipe .paragraphs div:nth-child(1) strong {
+  font-size: 24px;
+  margin-right: 8px;
 }
 
-.container.recipe .paragraphs ul li, .container.recipe .paragraphs p {
+.container.recipe .paragraphs div:nth-child(1) button {
+  background: none;
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.container.recipe .paragraphs .hide.active {
+  display: none;
+}
+
+.container.recipe .paragraphs .hide p,
+.container.recipe .paragraphs .hide li {
   font-size: 18px;
   line-height: 28px;
   color: #444;
 }
 
-.container.recipe .paragraphs div a {
-  font-size: 14px;
-  color: #777;
-  text-transform: uppercase;
-  margin-left: 10px;
-  cursor: pointer;
+.container.recipe .paragraphs .hide ul {
+  margin: 0;
+  padding: 0;
+  list-style-position: inside;
+  list-style-type: '- ';
 }
 
-.container.recipe .paragraphs .recipe-hidden.active {
-  display: none;
+/* INDEX RECIPES ADMIN */
+.container.admin h2 {
+  margin-bottom: 30px;
+}
+
+.container.admin .actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.container.admin .actions h2 {
+  margin: 0;
+}
+
+.container.admin .recipes {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.container.admin .recipes article {
+  height: 80px;
+  display: grid;
+  grid-template-columns: 172px 1fr;
+  gap: 20px;
+}
+
+.container.admin .recipes article img {
+  width: 100%;
+  height: 100%;
+  border-radius: 8.57px;
+}
+
+.container.admin .recipes article span {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.container.admin .recipes article a {
+  font-size: 14px;
+  font-weight: bold;
+  color: #6558C3;
 }

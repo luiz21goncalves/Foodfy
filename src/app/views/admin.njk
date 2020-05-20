@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <meta charset="UTF-8">
     <title>Foodfy</title>
@@ -7,11 +8,7 @@
   </head>
 
   <body>
-    <div class="header">
-      <a href="/">
-        <img src="/assets/logo.png" alt="Logo Foodfy">
-      </a>
-    </div>
+    {% include "parts/header-admin.njk" %}
 
     <main>
       {% block content %}
@@ -19,5 +16,8 @@
     </main>
 
     {% include "parts/message.njk" %}
+
+    <script src="/script.js"></script>
   </body>
+
 </html>

@@ -1,13 +1,15 @@
-const db = require("../../config/db");
-const { date } = require("../../lib/utils");
+const db = require('../../config/db');
 
 module.exports = {
   all() {
-    return db.query(`
+    const query = `
       SELECT recipes.*, chefs.name AS chef_name
       FROM recipes
       LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-      ORDER BY created_at DESC`);
+      ORDER BY recipes.created_at DESC
+    `;
+
+    return db.query(query);
   },
 
   create(data) {
@@ -25,7 +27,11 @@ module.exports = {
 
     const values = [
       data.chef_id,
+<<<<<<< HEAD
       data.user_id ||1,
+=======
+      data.user_id || 1,
+>>>>>>> refactoring
       data.title,
       data.ingredients,
       data.preparation,
@@ -35,43 +41,21 @@ module.exports = {
     return db.query(query, values);
   },
 
-  find(id) {
-    return db.query(
-      `
-      SELECT recipes.*, chefs.name AS chef_name
-      FROM recipes
-      LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-      WHERE recipes.id = $1`,
-      [id]
-    );
-  },
-
-  search(filter) {
-    let query = `
-      SELECT recipes.*, chefs.name AS chef_name
-      FROM recipes
-      LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-      WHERE recipes.title ILIKE '%${filter}%'
-      OR chefs.name ILIKE '%${filter}%'
-      ORDER BY recipes.id
-    `;
-
-    return db.query(query);
-  },
-
   update(data) {
     const query = `
       UPDATE recipes SET
         chef_id=($1),
-        title=($2),
-        ingredients=($3),
-        preparation=($4),
-        information=($5)
-      WHERE id = $6
+        user_id=($2),
+        title=($3),
+        ingredients=($4),
+        preparation=($5),
+        information=($6)
+      WHERE id = $7
     `;
 
     const values = [
       data.chef_id,
+      data.user_id || 1,
       data.title,
       data.ingredients,
       data.preparation,
@@ -82,11 +66,32 @@ module.exports = {
     return db.query(query, values);
   },
 
+  findOne(id) {
+    let query = `
+      SELECT recipes.*, chefs.name AS chef_name
+      FROM recipes
+      LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
+      WHERE recipes.id = $1
+    `;
+
+    return db.query(query, [id]);
+  },
+
+  search(filter) {
+    return db.query(`
+      SELECT recipes.*, chefs.name AS chef_name
+      FROM recipes
+      LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
+      WHERE recipes.title ILIKE '%${filter}%'
+      ORDER BY recipes.created_at DESC
+    `);
+  },
+
   delete(id) {
     return db.query(`DELETE FROM recipes WHERE id = $1`, [id]);
   },
 
-  chefSelectOptions() {
-    return db.query(`SELECT name, id FROM chefs ORDER BY id`);
-  },
-};
+  ChefSelectionOptions() {
+    return db.query(`SELECT name, id FROM chefs`);
+  }
+}

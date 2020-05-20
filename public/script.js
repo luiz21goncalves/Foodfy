@@ -1,15 +1,47 @@
 const currentPage = location.pathname;
-const menuItens = document.querySelectorAll('header nav a');
-const filter = document.querySelector('#search');
+const menuItems = document.querySelectorAll('header nav a');
 
-for (item of menuItens) {
+for (item of menuItems) {
   if (currentPage.includes(item.getAttribute('href'))) {
-    if (currentPage == '/recipes' || currentPage.includes('recipes/search')) {
-      filter.classList.add('active')
+    if (currentPage.includes('search') || currentPage == '/recipes') {
+      const form = document.querySelector('header .content div #search');
+      form.classList.add('active');
     }
-    item.classList.add('active')
+
+    item.classList.add('active');
   }
 }
+
+const HiddenDiv = {
+  hidden: false,
+  apply(button) {
+    const div = button.parentNode.parentNode.querySelector('.hide')
+    HiddenDiv.hidden ? HiddenDiv.remove(div, button) : HiddenDiv.add(div, button)
+  },
+  add(div, button) {
+    div.classList.add('active');
+    button.innerHTML = 'mostrar';
+    HiddenDiv.hidden = true;
+  },
+  remove(div, button) {
+    div.classList.remove('active');
+    button.innerHTML = 'esconder';
+    HiddenDiv.hidden = false;
+  }
+};
+
+function addInput(button) {
+  const divItem = button.parentNode;
+  const div = divItem.querySelector('div')
+  const fieldContainer = divItem.querySelectorAll('.copy');
+
+  const newField = fieldContainer[fieldContainer.length - 1].cloneNode(true);
+
+  if (newField.children[0].value == '') return false;
+
+  newField.children[0].value = "";
+  div.appendChild(newField);
+};
 
 const ImagesUploadRecipes = {
   input: '',
@@ -33,7 +65,7 @@ const ImagesUploadRecipes = {
 
         const container = ImagesUploadRecipes.getContainer(image);
         ImagesUploadRecipes.preview.appendChild(container);
-      }
+      };
 
       reader.readAsDataURL(file);
     });
@@ -54,13 +86,13 @@ const ImagesUploadRecipes = {
     const imagesContainer = [];
     preview.childNodes.forEach(item => {
       if (item.classList && item.classList.value == 'image')
-        imagesContainer.push(item)
-    })
+        imagesContainer.push(item);
+    });
 
     const totalImages = fileList.length + imagesContainer.length;
 
     if (totalImages > uploadLimit) {
-      alert('Você atingiu o limite máximo de imagens.')
+      alert('Você atingiu o limite máximo de imagens.');
       event.prefentDefault();
       return true;
     }
@@ -78,7 +110,6 @@ const ImagesUploadRecipes = {
 
   getContainer(image) {
     const container = document.createElement('div');
-    
     container.classList.add('image');
 
     container.onclick = ImagesUploadRecipes.removeImage;
@@ -116,8 +147,6 @@ const ImagesUploadRecipes = {
 
       if(removeImage)
         removeImage.value += `${imageDiv.id},`
-      
-      
     }
 
     imageDiv.remove()
@@ -159,7 +188,7 @@ const ImagesUploadChefs = {
     const { files: fileList } = input;
 
     if (fileList.length > uploadLimit) {
-      alert(`Envie no máximo ${uploadLimit} imagens.`);
+      alert(`Envie no máximo ${uploadLimit} imagem.`);
       event.prefentDefault();
       return true;
     }
@@ -235,16 +264,16 @@ const ImagesUploadChefs = {
   }
 };
 
-const ImageGallery = {
+const Gallery = {
   highlight: document.querySelector('.highlight img'),
-  previews: document.querySelectorAll('.gallery-preview img'),
+  images: document.querySelectorAll('.gallery-preview img'),
   setImage(event) {
     const { target } = event;
 
-    ImageGallery.previews.forEach(image => image.classList.remove('active'))
+    Gallery.images.forEach(image => image.classList.remove('active'));
     target.classList.add('active');
 
-    ImageGallery.highlight.src = target.src;
-    ImageGallery.highlight.alt = target.alt;
-  }
+    Gallery.highlight.src = target.src;
+    Gallery.highlight.alt = target.alt;
+  },
 };

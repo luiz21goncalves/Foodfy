@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <meta charset="UTF-8">
     <title>Foodfy</title>
     {% include "styles.njk" %}
   </head>
-  
+
   <body>
-
     {% include "parts/header.njk" %}
-    
-    <main>
 
+    <main>
       {% block content %}
       {% endblock content %}
-
     </main>
-  
-    {% include "parts/footer.njk" %}
-    
+
+    <footer>
+      <p>Todos os direitos reservados, receitas Foodfy</p>
+    </footer>
+
     {% include "parts/message.njk" %}
 
     <script src="/script.js"></script>
-    
   </body>
+
 </html>

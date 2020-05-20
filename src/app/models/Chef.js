@@ -1,10 +1,9 @@
-const db = require("../../config/db");
-const { date } = require("../../lib/utils");
+const db = require('../../config/db');
 
 module.exports = {
   all() {
     return db.query(`
-      SELECT chefs.*, COUNT(recipes) AS total
+      SELECT chefs.*, COUNT(recipes) As total
       FROM chefs
       LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
       GROUP BY chefs.id
@@ -12,10 +11,10 @@ module.exports = {
     `);
   },
 
-  find(id) {
+  findOne(id) {
     return db.query(`
-      SELECT chefs.*, COUNT(recipes) AS total
-      FROM chefs 
+      SELECT chefs.*, COUNT(recipes) As total
+      FROM chefs
       LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
       WHERE chefs.id = $1
       GROUP BY chefs.id`,
@@ -23,32 +22,16 @@ module.exports = {
     );
   },
 
-  findRecipesByChef(id) {
-    return db.query(`
-      SELECT recipes.*
-      FROM chefs
-      LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
-      WHERE recipes.chef_id = $1
-      ORDER BY recipes.created_at DESC`,
-      [id]
-    );
-  },
-
-  create(data) {
+  create(name, fileId) {
     const query = `
       INSERT INTO chefs (
         name,
         file_id
-      ) VALUES ($1,$2)
+      ) VALUES ($1, $2)
       RETURNING id
     `;
 
-    const values = [
-      data.name,
-      data.fileId,
-    ];
-
-    return db.query (query, values);
+    return db.query(query, [name, fileId]);
   },
 
   update(data) {
@@ -58,14 +41,19 @@ module.exports = {
         file_id=($2)
       WHERE id = $3
     `;
-  
-    const values = [
-      data.name,
-      data.fileId,
-      data.id,
-    ];
 
-    return db.query(query, values);
+    return db.query(query, [ data.name, data.fileId, data.id ]);
+  },
+
+  findRecipeByChef(id) {
+    return db.query(`
+      SELECT recipes.*
+      FROM chefs
+      LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
+      WHERE recipes.chef_id = $1
+      ORDER BY recipes.created_at DESC`,
+      [id]
+    );
   },
 
   delete(id) {

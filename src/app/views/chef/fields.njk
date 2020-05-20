@@ -1,24 +1,20 @@
 <div class="item">
-  <div>
-    <p>Nome</p>
-  </div>
-
-  <div>
+  <label>Nome</label>
+  
+  <div class="input">
     <input type="text" name="name" value="{{ chef.name }}">
   </div>
 </div>
 
 <div class="item">
-  <div>
-    <p>Avatar</p>
-  </div>
+  <label>Avatar</label>
 
   <div class="images-input">
     <div id="images-upload">
       <input 
+        id="images-input"
         type="file" 
         name="images_chefs" 
-        id="images-input"
         multiple
         accept="image/*"
         onchange="ImagesUploadChefs.handleFileInput(event)"
@@ -27,10 +23,9 @@
     </div>
 
     <div id="images-preview">
-
-      {% if chef.file %}
-        <div class="image" id="{{ chef.file.id }}">
-          <img src="{{ chef.file.src }}" alt="imagem de {{ chef.name }}">
+      {% for file in chef.files %}
+        <div class="image" id="{{ file.id }}">
+          <img src="{{ file.src }}" alt="{{ file.name }}">
           <i 
             class="material-icons"
             onclick="ImagesUploadChefs.removeOldImage(event)"
@@ -38,10 +33,9 @@
             close
           </i>
         </div>
-      {% endif %}
+      {% endfor %}
 
       <input type="hidden" name="removed_images">
-
     </div>
   </div>
 </div>

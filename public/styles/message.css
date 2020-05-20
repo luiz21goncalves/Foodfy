@@ -1,42 +1,38 @@
-div.message {
-  position: absolute;
+@keyframes hidemessage {
+  to {
+    opacity: 0;
+    top: -150px;
+  }
+}
+
+.message {
+  position: fixed;
   top: 15px;
   right: 15px;
-
   width: 344px;
   height: 135px;
-
+  padding: 20px;
   border: 1px solid #ddd;
   border-radius: 4px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  overflow: hidden;
-  padding: 20px;
-
-  animation: hidemessage 0.5s 7s ease-out forwards;
+  text-align: center;
+  animation: hidemessage 400ms 5s ease-out forwards;
 }
 
-div.message p {
-  text-align: center;
+.message p {
   font-size: 16px;
+  line-height: 26px;
   font-weight: bold;
   color: #fff;
 }
 
-div.message.error {
+.message.success {
+  background: #01B12A;
+}
+
+.message.error {
   background: #DC4747;
 }
 
-div.message.success {
-  background: #01B12A ;
-}
-
-@keyframes hidemessage {
-  to {
-    top: -200px;
-    opacity: 0;
-  }
-}

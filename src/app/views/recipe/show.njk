@@ -1,0 +1,73 @@
+{% extends "admin.njk" %}
+
+{% block content %}
+
+<div class="container recipe admin">
+  <div class="actions">
+    <h2>Receita: {{ recipe.title }}</h2>
+
+    <a href="/admin/recipes/{{ recipe.id }}/edit" class="button">Editar receita</a>
+  </div>
+
+  <div class="gallery">
+    <div class="highlight">
+      <img src="{{ recipe.files[0].src }}" alt="{{ recipe.files[0].name }}">
+    </div>
+
+    <div class="gallery-preview">
+      {% for file in recipe.files %}
+        <img
+          src="{{ file.src }}" 
+          alt="{{ file.name }}"
+          onclick="Gallery.setImage(event)"
+          {% if loop.index0 == 0 %}
+            class="active"
+          {% endif %}
+        >
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="recipe-info">
+    <h1>{{ recipe.title }}</h1>
+    <span>{{ recipe.chef_name }}</span>
+  </div>
+
+  <div class="paragraphs">
+    <div>
+      <Strong>Ingredientes</Strong>
+    </div>
+
+    <div class="hide">
+      <ul>
+        {% for ingredient in recipe.ingredients %}
+          <li>{{ ingredient }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="paragraphs">
+    <div>
+      <Strong>Modo de preparo</Strong>
+    </div>
+
+    <div class="hide">
+      {% for phrase in recipe.preparation %}
+        <p>{{ phrase }}</p>
+      {% endfor %}
+    </div>
+  </div>
+
+    <div class="paragraphs">
+      <div>
+        <Strong>Informações adicionais</Strong>
+      </div>
+
+      <div class="hide">
+        <p>{{ recipe.information }}</p>
+      </div>
+    </div>
+</div>
+
+{% endblock content %}

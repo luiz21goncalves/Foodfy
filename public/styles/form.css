@@ -1,51 +1,65 @@
-.container.admin .actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 30px;
-}
-
-.container.admin .actions h2 {
-  font-size: 24px;
-}
-
-/* REECIPE CREATE */
-.container.admin .fields .item select,
-.container.admin .fields .item input, .container.admin .fields .item textarea {
-  width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
-  line-height: 28px;
-  padding: 15px 20px;
-  background: transparent;
-  margin-bottom: 15px;
-  font-weight: normal;
-  resize: vertical;
-}
-
+/* RECIPE FORM */
 .container.admin .fields .item {
   margin-bottom: 30px;
 }
 
-.container.admin .fields .item div:nth-child(1) {
+.container.admin .fields .item label {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 10px;
+  display: inline-block;
+}
+
+.container.admin .fields .item input,
+.container.admin .fields .item select,
+.container.admin .fields .item textarea {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: none;
+  font-size: 16px;
+  line-height: 24px;
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  resize: vertical;
 }
 
 .container.admin .fields .item a {
-  color: #6558C3;
-  font-weight: bold;
   font-size: 16px;
+  font-weight: bold;
+  color: #6558C3;
+  margin-top: 15px;
+  display: inline-block;
+  cursor: pointer;
 }
 
-/* PROFILE */
+.container.admin .fields .item #images-upload {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
 
-.container.admin .fields.profile {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+.container.admin .fields .item #images-upload input {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.container.admin .fields .item #images-upload i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 0px 40px;
+  justify-content: center;
+  z-index: -5;
+  font-size: 28px;
+  font-weight: bold;
+  color: #777;
 }

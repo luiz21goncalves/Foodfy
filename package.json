@@ -5,7 +5,7 @@
   "scripts": {
     "start": "npm-run-all -p nodemon browsersycn",
     "nodemon": "nodemon src/server.js",
-    "browsersycn": "browser-sync start --proxy http://localhost:5000 --files 'public,src/app/views' "
+    "browsersycn": "browser-sync start --proxy http://localhost:5000 --files 'public, src/app/views' "
   },
   "dependencies": {
     "connect-pg-simple": "^6.1.0",

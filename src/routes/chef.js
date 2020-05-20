@@ -7,22 +7,11 @@ const ChefValidator = require('../app/validators/chef');
 
 routes.get('/', ChefController.index);
 routes.get('/create', ChefController.create);
-routes.get('/:id', ChefValidator.checkChef, ChefController.show);
-routes.get('/:id/edit', ChefValidator.checkChef, ChefController.edit);
+routes.get('/:id', ChefValidator.checkChefs, ChefController.show);
+routes.get('/:id/edit', ChefValidator.checkChefs, ChefController.edit);
 
-routes.post(
-  '/', 
-  multer.single('images_chefs'), 
-  ChefValidator.post,
-  ChefController.post
-);
-routes.put(
-  '/', 
-  multer.single('images_chefs'), 
-  ChefValidator.put, 
-  ChefController.put
-);
-
-routes.delete('/', ChefValidator.checkChef, ChefController.delete);
+routes.post('/', multer.array('images_chefs', 1),ChefValidator.post, ChefController.post);
+routes.put('/', multer.array('images_chefs', 1),ChefValidator.put, ChefController.put);
+routes.delete('/', ChefValidator.checkChefs, ChefController.delete);
 
 module.exports = routes;

@@ -1,70 +1,66 @@
-/* HOME INDEX */
-.container.chefs .chef-container {
+.container .chefs {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 30px;
 }
 
-.container.chefs .chef-container .chef {
+.container .chefs article {
   display: grid;
   grid-template-columns: 64px 1fr;
+  gap: 20px;
+  align-items: center;
 }
 
-.container.chefs .chef-container .chef img {
+.container .chefs article img {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  object-fit: cover;
-  object-position: 50% 50%;
 }
 
-.container.chefs .chef-container .chef div {
-  margin-left: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.container.chefs .chef-container .chef p {
-  font-size: 18px;
+.container .chefs article p {
+  font-size: 16px;
   margin-bottom: 5px;
 }
 
-.container.chefs .chef-container .chef span {
+.container .chefs article span {
   font-size: 14px;
   color: #666;
 }
 
-/* ADMIN INDEX */
-.container.chefs .chef-container .chef a {
-  font-size: 14px;
-  font-weight: bold;
-  text-decoration: none;
-  color: #6558C3;
-}
+/* CHEF DATAIL */
 
-
-/* CHEFS - RECIPES */
-.container.chefs .chef-profile {
+.container .chef-datail {
   text-align: center;
   margin-bottom: 50px;
 }
 
-.container.chefs .chef-profile img {
+.container .chef-datail img {
   width: 200px;
   height: 200px;
   border-radius: 50%;
   margin-bottom: 30px;
-  object-fit: cover;
-  object-position: 50% 50%;
 }
 
-.container.chefs .chef-profile h1 {
+.container .chef-datail h1 {
   font-size: 36px;
   margin-bottom: 4px;
 }
 
-.container.chefs .chef-profile span {
+.container .chef-datail p {
   font-size: 20px;
   color: #777;
 }
+
+/* CHEF INDEX ADMIN */
+.container.admin .chefs article p {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.container.admin .chefs article a {
+  font-size: 14px;
+  font-weight: bold;
+  color: #6558C3;
+}
+
+/* CHEF SHOW ADMIN */

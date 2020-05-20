@@ -1,0 +1,30 @@
+{% extends "admin.njk" %}
+
+{% block content %}
+
+<div class="container admin">
+  <form id="form-delete" action="/admin/chefs?_method=DELETE" method="post">
+    <input type="hidden" name="id" value="{{ chef.id }}">
+  </form>
+
+  <form action="/admin/chefs?_method=PUT" method="post" enctype="multipart/form-data">
+
+    <div class="actions">
+      <h2>Editando chef</h2>
+      <div>
+        <a onclick="submit()" class="button delete">Deletar</a>
+        <button type="submit" class="button">Salva chef</button>
+      </div>
+    </div>
+
+    <div class="fields">
+      {% include "chef/fields.njk" %}
+    </div>
+
+    <input type="hidden" name="id" value="{{ chef.id }}">
+  </form>
+</div>
+
+{% include "confirm.njk" %}
+
+{% endblock content %}
