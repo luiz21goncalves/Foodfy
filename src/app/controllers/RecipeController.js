@@ -55,7 +55,7 @@ module.exports = {
       const recipeFilesPromise = filesId.map(file => RecipeFile.create(file.id, recipeId));
       await Promise.all(recipeFilesPromise);
       
-      return res.redirect(`recipes/${recipeId}`);
+      return res.redirect(`/admin/recipes/${recipeId}`);
     } catch (err) {
       console.error('RecipeController post', err);
 

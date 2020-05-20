@@ -25,7 +25,6 @@ async function checkAllFields(body) {
 
 async function checkForImages(files) {
   if (files.length == 0) {
-        
     const chefs = await polulateChefSelection();
 
     return {
@@ -74,7 +73,7 @@ async function post(req, res, next) {
   if (fillAllFields)
     return res.render('recipe/create', fillAllFields);
   
-  const thereIsImage = checkForImages(req.files);
+  const thereIsImage = await checkForImages(req.files);
 
   if (thereIsImage)
     return res.render('recipe/create', { 

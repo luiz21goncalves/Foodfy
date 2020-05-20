@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="container admin">
-  <form action="/admin/chefs?_method=DELETE" method="post">
+  <form id="form-delete" action="/admin/chefs?_method=DELETE" method="post">
     <input type="hidden" name="id" value="{{ chef.id }}">
   </form>
 

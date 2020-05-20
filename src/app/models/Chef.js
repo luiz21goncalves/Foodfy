@@ -54,5 +54,9 @@ module.exports = {
       ORDER BY recipes.created_at DESC`,
       [id]
     );
+  },
+
+  delete(id) {
+    return db.query(`DELETE FROM chefs WHERE id = $1`, [id]);
   }
 }

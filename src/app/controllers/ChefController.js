@@ -1,7 +1,6 @@
 const Chef = require('../models/Chef');
 const File = require('../models/File');
 
-
 async function getRecipeImage(recipe, req) {
   const results = await File.findByRecipe(recipe.id);
   const files = results.rows.map(file => ({
@@ -16,7 +15,7 @@ async function getRecipeImage(recipe, req) {
 };
 
 async function getChefImage(chef, req) {
-  const results = await File.findOne(chef.id);
+  const results = await File.findOne(chef.file_id);
   const files = results.rows.map(file => ({
     ...file,
     src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
@@ -115,4 +114,34 @@ module.exports = {
       })
     }
   },
+
+  async delete(req, res) {
+    try {
+      let chef = req.chef;
+
+      const results = await Chef.findRecipeByChef(chef.id);
+      const recipes =  results.rows;
+  
+      if (recipes.length == 0) {
+        await Chef.delete(chef.id);
+        await File.delete(chef.file_id);
+  
+        return res.redirect('/admin/chefs')
+      }
+
+      chef = await getChefImage(chef, req);
+
+      return res.render('chef/edit', {
+        chef,
+        error: 'Esse chef não pode ser deletado, pois possui pelo menos receita cadastrada!'
+      })
+    } catch (err) {
+      console.error('ChefController delete', err);
+
+      return res.render('chef/edit', {
+        chef,
+        error: 'Erro inesperado, tente novamente.'
+      })
+    }
+  }
 };
