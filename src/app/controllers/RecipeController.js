@@ -142,7 +142,7 @@ module.exports = {
     try {
       const recipe = req.recipe;
 
-      const results = await RecipeFile.find(recipe.id);
+      let results = await RecipeFile.find(recipe.id);
   
       const recipeFilesDeletePromise = results.rows.map(item => RecipeFile.delete(item.file_id));
       await Promise.all(recipeFilesDeletePromise);
@@ -151,8 +151,15 @@ module.exports = {
       await Promise.all(filesDeletePromise);
   
       await Recipe.delete(recipe.id);
-  
-      return res.redirect('/admin/recipes');
+
+      results = await Recipe.all();
+      const filesPromise = results.rows.map(recipe => getRecipeImage(recipe, req));
+      const recipes = await Promise.all(filesPromise);
+
+      return res.render('recipe/index', { 
+        recipes,
+        success: `Receita ${recipe.title} deletada com sucesso.`
+      });
     } catch  (err) {
       console.error('RecipeController delete', err);
 

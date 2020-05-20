@@ -125,8 +125,15 @@ module.exports = {
       if (recipes.length == 0) {
         await Chef.delete(chef.id);
         await File.delete(chef.file_id);
+
+        const results = await Chef.all();
+        const filesPromise = results.rows.map(chef => getRecipeImage(chef, req));
+        const chefs = await Promise.all(filesPromise);
   
-        return res.redirect('/admin/chefs')
+        return res.render('chef/index', {
+          chefs,
+          success: `Chef ${chef.name} deletado com sucesso.`
+        });
       }
 
       chef = await getChefImage(chef, req);
