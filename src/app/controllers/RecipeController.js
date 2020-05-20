@@ -126,9 +126,15 @@ module.exports = {
         await Promise.all(recipeFilesPromise);
       }
   
-      await  Recipe.update(req.body);
+      await Recipe.update(req.body);
+
+      const results = await Recipe.findOne(recipeId);
+      const recipe = await getRecipeImage(results.rows[0], req);
   
-      return res.redirect(`/admin/recipes/${recipeId}`);
+      return res.render('recipe/show', {
+        recipe,
+        success: `A receita ${recipe.title} foi atualizada com sucesso.`
+      });
     } catch (err) {
       console.error('RecipeController put', err);
 
@@ -163,7 +169,7 @@ module.exports = {
 
       return res.render('recipe/index', { 
         recipes,
-        success: `Receita ${recipe.title} deletada com sucesso.`
+        success: `A receita ${recipe.title} deletada com sucesso.`
       });
     } catch  (err) {
       console.error('RecipeController delete', err);

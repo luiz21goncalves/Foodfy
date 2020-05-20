@@ -93,11 +93,11 @@ module.exports = {
   async put(req, res) {
     try {
       const removedImges = req.body.removed_images;
-      const chefId = req.body.id;
+      let { id: chefId, file_id: fileId } = req.chef;
 
-      let data = { ...req.body, fileId: removedImges };
+      let data = { ...req.body, fileId };
 
-      if (req.files) {
+      if (req.files && removedImges) {
         const results = await File.create(...req.files);
         const { id } = results.rows[0];
 
@@ -108,8 +108,8 @@ module.exports = {
 
       if (removedImges) 
         await File.delete(removedImges);
-
-      let results = await Chef.findOne(chefId);
+      
+      results = await Chef.findOne(chefId);
       const chef = await getChefImage(results.rows[0], req);
 
       results = await Chef.findRecipeByChef(chefId);
@@ -119,12 +119,13 @@ module.exports = {
       return res.render('chef/show', {
         chef,
         recipes,
-        success: `O chef ${chef.name} foi alterado com sucesso.`
+        success: `O chef ${chef.name} foi atualizado com sucesso.`
       });
     } catch (err) {
       console.error('ChefController put', err);
 
       return res.render('chef/edit', {
+        error: 'Erro inesperado, tente novamanete.',
         chef: req.body
       })
     }
@@ -132,7 +133,7 @@ module.exports = {
 
   async delete(req, res) {
     try {
-      let chef = req.chef;
+      const chef = req.chef;
 
       const results = await Chef.findRecipeByChef(chef.id);
       const recipes =  results.rows;
