@@ -10,12 +10,7 @@
   </div>
 
   <div class="chef-datail">
-    {% if not chef.files[0] %}
-      <img src="http://placehold.it/900x900?text=CHEF SEM IMAGEM" alt="Chef sem imagem">
-    {% else %}
-      <img src="{{chef.files[0].src}}" alt="{{ chef.files[0].name }}">
-    {% endif %}
-
+    <img src="{{chef.files[0].src}}" alt="{{ chef.files[0].name }}">
     <h1>{{ chef.name }}</h1>
     <p>{{ chef.total }} receitas </p>
   </div>

@@ -188,7 +188,7 @@ const ImagesUploadChefs = {
     const { files: fileList } = input;
 
     if (fileList.length > uploadLimit) {
-      alert(`Envie no máximo ${uploadLimit} imagens.`);
+      alert(`Envie no máximo ${uploadLimit} imagem.`);
       event.prefentDefault();
       return true;
     }

@@ -22,6 +22,29 @@ module.exports = {
     );
   },
 
+  create(name, fileId) {
+    const query = `
+      INSERT INTO chefs (
+        name,
+        file_id
+      ) VALUES ($1, $2)
+      RETURNING id
+    `;
+
+    return db.query(query, [name, fileId]);
+  },
+
+  update(data) {
+    const query = `
+      UPDATE chefs SET
+        name=($1),
+        file_id=($2)
+      WHERE id = $3
+    `;
+
+    return db.query(query, [ data.name, data.fileId, data.id ]);
+  },
+
   findRecipeByChef(id) {
     return db.query(`
       SELECT recipes.*

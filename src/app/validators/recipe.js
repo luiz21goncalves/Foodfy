@@ -1,17 +1,39 @@
 const Recipe = require('../models/Recipe');
 const File = require('../models/File');
 
-function checkAllFields(body) {
+async function polulateChefSelection() {
+  const results = await Recipe.ChefSelectionOptions();
+
+  return results.rows;
+};
+
+async function checkAllFields(body) {
   const keys = Object.keys(body);
 
   for (key of keys) {
-    if (body[key] == '' && key != 'removed_images' && key != 'information')
+    if (body[key] == '' && key != 'removed_images' && key != 'information') {
+      const chefs = await polulateChefSelection();
+
       return {
+        chefs,
         recipe: body,
         error: 'Apenas o campo de informações adicionas não é obrigatário.'
       };
+    }
   }
-}
+};
+
+async function checkForImages(files) {
+  if (files.length == 0) {
+        
+    const chefs = await polulateChefSelection();
+
+    return {
+      chefs,
+      error: 'Envie pelo menos uma imagem.'
+    }
+  }
+};
 
 async function getRecipeImage(recipe, req) {
   const results = await File.findByRecipe(recipe.id);
@@ -47,34 +69,36 @@ async function checkRecipe(req, res, next) {
 };
 
 async function post(req, res, next) {
-  const fillAllFields = checkAllFields(req.body);
+  const fillAllFields = await checkAllFields(req.body);
 
   if (fillAllFields)
     return res.render('recipe/create', fillAllFields);
+  
+  const thereIsImage = checkForImages(req.files);
 
-  if (req.files.length == 0)
+  if (thereIsImage)
     return res.render('recipe/create', { 
+      ... thereIsImage,
       recipe: req.body,
-      error: 'Envie pelo menos uma imagem.'
     });
 
   next();
 };
 
 async function put(req, res, next) {
-  const fillAllFields = checkAllFields(req.body);
-    
-  const results = await Recipe.ChefSelectionOptions();
-  const chefs = results.rows;
+  const fillAllFields = await checkAllFields(req.body);
 
   if (fillAllFields)
-    return res.render('recipe/edit', {fillAllFields, chefs});
+    return res.render('recipe/edit', {
+      ...fillAllFields,
+    });
 
-  if (req.files == 0)
+  const thereIsImage = await checkIfImagesExists(req.files);
+
+  if (thereIsImage)
     return  res.render('recipe/edit', {
+      ...thereIsImage,
       recipe: req.body,
-      chefs,
-      error: 'Envie pelo menos uma imaagem'
     });
 
   next();
