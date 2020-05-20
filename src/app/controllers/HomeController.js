@@ -16,7 +16,7 @@ async function getRecipeImage(recipe, req) {
 };
 
 async function getChefImage(chef, req) {
-  const results = await File.findOne(chef.id);
+  const results = await File.findOne(chef.file_id);
   const files = results.rows.map(file => ({
     ...file,
     src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`

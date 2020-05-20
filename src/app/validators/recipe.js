@@ -116,17 +116,8 @@ async function put(req, res, next) {
   next();
 };
 
-function search(req, res, next) {
-  const { filter } = req.query;
-
-  if (!filter) return res.redirect('/recipes');
-
-  next();
-};
-
 module.exports = {
   checkRecipe,
   post,
   put,
-  search,
 };

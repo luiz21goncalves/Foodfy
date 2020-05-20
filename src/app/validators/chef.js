@@ -36,10 +36,15 @@ async function checkChefs(req, res, next) {
   const results = await Chef.findOne(req.params.id || req.body.id);
   const chef = results.rows[0];
     
-  if (!chef) return res.render('chef/index', {
-    error: 'Chef não encontrado!'
-  })
+  if (!chef) {
+    const results = await Chef.all();
+    const filesPromise = results.rows.map(chef => getChefImage(chef, req));
+    const chefs = await Promise.all(filesPromise);
 
+    return res.render('chef/index', {
+      error: 'Chef não encontrado!'
+    })
+  }
   req.chef = chef;
 
   next();
