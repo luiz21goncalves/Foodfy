@@ -8,10 +8,10 @@
     <input type="hidden" name="id" value="{{ user.id }}">
   </form>
 
-  <form action="/admin/users" method="post">
+  <form action="/admin/users?_method=PUT" method="post">
 
     <div class="actions">
-      <h2>Criar Usuário</h2>
+      <h2>Atualizar Usuário</h2>
 
       <div>
         <a onclick="submit()" class="button delete">Deletar</a>
@@ -22,6 +22,9 @@
     <div class="fields">
       {% include "user/fields.njk" %}
     </div>
+
+    <input type="hidden" name="id" value="{{ user.id }}">
+    
   </form>
 
 </div>

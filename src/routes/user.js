@@ -9,5 +9,6 @@ routes.get('/create', UserController.create);
 routes.get('/:id/edit', UserValidator.checkUser, UserController.edit);
 
 routes.post('/', UserValidator.post, UserController.post);
+routes.put('/', UserValidator.put, UserController.put);
 
 module.exports = routes;

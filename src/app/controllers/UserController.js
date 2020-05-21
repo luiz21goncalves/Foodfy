@@ -14,13 +14,6 @@ module.exports = {
     return res.render('user/create');
   },
 
-  edit(req, res) {
-    const user = req.user;
-
-    // return res.send({ user });
-    return res.render('user/edit', { user });
-  },
-
   async post(req, res) {
     try {
       const { name, email, is_admin } = req.body;
@@ -33,7 +26,6 @@ module.exports = {
   
       const user = await User.create(data);
   
-      console.log(user.id)
       return res.send(user.id);
     } catch (err) {
       console.error(err);
@@ -44,4 +36,36 @@ module.exports = {
       })
     }
   },
+
+  edit(req, res) {
+    const user = req.user;
+
+    return res.render('user/edit', { user });
+  },
+
+  async put(req, res) {
+    try {
+      const { name, email, is_admin, id } = req.body;
+      const isAdmin = is_admin == 'on' ? true : false;
+
+      const data = { name, email, isAdmin, id };
+
+      await User.update(data);
+
+      const user = await User.findOne({ where: { id: data.id } })
+
+      return res.render('user/edit', {
+        user,
+        success: `Usuário ${user.name} atualizado com sucesso.`
+      });
+    } catch (err) {
+      console.error(err);
+
+      return res.render('user/edit', {
+        chef: data,
+        error: 'Erro inesperado, por favor tente novamente.'
+      })
+    }
+  },
+
 };

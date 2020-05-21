@@ -1,5 +1,16 @@
 const User = require('../models/User');
 
+function checkAllFields(body) {
+  const keys = Object.keys(body);
+
+  for (key of keys) {
+    if (body[key] == '' && key != 'is_admin')
+      return {
+        error: 'Apenas o campo de admistrador não é obrigatório.'
+      };
+  }
+};
+
 async function checkUser(req, res, next) {
   const user = await User.findOne({ where: { id: req.params.id || req.body.id } });
 
@@ -18,15 +29,13 @@ async function checkUser(req, res, next) {
 };
 
 async function post(req, res, next) {
-  const keys = Object.keys(req.body);
+  const fillAllFields = checkAllFields(req.body);
 
-  for (key of keys) {
-    if (req.body[key] == '' && key != 'is_admin')
-      return res.render('user/create', {
-        user: req.body,
-        error: 'Apenas o campo de admistrador não é obrigatório.'
-      });
-  }
+  if (fillAllFields)
+    return res.render('user/create', {
+      ...fillAllFields,
+      user: req.body,
+    });
 
   const user = await User.findOne({ where: { email: req.body.email } });
 
@@ -39,7 +48,30 @@ async function post(req, res, next) {
   next();
 };
 
+async function put(req, res, next) {
+  const fillAllFields = checkAllFields(req.body);
+
+  if (fillAllFields)
+    return res.render('user/edit', {
+      ...fillAllFields,
+      user: req.body,
+    });
+
+  const user = await User.findOne({ where: { email: req.body.email } });
+
+  if (user) {
+    if (user.id != req.body.id)
+    return res.render('user/edit', {
+      user: req.body,
+      error: 'Esse email pretence a outro usuário, por favor ulitize outro.'
+    })
+  }
+
+  next();
+};
+
 module.exports = {
   checkUser,
   post,
+  put,
 };
