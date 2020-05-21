@@ -4,8 +4,10 @@ const crypto = require('crypto');
 const User = require('../models/User');
 
 module.exports = {
-  index(req, res) {
-    return res.render('user/index');
+  async index(req, res) {
+    const users = await User.all()
+
+    return res.render('user/index', { users });
   },
 
   create(req, res) {

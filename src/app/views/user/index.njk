@@ -9,6 +9,27 @@
     <a href="/admin/users/create" class="button">Novo</a>
   </div>
 
+  <div class="users">
+    {% for user in users %}
+      <article>
+        <div>
+          <p>{{ user.name }}</p>
+          <span>{{ user.email }}</span>
+        </div>
+
+        <div>
+          <a class="edit" href="/admin/users/{{ user.id }}/edit">
+            Editar
+          </a>
+          <form id="form-delete" action="/admin/users">
+            <input type="hidden" name="id" valeu="{{ user.id }}">
+            <button class="delete" type="submit">Remover</button>
+          </form>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+
 </div>
 
 {% endblock content %}

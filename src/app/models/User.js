@@ -1,7 +1,11 @@
 const db = require('../../config/db');
 
 module.exports = {
-  all() {},
+  async all() {
+    const results = await db.query(`SELECT * FROM users ORDER BY created_at DESC`);
+
+    return results.rows;
+  },
 
   async findOne(filters) {
     let query = `SELECT * FROM users`;

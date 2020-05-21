@@ -1,0 +1,37 @@
+.container.admin .users {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 52px;
+}
+
+.container.admin .users article {
+  display: grid;
+  gap: 16px 0;
+}
+
+.container.admin .users article div:nth-child(1) p {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.container.admin .users article div:nth-child(1) span {
+  font-size: 14px;
+}
+
+.container.admin .users article div:nth-child(2) {
+  display: flex;
+  align-items: center;
+}
+
+.container.admin .users article div:nth-child(2) a {
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 16px;
+}
+
+.container.admin .users article div:nth-child(2) button.delete {
+  color: #F55A5A;
+  font-size: 14px;
+  font-weight: bold;
+  background: none;
+}
