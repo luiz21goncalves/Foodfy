@@ -28,6 +28,11 @@
   color: #fff;
 }
 
+.message a {
+  color: #ddd;
+  text-decoration: underline;
+}
+
 .message.success {
   background: #01B12A;
 }
