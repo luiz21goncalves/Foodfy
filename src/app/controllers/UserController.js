@@ -40,7 +40,7 @@ module.exports = {
           <h2>${data.name} seja bem-vindo.</h2>
           <p>Seu acesso ao <b>Foodfy</b> está aqui.</p>
           <p>
-            Faça seu login <a href="${req.protocol}://localhost:3000/login" target="_blank">clicando aqui</a>
+            Faça seu login <a href="${req.protocol}://localhost:3000/session/login" target="_blank">clicando aqui</a>
           </p>
           <p>
             Essa é sua senha <b>${password}</b>, mas relaxa é só para o primeiro acesso.
