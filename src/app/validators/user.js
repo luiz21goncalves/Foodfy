@@ -1,5 +1,22 @@
 const User = require('../models/User');
 
+async function checkUser(req, res, next) {
+  const user = await User.findOne({ where: { id: req.params.id || req.body.id } });
+
+  if (!user) {
+    const users = await User.all();
+
+    return res.render('user/index', {
+      users,
+      error: 'Usuário não encontrado.'
+    });
+  }
+
+  req.user = user;
+
+  next();
+};
+
 async function post(req, res, next) {
   const keys = Object.keys(req.body);
 
@@ -23,5 +40,6 @@ async function post(req, res, next) {
 };
 
 module.exports = {
+  checkUser,
   post,
 };

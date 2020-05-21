@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const User = require('../models/User');
 
 module.exports = {
-  async index(req, res) {
+  async list(req, res) {
     const users = await User.all()
 
     return res.render('user/index', { users });
@@ -12,6 +12,13 @@ module.exports = {
 
   create(req, res) {
     return res.render('user/create');
+  },
+
+  edit(req, res) {
+    const user = req.user;
+
+    // return res.send({ user });
+    return res.render('user/edit', { user });
   },
 
   async post(req, res) {
