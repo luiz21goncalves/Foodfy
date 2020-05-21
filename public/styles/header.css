@@ -20,9 +20,6 @@ header .content nav {
 header .content nav a:first-child {
   width: 91px;
   height: 27px;
-}
-
-header .content nav img {
   margin-right: 120px;
 }
 
@@ -46,25 +43,17 @@ header .content nav a + a {
   margin-left: 30px;
 }
 
-header .content form#search {
-  opacity: 0;
-  visibility: hidden;
-  transition: 400ms;
+header .content div {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
-header .content form#search.active {
-  opacity: 1;
-  visibility: initial;
-}
-
-header .content form#search input {
-  max-width: 246px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 10px 15px;
-  margin-right: 8px;
-  font-size: 14px;
-  color: #999;
+header .content div a {
+  font-size: 16px;
+  font-weight: bold;
+  color: #6558C3;
+  margin-left: 30px;
 }
 
 /* HEADER ADMIN */

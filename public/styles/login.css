@@ -1,0 +1,52 @@
+.container.login {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.container.login h2 {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.container.login .logo {
+  height: 67px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-bottom: 146px;
+}
+
+.container.login .fields .item {
+  margin-bottom: 35px;
+}
+
+.container.login .fields .item label {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.container.login .fields .item input {
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  padding: 15px;
+}
+
+.container.login .fields .item input::placeholder {
+  color: #999;
+}
+
+.container.login .fields .footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.container.login .fields .footer a {
+  font-size: 16px;
+  font-weight: bold;
+  color: #969696;
+}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Foodfy</title>
+    {% include "styles.njk" %}
+  </head>
+
+  <body>
+    <main>
+      {% block content %}
+      {% endblock content %}
+    </main>
+
+    {% include "parts/message.njk" %}
+
+    <script src="/script.js"></script>
+  </body>
+
+</html>
