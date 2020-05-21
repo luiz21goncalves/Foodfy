@@ -28,11 +28,13 @@
   font-weight: bold;
   color: #6558C3;
   margin-right: 16px;
+  cursor: pointer;
 }
 
-.container.admin .users article div:nth-child(2) button.delete {
+.container.admin .users article div:nth-child(2) a.delete {
   color: #F55A5A;
   font-size: 14px;
   font-weight: bold;
   background: none;
+  cursor: pointer;
 }

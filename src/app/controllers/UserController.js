@@ -68,4 +68,24 @@ module.exports = {
     }
   },
 
+  async delete(req, res) {
+    try{
+      const user = req.user;
+      await User.delete(user.id);
+
+      const users = await User.all();
+
+      return res.render('user/index', {
+        users,
+        success: `Usuário ${user.name} deletado com sucesso`,
+      });
+    } catch (err) {
+      console.error(err);
+
+      return res.render('user/index', {
+        users,
+        error: 'Erro inesperado, por favor tente novamente'
+      });
+    }
+  },
 };
