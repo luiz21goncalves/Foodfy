@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
+const mailer = require('../../lib/mailer');
 const User = require('../models/User');
 
 module.exports = {
@@ -21,12 +22,38 @@ module.exports = {
   
       const password = crypto.randomBytes(4).toString('hex');
       const passwordHash = await bcrypt.hash(password, 8);
-  
+
+      // const token = crypto.randomBytes(20).toString('hex');
+      // let now = new Date();
+      // now = now.setHours(now.getHours() + 1);
+
+      // const data = { name, email, password: passwordHash, isAdmin, token, now };
       const data = { name, email, password: passwordHash, isAdmin };
   
-      const user = await User.create(data);
+      await User.create(data);
+
+      await mailer.sendMail({
+        to: data.email,
+        from: 'no-replay@foodfy.com.br',
+        subject: 'Bem-vindo ao  Foodfy',
+        html:`
+          <h2>${data.name} seja bem-vindo.</h2>
+          <p>Seu acesso ao <b>Foodfy</b> está aqui.</p>
+          <p>
+            Faça seu login <a href="${req.protocol}://localhost:3000/login" target="_blank">clicando aqui</a>
+          </p>
+          <p>
+            Essa é sua senha <b>${password}</b>, mas relaxa é só para o primeiro acesso.
+          </p>
+        `,
+      });
+
+      const users = await User.all();
   
-      return res.send(user.id);
+      return res.render('user/index', {
+        users,
+        success: `Usuário ${data.name} criado com sucesso.`,
+      });
     } catch (err) {
       console.error(err);
 

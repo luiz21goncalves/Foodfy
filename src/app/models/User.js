@@ -29,8 +29,10 @@ module.exports = {
         name,
         email,
         password,
-        is_admin
-      ) VALUES ($1, $2, $3, $4)
+        is_admin,
+        reset_token,
+        reset_token_expires
+      ) VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING  id
     `;
 
@@ -39,6 +41,8 @@ module.exports = {
       data.email,
       data.password,
       data.isAdmin,
+      data.token,
+      data.now,
     ];
 
     const results = await db.query(query, values);
