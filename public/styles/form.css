@@ -63,3 +63,33 @@
   font-weight: bold;
   color: #777;
 }
+
+/* FORM USER */
+.container.user .fields {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 40px;
+}
+
+.container.user .fields .item:last-child {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.container.user .fields .item label {
+  font-weight: bold;
+}
+
+.container.user .fields .item:last-child label {
+  position: absolute;
+  left: 23px;
+}
+.container.admin .fields .item input {
+  margin-bottom: 0;
+}
+
+.container.user .fields .item:last-child input {
+  width: 15px;
+  height: 15px;
+}

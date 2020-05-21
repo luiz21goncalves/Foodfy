@@ -1,0 +1,43 @@
+<div class="item">
+  <label for="name">Nome</label>
+
+  <div class="input">
+    <input
+      id="name"
+      type="text"
+      name="name"
+      placeholder="Digite o nome completo"
+      value="{{ user.name }}"
+    >
+  </div>
+</div>
+
+<div class="item">
+  <label for="email">Email</label>
+
+  <div class="input">
+    <input
+      id="email"
+      type="email"
+      name="email"
+      placeholder="Digite o email"
+      value="{{ user.email }}"
+    >
+  </div>
+</div>
+
+<div class="item">
+  <input 
+    type="checkbox" 
+    name="is_admin" 
+    id="is_admin"
+    {% if user.is_admin == "true" %}
+      checked
+    {% endif %}
+    {% if user.is_admin == "on" %}
+      checked
+    {% endif %}
+  >
+
+  <label for="is_admin">Administrador</label>
+</div>
