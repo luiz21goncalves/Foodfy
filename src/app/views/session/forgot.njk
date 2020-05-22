@@ -8,9 +8,9 @@
     <img src="/assets/logo.png" alt="logo Foodfy">
   </div>  
 
-  <h2>Iniciar Sessão</h2>
+  <h2>Esqueceu a Senha?</h2>
 
-  <form action="/login" method="post">
+  <form action="/forgot-password" method="post">
 
     <div class="fields">
 
@@ -22,27 +22,15 @@
             type="email" 
             name="email" 
             id="email"
-            placeholder="Digite seu email"
+            placeholder="Digite seu email para recuperar sua senha"
             value="{{ user.email }}"
           >
         </div>
       </div>
 
-      <div class="item">
-        <label for="password">Senha</label>
-
-        <div class="input">
-          <input
-            type="password"
-            name="password" 
-            id="password"
-            placeholder="Digite sua senha"
-          >
-        </div>
-      </div>
 
       <div class="footer">
-        <a href="/forgot-password">Perdeu a senha?</a>
+        <div></div>
         <button type="submit" class="button">Acessar</button>
       </div>
 

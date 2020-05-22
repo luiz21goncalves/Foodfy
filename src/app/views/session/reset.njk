@@ -8,9 +8,9 @@
     <img src="/assets/logo.png" alt="logo Foodfy">
   </div>  
 
-  <h2>Iniciar Sessão</h2>
+  <h2>Nova Senha</h2>
 
-  <form action="/login" method="post">
+  <form action="/reset-password" method="post">
 
     <div class="fields">
 
@@ -29,20 +29,35 @@
       </div>
 
       <div class="item">
-        <label for="password">Senha</label>
+        <label for="password">Nova senha</label>
 
         <div class="input">
           <input
             type="password"
             name="password" 
             id="password"
-            placeholder="Digite sua senha"
+            placeholder="Digite sua nova senha"
           >
         </div>
       </div>
 
+      <div class="item">
+        <label for="passwordRepet">Repetir Senha</label>
+
+        <div class="input">
+          <input
+            type="password"
+            name="passwordRepet" 
+            id="passwordRepet"
+            placeholder="Repita a nova senha"
+          >
+        </div>
+      </div>
+
+      <input type="hidden" name="token" value="{{ token }}">
+
       <div class="footer">
-        <a href="/forgot-password">Perdeu a senha?</a>
+        <div></div>
         <button type="submit" class="button">Acessar</button>
       </div>
 

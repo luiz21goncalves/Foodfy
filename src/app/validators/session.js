@@ -26,6 +26,32 @@ async function login(req, res, next) {
   next();
 };
 
+async function forgot(req, res, next) {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ where: { email } });
+
+    if (!user)
+      return res.render('session/forgot', {
+        user: req.body,
+        error: 'Usuário não cadastrdo.'
+      });
+
+    req.user = user;
+
+    next();
+  } catch (err) {
+    console.error(err);
+
+    return res.render('sessio/forgot', {
+      user: req.body,
+      error: 'Erro inesperado, por favor tente novamente.'
+    });
+  }
+};
+
 module.exports = {
   login,
+  forgot,
 };
