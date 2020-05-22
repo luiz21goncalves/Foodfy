@@ -97,8 +97,23 @@ async function put(req, res, next) {
   next();
 };
 
+async function onlyAdmin(req, res, next) {
+  if (!req.session.isAdmin) {
+    const results = await Chef.all();
+    const filesPromise = results.rows.map(chef => getChefImage(chef, req));
+    const chefs = await Promise.all(filesPromise);
+
+    return res.render('chef/index', {
+      chefs,
+      error: 'Você não tem permissão para criação, edição ou para deletar chefs.'
+    })
+  }
+
+};
+
 module.exports = {
   checkChefs,
+  onlyAdmin,
   post,
   put,
 };

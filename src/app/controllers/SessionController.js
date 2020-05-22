@@ -10,13 +10,15 @@ module.exports = {
 
   login(req, res) {
     const user = req.user;
+
     req.session.userId = user.id;
+    req.session.isAdmin = user.is_admin;
 
     if (user.is_admin) {
-      return res.redirect('/admin/profile');
+      return res.redirect('/admin/users');
     }
 
-    return res.redirect('/admin/users');
+    return res.redirect('/admin/profile');
   },
 
   logout(req, res) {

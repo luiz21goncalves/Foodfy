@@ -2,9 +2,13 @@ const express = require('express');
 const routes = express.Router();
 
 const SessionController = require('../app/controllers/SessionController');
+
 const SessionValidator = require('../app/validators/session');
 
-routes.get('/login', SessionController.formLogin);
+const { isLogged } = require('../app/middlewares/session');
+
+
+routes.get('/login', isLogged, SessionController.formLogin);
 routes.post('/login', SessionValidator.login, SessionController.login);
 routes.post('/logout', SessionController.logout);
 

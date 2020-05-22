@@ -4,6 +4,10 @@ const routes = express.Router();
 const UserController = require('../app/controllers/UserController');
 const UserValidator = require('../app/validators/user');
 
+const { onlyAdmin } = require('../app/middlewares/session');
+
+routes.use(onlyAdmin)
+
 routes.get('/', UserController.list);
 routes.get('/create', UserController.create);
 routes.get('/:id/edit', UserValidator.checkUser, UserController.edit);
