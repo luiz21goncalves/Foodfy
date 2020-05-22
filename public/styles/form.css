@@ -93,6 +93,10 @@ header .content form#search input {
   gap: 0 40px;
 }
 
+.container.user .fields .item {
+  margin-bottom: 36px;
+}
+
 .container.user .fields .item:last-child {
   position: relative;
   display: flex;
@@ -114,4 +118,15 @@ header .content form#search input {
 .container.user .fields .item:last-child input {
   width: 15px;
   height: 15px;
+}
+
+/* FORM PROFILE */
+.container.profile .fields {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0px 40px;
+}
+
+.container.profile .fields .item {
+  margin-bottom: 36px;
 }
