@@ -75,11 +75,9 @@ module.exports = {
       const { name, email, is_admin, id } = req.body;
       const isAdmin = is_admin == 'on' ? true : false;
 
-      const data = { name, email, isAdmin, id };
+      await User.update(id, { name, email, is_admin: isAdmin });
 
-      await User.update(data);
-
-      const user = await User.findOne({ where: { id: data.id } })
+      const user = await User.findOne({ where: { id } })
 
       return res.render('user/edit', {
         user,

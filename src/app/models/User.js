@@ -50,23 +50,23 @@ module.exports = {
     return results.rows[0];
   },
 
-  update(data) {
-    const query = `
-      UPDATE users SET
-        name=($1),
-        email=($2),
-        is_admin=($3)
-      WHERE  id = $4
-    `;
+  async update(id, fields) {
+    let query = `UPDATE users SET`;
 
-    const values = [
-      data.name,
-      data.email,
-      data.isAdmin,
-      data.id,
-    ];
+    Object.keys(fields).map((key, index, array) => {
+      if ((index + 1) < array.length) {
+        query = `${query} ${key} = '${fields[key]}',`;
+      } else {
+        query = `
+          ${query} ${key} = '${fields[key]}'
+          WHERE id = ${id}
+        `;
+      }
+    });
 
-    return db.query(query, values);
+    await db.query(query);
+
+    return 
   },
 
   delete(id) {
