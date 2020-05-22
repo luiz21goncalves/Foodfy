@@ -82,12 +82,24 @@ async function post(req, res, next) {
       recipe: req.body,
     });
   }
-   
 
   next();
 };
 
 async function put(req, res, next) {
+  const isAdmin = req.session.isAdmin;
+  const userId = req.session.userId;
+
+  const recipe = await getRecipeImage(req.body, req);
+
+  if (!isAdmin || userId != req.body.user_id)
+    return res.render('recipe/show', {
+      recipe,
+      isAdmin,
+      userId,
+      error: 'Você não tem permissão para editar ou deletar essa receita.'
+    });
+
   const fillAllFields = await checkAllFields(req.body);
 
   if (fillAllFields)
@@ -96,8 +108,6 @@ async function put(req, res, next) {
     });
 
   const thereIsImage = await checkForImages(req.files);
-
-  const recipe = await getRecipeImage(req.body, req);
 
   const removedImages = req.body.removed_images.split(',');
   const lastIndex = removedImages.length - 1;

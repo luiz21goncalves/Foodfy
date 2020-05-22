@@ -6,7 +6,10 @@
 
   <div class="actions">
     <h2>Chef: {{ chef.name }}</h2>
-    <a href="/admin/chefs/{{ chef.id }}/edit" class="button">Editar chef</a>
+
+    {% if isAdmin %}
+      <a href="/admin/chefs/{{ chef.id }}/edit" class="button">Editar chef</a>
+    {% endif %}
   </div>
 
   <div class="chef-datail">

@@ -5,7 +5,10 @@
 
   <div class="actions">
     <h2>Gerenciar Chefs</h2>
-    <a href="/admin/chefs/create" class="button">Novo chef</a>
+    
+    {% if isAdmin %}
+      <a href="/admin/chefs/create" class="button">Novo chef</a>
+    {% endif %}
   </div>
 
   <div class="chefs">

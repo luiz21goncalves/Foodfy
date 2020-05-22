@@ -45,7 +45,9 @@ module.exports = {
 
   async post(req, res) {
     try {
-      let results = await Recipe.create(req.body);
+      const data = { ...req.body, user_id: req.session.userId};
+
+      let results = await Recipe.create(data);
       const recipeId = results.rows[0].id;
 
       const filesPromise = req.files.map(file => File.create({ ...file }));
@@ -74,35 +76,41 @@ module.exports = {
 
   async show(req, res) {
     try {
+      const { isAdmin, userId } = req.session;
+      
       const recipeId = req.params.id;
       let results = await Recipe.findOne(recipeId);
       const recipe = await getRecipeImage(results.rows[0], req);
   
-      return res.render('recipe/show', { recipe });
+      return res.render('recipe/show', { recipe, isAdmin, userId });
     } catch (err) {
       console.error('RecipeController show', err);
 
-      return res.render('recipe/show', { recipe });
+      return res.render('recipe/show', { recipe, isAdmin });
     }
   },
 
   async edit(req, res) {
     try {
+      const { isAdmin, userId } = req.session;
+
       const recipe = await getRecipeImage(req.recipe, req);
 
       const results = await Recipe.ChefSelectionOptions();
       const chefs = results.rows
 
-      return res.render('recipe/edit', { recipe, chefs })
+      return res.render('recipe/edit', { recipe, chefs, isAdmin, userId})
     } catch(err) {
       console.error('RecipeController edit', err);
 
-      return res.render('recipe/edit', { recipe, chefs });
+      return res.render('recipe/edit', { recipe, chefs, isAdmin, userId });
     }
   },
 
   async put(req, res) {
     try {
+      const { isAdmin, userId } = req.session;
+
       const recipeId = req.body.id;
 
       if (req.body.removed_images) {
@@ -142,6 +150,8 @@ module.exports = {
       const chefs = results.rows
 
       return res.render('recipe/edit', {
+        isAdmin,
+        userId,
         recipe: req.body,
         chefs,
         error: 'Erro inesperado, tente novamente!'
@@ -151,6 +161,8 @@ module.exports = {
 
   async delete(req, res) {
     try {
+      const { isAdmin, userId } = req.session;
+
       const recipe = req.recipe;
 
       let results = await RecipeFile.find(recipe.id);
@@ -174,7 +186,9 @@ module.exports = {
     } catch  (err) {
       console.error('RecipeController delete', err);
 
-      res.render('recipe/edit', { 
+      res.render('recipe/edit', {
+        isAdmin,
+        userId,
         recipe,
         error: 'Erro inesperado, tente novamente!'
       });

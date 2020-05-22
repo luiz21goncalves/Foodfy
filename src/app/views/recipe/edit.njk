@@ -10,21 +10,27 @@
   <form action="/admin/recipes?_method=PUt" method="post" enctype="multipart/form-data">
     <div class="actions">
       <h2>Editando Receita</h2>
-      <div>
-        <a onclick="submit()" class="button delete">Deletar</a>
-        <button type="submit" class="button">Salva receita</button>
-      </div>
+
+      {% if isAdmin %}
+        <div>
+          <a onclick="submit()" class="button delete">Deletar</a>
+          <button type="submit" class="button">Salva receita</button>
+        </div>
+      {% elif userId == recipe.user_id %}
+        <div>
+          <a onclick="submit()" class="button delete">Deletar</a>
+          <button type="submit" class="button">Salva receita</button>
+        </div>
+      {% endif %}
     </div>
 
-    <div class="fields">
+    <div class="fields recipe">
       {% include "recipe/fields.njk" %}
     </div>
 
-    <input 
-      type="hidden" 
-      name="id"
-      value="{{ recipe.id }}"
-    >
+    <input type="hidden" name="id" value="{{ recipe.id }}">
+
+    <input type="hidden" name="user_id" value="{{ recipe.user_id }}">
   </form>
 
 </div>

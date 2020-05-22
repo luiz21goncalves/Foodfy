@@ -46,11 +46,14 @@ header .content form#search input {
   resize: vertical;
 }
 
+.container.admin .fields.recipe .item input {
+  margin-bottom: 15px;
+}
+
 .container.admin .fields .item a {
   font-size: 16px;
   font-weight: bold;
   color: #6558C3;
-  margin-top: 15px;
   display: inline-block;
   cursor: pointer;
 }

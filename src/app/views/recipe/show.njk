@@ -6,7 +6,11 @@
   <div class="actions">
     <h2>Receita: {{ recipe.title }}</h2>
 
-    <a href="/admin/recipes/{{ recipe.id }}/edit" class="button">Editar receita</a>
+    {% if isAdmin %}
+      <a href="/admin/recipes/{{ recipe.id }}/edit" class="button">Editar receita</a>
+    {% elif userId == recipe.user_id %}
+      <a href="/admin/recipes/{{ recipe.id }}/edit" class="button">Editar receita</a>
+    {% endif %}
   </div>
 
   <div class="gallery">
