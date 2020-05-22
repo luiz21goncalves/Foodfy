@@ -12,5 +12,6 @@ routes.get('/forgot-password', SessionController.formForgot);
 routes.post('/forgot-password', SessionValidator.forgot, SessionController.forgot);
 
 routes.get('/reset-password', SessionController.formReset);
+routes.post('/reset-password', SessionValidator.reset, SessionController.reset);
 
 module.exports = routes;

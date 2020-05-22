@@ -8,6 +8,10 @@ for (item of menuItems) {
       form.classList.add('active');
     }
 
+    if (currentPage.includes('profile')) {
+      menuItems[3].classList.add('active');
+    }
+
     item.classList.add('active');
   }
 }
