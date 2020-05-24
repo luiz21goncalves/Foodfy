@@ -45,8 +45,6 @@ CREATE TABLE "users" (
   "updated_at" timestamp DEFAULT (now())
 );
 
-INSERT INTO users(name, email, password, is_admin) VALUES('admin', 'admin@foodfy.com', '1234', 'true');
-
 CREATE TABLE "session" (
   "sid" varchar NOT NULL COLLATE "default",
   "sess" json NOT NULL,
