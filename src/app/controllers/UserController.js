@@ -24,11 +24,6 @@ module.exports = {
       const password = crypto.randomBytes(4).toString('hex');
       const passwordHash = await bcrypt.hash(password, 8);
 
-      // const token = crypto.randomBytes(20).toString('hex');
-      // let now = new Date();
-      // now = now.setHours(now.getHours() + 1);
-
-      // const data = { name, email, password: passwordHash, isAdmin, token, now };
       const data = { name, email, password: passwordHash, isAdmin };
   
       await User.create(data);

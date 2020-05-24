@@ -1,0 +1,12 @@
+{% extends "layout.njk" %}
+{% import "parts/banner.njk" as section %}
+
+{% block content %}
+
+{{ section.banner("true") }}
+
+<div class="container">
+  <h2>Essa é uma rota para criação do primeiro usuário do sistema.</h2>
+</div>
+
+{% endblock content %}

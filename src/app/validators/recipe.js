@@ -73,6 +73,17 @@ async function edit(req, res,next) {
     });
   }
 
+  if (!recipe) {
+    const results = await Recipe.all();
+    const filesPromise = results.rows.map(recipe => getRecipeImage(recipe, req));
+    const recipes = await Promise.all(filesPromise);
+
+    return res.render('recipe/index', { 
+      recipes,
+      error: 'Receita não encontrada.'
+     });
+  }
+
   req.recipe = recipe;
 
   next();
