@@ -8,8 +8,7 @@ module.exports = {
   async post(req, res) {
     try {
       const  name = 'Admin Foodfy',
-        email = 'admin@foodfy.com.br',
-        is_admin = true;
+        email = 'admin@foodfy.com.br';
       
       const user = await User.findOne({ where: { email } });
 
@@ -21,7 +20,9 @@ module.exports = {
       const password = crypto.randomBytes(4).toString('hex');
       const passwordHash = await bcrypt.hash(password, 8);
 
-      await User.create({ name, email, password: passwordHash, is_admin });
+      const data = { name, email, password: passwordHash, isAdmin: true }
+
+      await User.create(data);
 
       await mailer.sendMail({
         to: email,
