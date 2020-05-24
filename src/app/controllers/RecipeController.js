@@ -108,11 +108,11 @@ module.exports = {
   },
 
   async put(req, res) {
+    const { isAdmin, userId } = req.session;
+
+    const { id, title, chef_id, ingredients, preparation, information } = req.body;
+    
     try {
-      const { isAdmin, userId } = req.session;
-
-      const recipeId = req.body.id;
-
       if (req.body.removed_images) {
         const filesId = req.body.removed_images.split(',');
         const lastIndex = filesId.length - 1;
@@ -130,13 +130,13 @@ module.exports = {
         const results = await Promise.all(filesPormise);
         
         const recipeFiles = results.map(result => result.rows[0]);
-        const recipeFilesPromise = recipeFiles.map(file => RecipeFile.create(file.id, recipeId));
+        const recipeFilesPromise = recipeFiles.map(file => RecipeFile.create(file.id, id));
         await Promise.all(recipeFilesPromise);
       }
-  
-      await Recipe.update(req.body);
+            
+      await Recipe.update(id, { title, chef_id, ingredients, preparation, information });
 
-      const results = await Recipe.findOne(recipeId);
+      const results = await Recipe.findOne(id);
       const recipe = await getRecipeImage(results.rows[0], req);
   
       return res.render('recipe/show', {
@@ -150,11 +150,12 @@ module.exports = {
 
       const results = await Recipe.ChefSelectionOptions();
       const chefs = results.rows
+      const recipe = await getRecipeImage(req.body, req);
 
       return res.render('recipe/edit', {
         isAdmin,
         userId,
-        recipe: req.body,
+        recipe,
         chefs,
         error: 'Erro inesperado, tente novamente!'
       });

@@ -4,7 +4,7 @@
 
 <div class="container admin user">
 
-  <form action="/admin/users?_method=DELTE">
+  <form id="form-delete" action="/admin/users?_method=DELETE" method="post">
     <input type="hidden" name="id" value="{{ user.id }}">
   </form>
 

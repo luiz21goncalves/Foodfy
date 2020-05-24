@@ -71,5 +71,18 @@ module.exports = {
 
   delete(id) {
     return db.query(`DELETE FROM users WHERE id = $1`, [id])
-  }
+  },
+
+  async recipeByUser(id) {
+    const query = `
+      SELECT recipes.*
+      FROM users
+      LEFT JOIN recipes ON (recipes.user_id = users.id)
+      WHERE recipes.user_id = $1
+    `;
+
+    const results = await db.query(query, [id]);
+
+    return results.rows;
+  },
 }

@@ -6,14 +6,14 @@ const UserValidator = require('../app/validators/user');
 
 const { onlyAdmin } = require('../app/middlewares/session');
 
-routes.use(onlyAdmin)
+routes.use(onlyAdmin);
 
 routes.get('/', UserController.list);
 routes.get('/create', UserController.create);
-routes.get('/:id/edit', UserValidator.checkUser, UserController.edit);
+routes.get('/:id/edit', UserValidator.edit, UserController.edit);
 
 routes.post('/', UserValidator.post, UserController.post);
 routes.put('/', UserValidator.put, UserController.put);
-routes.delete('/', UserValidator.checkUser, UserController.delete);
+routes.delete('/', UserValidator.deleteUser, UserController.delete);
 
 module.exports = routes;

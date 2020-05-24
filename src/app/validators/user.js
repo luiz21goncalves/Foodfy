@@ -11,8 +11,8 @@ function checkAllFields(body) {
   }
 };
 
-async function checkUser(req, res, next) {
-  const user = await User.findOne({ where: { id: req.params.id || req.body.id } });
+async function edit(req, res, next) {
+  const user = await User.findOne({ where: { id: req.params.id } });
 
   if (!user) {
     const users = await User.all();
@@ -70,8 +70,36 @@ async function put(req, res, next) {
   next();
 };
 
+async function deleteUser(req, res, next) {
+  const loggedUserId = req.session.userId;
+  const user = await User.findOne({ where: { id: req.body.id} });
+
+  if (!user) {
+    const users = await User.all();
+
+    return res.render('user/index', {
+      users,
+      error: 'Usuário não encontrado.'
+    });
+  }
+
+  if (user.id == loggedUserId) {
+    const users = await User.all();
+
+    return res.render('user/index', {
+      users,
+      error: 'Você não pode deletar sua próprio usuário.'
+    });
+  }
+
+  req.user = user;
+
+  next();
+};
+
 module.exports = {
-  checkUser,
+  edit,
   post,
   put,
+  deleteUser,
 };

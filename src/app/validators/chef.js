@@ -12,13 +12,6 @@ function checkAllFields(body) {
   }
 };
 
-function checkForImages(files) {
-  if (files.length == 0)
-    return {
-      error: 'Envie pelo menos uma imagem,'
-    };
-};
-
 async function getChefImage(chef, req) {
   const results = await File.findOne(chef.file_id);
   const files = results.rows.map(file => ({
@@ -55,13 +48,11 @@ function post(req, res, next) {
 
   if (fillAllFields)
     return res.render('chef/create', {
-      ...fillAllFields,
+      error: 'Envie pelo menos uma imagem.',
       chef: req.body
     });
   
-  const thereIsImage = checkForImages(req.files);
-
-  if (thereIsImage)
+  if (req.files.length == 0)
     return res.render('chef/create', {
       ...thereIsImage,
       chef: req.body
@@ -82,15 +73,11 @@ async function put(req, res, next) {
       chef: {...chef, ...req.body}
     });
   
-  const thereIsImage = checkForImages(req.files);
-
-  if (req.body.removed_images) {
-    if (thereIsImage)
-      return res.render('chef/edit', {
-        ...thereIsImage,
-        chef: {...chef, ...req.body}
-      });
-  }
+  if (req.body.removed_images && req.files.length == 0)
+    return res.render('chef/edit', {
+      error: 'Envie pelo menos uma imagem.',
+      chef: {...chef, ...req.body}
+    });
 
   req.chef = chef;
 
@@ -109,6 +96,7 @@ async function onlyAdmin(req, res, next) {
     })
   }
 
+  next();
 };
 
 module.exports = {

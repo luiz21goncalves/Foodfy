@@ -3,6 +3,7 @@ const crypto = require('crypto');
 
 const mailer = require('../../lib/mailer');
 const User = require('../models/User');
+const Recipe = require('../models/Recipe');
 
 module.exports = {
   async list(req, res) {
@@ -95,14 +96,19 @@ module.exports = {
 
   async delete(req, res) {
     try{
+      const loggedUserId = req.session.userId;
       const user = req.user;
+
+      const recipes = await User.recipeByUser(user.id);
+      await Promise.all(recipes.map(async recipe => await Recipe.update(recipe.id, { user_id: loggedUserId })));
+
       await User.delete(user.id);
 
       const users = await User.all();
 
       return res.render('user/index', {
         users,
-        success: `Usuário ${user.name} deletado com sucesso`,
+        success: `Usuário ${user.name} deletado com sucesso. As receitas que ele criou agora são administradas por você.`,
       });
     } catch (err) {
       console.error(err);

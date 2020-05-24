@@ -87,7 +87,7 @@ async function post(req, res, next) {
       recipe: req.body,
     });
 
-  if (files.length == 0) {
+  if (req.files.length == 0) {
     const chefs = await polulateChefSelection();
 
     return res.render('recipe/create', { 
