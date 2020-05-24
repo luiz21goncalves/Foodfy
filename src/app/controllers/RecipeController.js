@@ -86,7 +86,7 @@ module.exports = {
     } catch (err) {
       console.error('RecipeController show', err);
 
-      return res.render('recipe/show', { recipe, isAdmin });
+      return res.render('recipe/show', { recipe, isAdmin, userId });
     }
   },
 
@@ -141,6 +141,8 @@ module.exports = {
   
       return res.render('recipe/show', {
         recipe,
+        isAdmin,
+        userId,
         success: `A receita ${recipe.title} foi atualizada com sucesso.`
       });
     } catch (err) {
@@ -179,7 +181,9 @@ module.exports = {
       const filesPromise = results.rows.map(recipe => getRecipeImage(recipe, req));
       const recipes = await Promise.all(filesPromise);
 
-      return res.render('recipe/index', { 
+      return res.render('recipe/index', {
+        isAdmin,
+        userId,
         recipes,
         success: `A receita ${recipe.title} deletada com sucesso.`
       });
