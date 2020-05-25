@@ -281,3 +281,50 @@ const Gallery = {
     Gallery.highlight.alt = target.alt;
   },
 };
+
+const Validate = {
+  apply(input, func) {
+    Validate.clearErrors(input);
+
+    let results = Validate[func](input.value);
+    input.value = results.value;
+    console.log(input)
+
+    if (results.error)
+      return Validate.displayError(input, results.error);
+  },
+
+  clearErrors(input) {
+    const messageError = document.querySelector('body .message.error');
+
+    if (messageError) {
+      messageError.remove();
+      input.removeAttribute('id');
+    }
+  },
+
+  displayError(input, error) {
+    const messageError = document.createElement('div');
+    messageError.classList.add('message');
+    messageError.classList.add('error');
+
+    const p = document.createElement('p');
+    p.innerHTML = error;
+
+    messageError.appendChild(p);
+    document.querySelector('body').appendChild(messageError);
+
+    input.setAttribute('id', 'error');
+  },
+
+  isEmail(value) {
+    let error = null;
+    const mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if(!value.match(mailFormat))
+      error = 'Email inválido';
+    
+    return { error, value };
+  },
+
+};

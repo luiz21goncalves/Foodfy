@@ -133,3 +133,8 @@ header .content form#search input {
 .container.profile .fields .item {
   margin-bottom: 36px;
 }
+
+/* ERROR INPUT */
+.container .fields .item input#error {
+  border-color: #DC4747;
+}
