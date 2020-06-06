@@ -4,16 +4,15 @@
   <head>
     <meta charset="UTF-8">
     <title>Foodfy</title>
-    {% include "styles.njk" %}
+    <link rel="icon" href="/assets/favicon.png" type="image/png"> 
+    {% include "parts/styles.njk" %}
   </head>
 
   <body>
     {% include "parts/header.njk" %}
 
-    <main>
-      {% block content %}
-      {% endblock content %}
-    </main>
+    {% block content %}
+    {% endblock content %}
 
     <footer>
       <p>Todos os direitos reservados, receitas Foodfy</p>

@@ -1,5 +1,8 @@
 /* SEARCH FORM */
-header .content form#search {
+header .content div #search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   opacity: 0;
   visibility: hidden;
   transition: 400ms;
@@ -11,8 +14,8 @@ header .content form#search.active {
 }
 
 header .content form#search input {
-  max-width: 246px;
-  margin-right: 8px;
+  width: 100%;
+  margin-right: 12px;
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 10px 15px;

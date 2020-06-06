@@ -1,25 +1,14 @@
-{% macro banner(boolean) %}
+{% macro render(title) %}
 
-  {% if boolean == "true" %}
-    <section class="banner">
+  <section class="banner">
+    <div class="wrapper">
       <div>
-        <h1>As melhores Recitas</h1>
-        <p>Aprenda a construir os melhores pratos com receitas criadas pro profissionais do mundo inteiro.</p>
+        <h1>{{ title }}</h1>
+        {{ caller() }}
       </div>
 
       <img src="/assets/chef.png" alt="desenho de um chef">
-    </section>
-  {% endif %}
-
-  {% if boolean != "true" %}
-    <section class="banner">
-      <div>
-        <h1>Receita não encontrada...</h1>
-        <p>Não se prepcupe <a href="/">clique aqui</a> e retorne para página inicial.</p>
-      </div>
-
-      <img src="/assets/chef.png" alt="desenho de um chef">
-    </section>
-  {% endif %}
+    </div>
+  </section>
 
 {% endmacro %}

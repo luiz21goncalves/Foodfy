@@ -1,0 +1,15 @@
+{% macro render(title, classes) %}
+
+  <div class="container {{ classes }}">
+
+    {% if title %}
+      <div class="title">
+        <h2>{{ title }}</h2>
+      </div>
+    {% endif %}
+
+    {{ caller() }}
+    
+  </div>
+
+{% endmacro %}

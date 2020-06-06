@@ -1,8 +1,12 @@
 {% extends "layout.njk" %}
-{% import "parts/banner.njk" as section %}
+{% import "parts/banner.njk" as banner %}
 
 {% block content %}
 
-{{ section.banner("false") }}
+  {% call banner.render("Essa página não pode encontrada...") %}
+    <p>
+      Não se prepcupe <a href="/">clique aqui</a> e retorne para página inicial.
+    </p>
+  {% endcall %}
 
 {% endblock content %}

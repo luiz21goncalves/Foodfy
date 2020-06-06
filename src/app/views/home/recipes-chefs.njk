@@ -1,8 +1,10 @@
-{% extends "layout.njk" %}
+{% extends "layouts/home.njk" %}
+{% import "parts/container.njk" as container %}
 
 {% block content %}
 
-  <div class="container">
+  {% call container.render("", "") %}
+
     <div class="chef-datail">
       <img src="{{chef.files[0].src}}" alt="{{ chef.files[0].name }}">
       <h1>{{ chef.name }}</h1>
@@ -12,6 +14,7 @@
     <h2>Receitas</h2>
 
     <div class="recipes">
+    
       {% for recipe in recipes %}
 
         <article>
@@ -26,7 +29,9 @@
         </article>
         
       {% endfor %}
+
     </div>
-  </div>
+
+  {% endcall %}
 
 {% endblock content %}

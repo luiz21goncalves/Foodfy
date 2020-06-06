@@ -1,8 +1,3 @@
-.container h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
 .container .recipes {
   width: 100%;
   display: grid;
@@ -37,36 +32,36 @@
 }
 
 /* SHOW */
-.container.recipe .recipe-info {
+.container.recipe-show .recipe-info {
   text-align: center;
   margin-bottom: 50px;
 }
 
-.container.recipe .recipe-info h1 {
+.container.recipe-show .recipe-info h1 {
   font-size: 36px;
   margin-bottom: 4px;
 }
 
-.container.recipe .recipe-info span {
+.container.recipe-show .recipe-info span {
   font-size: 24px;
   color: #777;
 }
 
-.container.recipe .paragraphs + .paragraphs {
+.container.recipe-show .paragraphs + .paragraphs {
   width: 100%;
   margin-top: 40px;
 }
 
-.container.recipe .paragraphs div:nth-child(1) {
+.container.recipe-show .paragraphs div:nth-child(1) {
   margin-bottom: 20px;
 }
 
-.container.recipe .paragraphs div:nth-child(1) strong {
+.container.recipe-show .paragraphs div:nth-child(1) strong {
   font-size: 24px;
   margin-right: 8px;
 }
 
-.container.recipe .paragraphs div:nth-child(1) button {
+.container.recipe-show .paragraphs div:nth-child(1) button {
   background: none;
   font-size: 12px;
   color: #999;
@@ -74,18 +69,18 @@
   cursor: pointer;
 }
 
-.container.recipe .paragraphs .hide.active {
+.container.recipe-show .paragraphs .hide.active {
   display: none;
 }
 
-.container.recipe .paragraphs .hide p,
-.container.recipe .paragraphs .hide li {
+.container.recipe-show .paragraphs .hide p,
+.container.recipe-show .paragraphs .hide li {
   font-size: 18px;
   line-height: 28px;
   color: #444;
 }
 
-.container.recipe .paragraphs .hide ul {
+.container.recipe-show .paragraphs .hide ul {
   margin: 0;
   padding: 0;
   list-style-position: inside;

@@ -1,36 +1,41 @@
 .banner {
-  width: 100%;
+  max-width: 940px;
+  width: 80%;
   height: 366px;
+  margin: 0 auto;
+  margin-bottom: 50px;
   background: #FBDFDB;
   border-radius: 30px;
+}
+
+.banner .wrapper {
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 50px;
 }
 
-.banner div:first-child {
-  width: 316px;
+.banner .wrapper div {
   margin-left: 60px;
 }
 
-.banner div:first-child h1 {
+ .banner .wrapper div h1 {
   font-size: 32px;
   margin-bottom: 10px;
 }
 
-.banner div:first-child p {
+.banner .wrapper div p {
   font-size: 18px;
   line-height: 28px;
   color: rgba(0, 0, 0, 0.7);
 }
 
-.banner div:first-child p a {
+.banner .wrapper div p a {
   color: #333;
   font-weight: bold;
 }
 
-.banner img {
+.banner .wrapper img {
   align-self: flex-end;
   margin-right: 100px;
 }

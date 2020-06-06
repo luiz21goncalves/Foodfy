@@ -1,12 +1,14 @@
-{% extends "layout.njk" %}
-{% import "parts/banner.njk" as section %}
+{% extends "layouts/home.njk" %}
+{% import "parts/banner.njk" as banner %}
+{% import "parts/container.njk" as container %}
 
 {% block content %}
 
-  {{ section.banner("true") }}
+  {% call banner.render("As melhores receitas") %}
+    <p>Aprenda a construir os melhores pratos <br> com receitas criadas pro profissionais <br> do mundo inteiro.</p>
+  {% endcall %}
 
-  <div class="container">
-    <h2>Adicionadas Recentemente</h2>
+  {% call container.render("Adicionadas Recentemente", "") %}
 
     <div class="recipes">
       {% for recipe in recipes %}
@@ -26,6 +28,7 @@
         
       {% endfor %}
     </div>
-  </div>
+
+  {% endcall %}
 
 {% endblock content %}

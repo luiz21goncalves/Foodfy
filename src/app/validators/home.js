@@ -43,6 +43,8 @@ async function checkChef(req, res, next) {
     });
   }
 
+  req.chef = chef;
+
   next();
 };
 

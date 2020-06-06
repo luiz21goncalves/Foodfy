@@ -1,9 +1,9 @@
-{% extends "layout.njk" %}
+{% extends "layouts/home.njk" %}
+{% import "parts/container.njk" as container %}
 
 {% block content %}
 
-  <div class="container">
-    <h2>Buscando por "{{ filter }}"</h2>
+  {% call container.render('Buscando por  "' + filter + '"', "") %}
 
     <div class="recipes">
       {% for recipe in recipes %}
@@ -23,5 +23,7 @@
         
       {% endfor %}
     </div>
-  </div>
+
+  {% endcall %}
+
 {% endblock content %}

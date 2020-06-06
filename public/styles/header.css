@@ -1,38 +1,31 @@
 header {
-  margin-bottom: 50px;
   width: 100%;
-  height: 80px;
+  height: 63px;
+  margin-bottom: 50px;
 }
 
 header .content {
   max-width: 940px;
+  width: 80%;
+  height: 100%;
   margin: 0 auto;
-  margin-top: 31px;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   align-items: flex-end;
   justify-content: space-between;
 }
+
 header .content nav {
   display: flex;
   align-items: center;
 }
 
-header .content nav a:first-child {
-  width: 91px;
-  height: 27px;
-  margin-right: 120px;
+header .content nav > a > img {
+  margin-right: 122px;
 }
 
 header .content nav a {
   font-size: 16px;
-  color: #111;
-
-  transition: 400ms;
-}
-
-header .content nav a:hover {
-  font-weight: bold;
-  color: #333
 }
 
 header .content nav a.active {
@@ -40,20 +33,20 @@ header .content nav a.active {
 }
 
 header .content nav a + a {
-  margin-left: 30px;
+  margin-right: 30px;
 }
 
 header .content div {
-  display: flex;
+  display: grid;
   align-items: center;
-  justify-content: space-around;
+  grid-template-columns: 1fr 60px;
 }
 
 header .content div a {
   font-size: 16px;
-  font-weight: bold;
-  color: #6558C3;
-  margin-left: 30px;
+  font-weight: bolder;
+  color: var(--color-link);
+  text-align: right;
 }
 
 /* HEADER ADMIN */

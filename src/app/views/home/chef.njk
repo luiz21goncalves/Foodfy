@@ -1,24 +1,32 @@
-{% extends "layout.njk" %}
+{% extends "layouts/home.njk" %}
+{% import "parts/container.njk" as container %}
 
 {% block content %}
 
 <div class="container">
 
-  <div class="chefs">
-    {% for chef in chefs %}
+  {% call conteiner.render("", "") %}
 
-      <article>
-        <a href="/chefs/{{ chef.id }}">
-          <img src="{{ chef.files[0].src }}" alt="{{ chef.files[0].name }}">
-        </a>
-        <div>
-          <p>{{ chef.name }}</p>
-          <span>{{ chef.total }} receitas</span>
-        </div>
-      </article>
+    <div class="chefs">
+
+      {% for chef in chefs %}
+
+        <article>
+          <a href="/chefs/{{ chef.id }}">
+            <img src="{{ chef.files[0].src }}" alt="{{ chef.files[0].name }}">
+          </a>
+
+          <div>
+            <p>{{ chef.name }}</p>
+            <span>{{ chef.total }} receitas</span>
+          </div>
+        </article>
+        
+      {% endfor %}
       
-    {% endfor %}
-  </div>
+    </div>
+
+  {% endcall %}
 
 </div>
 

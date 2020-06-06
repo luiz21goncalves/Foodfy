@@ -3,17 +3,16 @@
 
   <head>
     <meta charset="UTF-8">
-    <title>Foodfy</title>
-    {% include "styles.njk" %}
+    <title>Foodfy - Admin</title>
+    <link rel="icon" href="/assets/favicon.png" type="image/png"> 
+    {% include "parts/styles.njk" %}
   </head>
 
   <body>
     {% include "parts/header-admin.njk" %}
 
-    <main>
-      {% block content %}
-      {% endblock content %}
-    </main>
+    {% block content %}
+    {% endblock content %}
 
     {% include "parts/message.njk" %}
 

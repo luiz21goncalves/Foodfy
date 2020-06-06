@@ -1,17 +1,28 @@
+:root {
+  --color-text: #111;
+  --color-link: #6558C3;
+  --color-delete: #DC4747;
+  --color-cancel: #8A8A8A;
+}
+
 * {
   margin: 0;
   border: 0;
   outline: none;
-  text-decoration: none;
   box-sizing: border-box;
+  color: var(--color-text);
+}
+
+a {
+  text-decoration: none;
 }
 
 body {
   font-family: Helvetica, sans-serif;
-  color: #111;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
 img {
@@ -24,7 +35,7 @@ img {
   height: 38px;
   display: inline-block;
   text-align: center;
-  background: #6558C3;
+  background: var(--color-link);
   border-radius: 4px;
   padding: 9px 20px;
   font-size: 16px;
@@ -34,24 +45,25 @@ img {
 }
 
 .button.delete {
-  background: #DC4747;
+  background: var(--color-delete);
   margin-right: 10px;
 }
 
 .button.cancel {
-  background: #8A8A8A ;
+  background:  var(--color-cancel);
   margin-left: 10px;
 }
 
 .container {
-  width: 100%;
+  max-width: 940px;
+  width: 80%;
+  margin: 0 auto;
   margin-bottom: 50px;
 }
 
-main {
-  max-width: 940px;
-  width: 100%;
-  margin: 0 auto;
+.container .title h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
 footer {
