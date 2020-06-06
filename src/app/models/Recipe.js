@@ -27,7 +27,7 @@ module.exports = {
 
     const values = [
       data.chef_id,
-      data.user_id ||1,
+      data.user_id || 1,
       data.title,
       data.ingredients,
       data.preparation,
@@ -41,8 +41,8 @@ module.exports = {
     let query = `UPDATE recipes SET`;
 
     Object.keys(fields).map((key, index, array) => {
-      if ((index + 1 < array.length)) {
-        if (key == 'ingredients' || key == 'preparation') {
+      if (index + 1 < array.length) {
+        if (key === 'ingredients' || key === 'preparation') {
           query = `${query} ${key} = '{${fields[key]}}',`;
         } else {
           query = `${query} ${key} = '${fields[key]}',`;
@@ -50,15 +50,15 @@ module.exports = {
       } else {
         query = `${query} ${key} = '${fields[key]}'WHERE id = ${id}`;
       }
+
+      return {};
     });
 
     await db.query(query);
-    
-    return 
   },
 
   findOne(id) {
-    let query = `
+    const query = `
       SELECT recipes.*, chefs.name AS chef_name
       FROM recipes
       LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
@@ -84,5 +84,5 @@ module.exports = {
 
   ChefSelectionOptions() {
     return db.query(`SELECT name, id FROM chefs`);
-  }
-}
+  },
+};

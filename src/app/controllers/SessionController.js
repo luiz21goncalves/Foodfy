@@ -9,7 +9,7 @@ module.exports = {
   },
 
   login(req, res) {
-    const user = req.user;
+    const { user } = req;
 
     req.session.userId = user.id;
     req.session.isAdmin = user.is_admin;
@@ -32,7 +32,7 @@ module.exports = {
   },
 
   async forgot(req, res) {
-    const user = req.user;
+    const { user } = req;
 
     try {
       const token = crypto.randomBytes(20).toString('hex');
@@ -59,15 +59,15 @@ module.exports = {
           </p>
         `,
       });
-      
+
       return res.render('session/forgot', {
-        success: 'Verifique seu email para recuperar sua senha.'
+        success: 'Verifique seu email para recuperar sua senha.',
       });
     } catch (err) {
       console.error(err);
 
       return res.render('session/forgot', {
-        error: 'Erro inesperado, por favor tente novamente.'
+        error: 'Erro inesperado, por favor tente novamente.',
       });
     }
   },
@@ -77,10 +77,10 @@ module.exports = {
   },
 
   async reset(req, res) {
-    try {
-      const user = req.user;
-      const { password, token } = req.body;
+    const { user } = req;
+    const { password, token } = req.body;
 
+    try {
       const newPassword = await hash(password, 8);
 
       await User.update(user.id, {
@@ -88,10 +88,10 @@ module.exports = {
         reset_token: '',
         reset_token_expires: '',
       });
-      
+
       return res.render('session/login', {
         user: req.body,
-        success: 'Senha atualizada, faça seu login.'
+        success: 'Senha atualizada, faça seu login.',
       });
     } catch (err) {
       console.error(err);
@@ -99,7 +99,7 @@ module.exports = {
       return res.render('session/reset', {
         user: req.body,
         token,
-        error: 'Erro inesperado, por favor tente novamente.'
+        error: 'Erro inesperado, por favor tente novamente.',
       });
     }
   },

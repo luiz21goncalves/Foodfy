@@ -5,6 +5,6 @@ module.exports = nodemailer.createTransport({
   port: 2525,
   auth: {
     user: '3c99ba236e9b27',
-    pass: '0a677764e6968d'
-  }
+    pass: '0a677764e6968d',
+  },
 });

@@ -9,8 +9,8 @@ async function put(req, res, next) {
   if (usedEmail)
     return res.render('profile/index', {
       user: req.body,
-      error: 'Esse email pretence a outro usuário, por favor ulitize outro.'
-    })
+      error: 'Esse email pretence a outro usuário, por favor ulitize outro.',
+    });
 
   const user = await User.findOne({ where: { id } });
   const passed = await compare(password, user.password);
@@ -18,12 +18,12 @@ async function put(req, res, next) {
   if (!passed)
     return res.render('profile/index', {
       user: req.body,
-      error: 'Senha incorreta.'
+      error: 'Senha incorreta.',
     });
 
   next();
-};
+}
 
 module.exports = {
-
+  put,
 };

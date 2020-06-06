@@ -7,7 +7,7 @@ const Recipe = require('../models/Recipe');
 
 module.exports = {
   async list(req, res) {
-    const users = await User.all()
+    const users = await User.all();
 
     return res.render('user/index', { users });
   },
@@ -19,20 +19,20 @@ module.exports = {
   async post(req, res) {
     try {
       const { name, email, is_admin } = req.body;
-      const isAdmin = is_admin == 'on' ? true : false;
-  
+      const isAdmin = is_admin === 'on';
+
       const password = crypto.randomBytes(4).toString('hex');
       const passwordHash = await bcrypt.hash(password, 8);
 
       const data = { name, email, password: passwordHash, isAdmin };
-  
+
       await User.create(data);
 
       await mailer.sendMail({
         to: data.email,
         from: 'no-replay@foodfy.com.br',
         subject: 'Bem-vindo ao  Foodfy',
-        html:`
+        html: `
           <h2>${data.name} seja bem-vindo.</h2>
           <p>Seu acesso ao <b>Foodfy</b> está aqui.</p>
           <p>
@@ -45,7 +45,7 @@ module.exports = {
       });
 
       const users = await User.all();
-  
+
       return res.render('user/index', {
         users,
         success: `Usuário ${data.name} criado com sucesso.`,
@@ -53,15 +53,15 @@ module.exports = {
     } catch (err) {
       console.error(err);
 
-      return  res.render('user/create', {
+      return res.render('user/create', {
         user: req.body,
-        error: 'Erro inesperado, por favor tente novamente.'
-      })
+        error: 'Erro inesperado, por favor tente novamente.',
+      });
     }
   },
 
   edit(req, res) {
-    const user = req.user;
+    const { user } = req;
 
     return res.render('user/edit', { user });
   },
@@ -69,33 +69,36 @@ module.exports = {
   async put(req, res) {
     try {
       const { name, email, is_admin, id } = req.body;
-      const isAdmin = is_admin == 'on' ? true : false;
 
-      await User.update(id, { name, email, is_admin: isAdmin });
+      await User.update(id, { name, email, is_admin: Boolean(is_admin) });
 
-      const user = await User.findOne({ where: { id } })
+      const user = await User.findOne({ where: { id } });
 
       return res.render('user/edit', {
         user,
-        success: `Usuário ${user.name} atualizado com sucesso.`
+        success: `Usuário ${user.name} atualizado com sucesso.`,
       });
     } catch (err) {
       console.error(err);
 
       return res.render('user/edit', {
-        chef: data,
-        error: 'Erro inesperado, por favor tente novamente.'
-      })
+        chef: req.body,
+        error: 'Erro inesperado, por favor tente novamente.',
+      });
     }
   },
 
   async delete(req, res) {
-    try{
-      const loggedUserId = req.session.userId;
-      const user = req.user;
+    const loggedUserId = req.session.userId;
+    const { user } = req;
 
+    try {
       const recipes = await User.recipeByUser(user.id);
-      await Promise.all(recipes.map(async recipe => await Recipe.update(recipe.id, { user_id: loggedUserId })));
+      await Promise.all(
+        recipes.map((recipe) =>
+          Recipe.update(recipe.id, { user_id: loggedUserId })
+        )
+      );
 
       await User.delete(user.id);
 
@@ -109,8 +112,7 @@ module.exports = {
       console.error(err);
 
       return res.render('user/index', {
-        users,
-        error: 'Erro inesperado, por favor tente novamente'
+        error: 'Erro inesperado, por favor tente novamente',
       });
     }
   },

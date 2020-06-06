@@ -1,5 +1,5 @@
-const db = require('../../config/db');
 const fs = require('fs');
+const db = require('../../config/db');
 
 module.exports = {
   create(data) {
@@ -39,7 +39,7 @@ module.exports = {
 
       return db.query(`DELETE FROM files WHERE id = $1`, [id]);
     } catch (err) {
-      console.error('File delete',  err);
+      console.error('File delete', err);
     }
   },
 };

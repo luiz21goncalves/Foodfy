@@ -1,4 +1,5 @@
 const express = require('express');
+
 const routes = express.Router();
 const multer = require('../app/middlewares/multer');
 
@@ -13,8 +14,18 @@ routes.use(ChefValidator.onlyAdmin);
 
 routes.get('/:id/edit', ChefValidator.checkChefs, ChefController.edit);
 
-routes.post('/', multer.array('images_chefs', 1),ChefValidator.post, ChefController.post);
-routes.put('/', multer.array('images_chefs', 1),ChefValidator.put, ChefController.put);
+routes.post(
+  '/',
+  multer.array('images_chefs', 1),
+  ChefValidator.post,
+  ChefController.post
+);
+routes.put(
+  '/',
+  multer.array('images_chefs', 1),
+  ChefValidator.put,
+  ChefController.put
+);
 routes.delete('/', ChefValidator.checkChefs, ChefController.delete);
 
 module.exports = routes;

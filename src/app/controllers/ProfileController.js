@@ -2,9 +2,9 @@ const User = require('../models/User');
 
 module.exports = {
   async index(req, res) {
-    const user = await User.findOne({ where: { id:req.session.userId } });
-    const name = user.name.split(' ');
-    user.firstName = name[0];
+    const user = await User.findOne({ where: { id: req.session.userId } });
+    const [name] = user.name.split(' ');
+    user.firstName = name;
 
     return res.render('profile/index', { user });
   },
@@ -14,22 +14,22 @@ module.exports = {
       const { name, email, id } = req.body;
 
       await User.update(id, { name, email });
-  
+
       const user = await User.findOne({ where: { id } });
-      const firstName = user.name.split(' ');
-      user.firstName = firstName[0];
-  
+      const [firstName] = user.name.split(' ');
+      user.firstName = firstName;
+
       return res.render('profile/index', {
         user,
-        success: `${user.firstName} seu perfil foi atualizado com sucesso.`
+        success: `${user.firstName} seu perfil foi atualizado com sucesso.`,
       });
     } catch (err) {
       console.error(err);
 
       return res.render('profile/index', {
         user: req.body,
-        error: 'Erro inesperado, por favor tente novamente. '
-      })
+        error: 'Erro inesperado, por favor tente novamente. ',
+      });
     }
   },
 };

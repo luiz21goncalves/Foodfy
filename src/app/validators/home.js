@@ -4,29 +4,35 @@ const Recipe = require('../models/Recipe');
 
 async function getChefImage(chef, req) {
   const results = await File.findOne(chef.file_id);
-  const files = results.rows.map(file => ({
+  const files = results.rows.map((file) => ({
     ...file,
-    src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
+    src: `${req.protocol}://${req.headers.host}${file.path.replace(
+      'public',
+      ''
+    )}`,
   }));
-  
+
   return {
     ...chef,
-    files
-  }
-};
+    files,
+  };
+}
 
 async function getRecipeImage(recipe, req) {
   const results = await File.findByRecipe(recipe.id);
-  const files = results.rows.map(file => ({
+  const files = results.rows.map((file) => ({
     ...file,
-    src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
+    src: `${req.protocol}://${req.headers.host}${file.path.replace(
+      'public',
+      ''
+    )}`,
   }));
-  
+
   return {
     ...recipe,
-    files
-  }
-};
+    files,
+  };
+}
 
 async function checkChef(req, res, next) {
   const results = await Chef.findOne(req.params.id);
@@ -34,19 +40,19 @@ async function checkChef(req, res, next) {
 
   if (!chef) {
     const results = await Chef.all();
-    const filesPromise = results.rows.map(chef => getChefImage(chef, req));
+    const filesPromise = results.rows.map((chef) => getChefImage(chef, req));
     const chefs = await Promise.all(filesPromise);
 
     return res.render('home/chef', {
       chefs,
-      error: 'Chef não encontrado.'
+      error: 'Chef não encontrado.',
     });
   }
 
   req.chef = chef;
 
   next();
-};
+}
 
 async function checkRecipe(req, res, next) {
   const results = await Recipe.findOne(req.params.id);
@@ -54,17 +60,19 @@ async function checkRecipe(req, res, next) {
 
   if (!recipe) {
     const results = await Recipe.all();
-    const filesPromise = results.rows.map(recipe => getRecipeImage(recipe, req));
+    const filesPromise = results.rows.map((recipe) =>
+      getRecipeImage(recipe, req)
+    );
     const recipes = await Promise.all(filesPromise);
 
     return res.render('home/index', {
       recipes,
-      error: 'Receita não encontrada.'
+      error: 'Receita não encontrada.',
     });
   }
 
   next();
-};
+}
 
 function search(req, res, next) {
   const { filter } = req.query;
@@ -72,8 +80,7 @@ function search(req, res, next) {
   if (!filter) return res.redirect('/recipes');
 
   next();
-};
-
+}
 
 module.exports = {
   checkChef,
