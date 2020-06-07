@@ -1,18 +1,10 @@
-const fs = require('fs');
+const Base = require('./Base');
 const db = require('../../config/db');
 
-module.exports = {
-  create(data) {
-    const query = `
-      INSERT INTO files (
-        name,
-        path
-      ) VALUES ($1, $2)
-      RETURNING id
-    `;
+Base.init({ table: 'files' });
 
-    return db.query(query, [data.filename, data.path]);
-  },
+module.exports = {
+  ...Base,
 
   findByRecipe(recipeId) {
     const query = `
@@ -25,21 +17,19 @@ module.exports = {
 
     return db.query(query, [recipeId]);
   },
-
-  findOne(id) {
-    return db.query(`SELECT * FROM files WHERE id = $1`, [id]);
-  },
-
-  async delete(id) {
-    try {
-      const results = await db.query(`SELECT * FROM files WHERE id = $1`, [id]);
-      const file = results.rows[0];
-
-      fs.unlinkSync(file.path);
-
-      return db.query(`DELETE FROM files WHERE id = $1`, [id]);
-    } catch (err) {
-      console.error('File delete', err);
-    }
-  },
 };
+/**
+ * async delete(id) {
+  try {
+    const results = await db.query(`SELECT * FROM files WHERE id = $1`, [id]);
+    const file = results.rows[0];
+
+    fs.unlinkSync(file.path);
+
+    return db.query(`DELETE FROM files WHERE id = $1`, [id]);
+  } catch (err) {
+    console.error('File delete', err);
+  }
+},
+
+*/

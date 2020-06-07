@@ -1,63 +1,53 @@
+const Base = require('./Base');
 const db = require('../../config/db');
 
+Base.init({ table: 'recipes' });
+
 module.exports = {
-  all() {
-    const query = `
-      SELECT recipes.*, chefs.name AS chef_name
-      FROM recipes
-      LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-      ORDER BY recipes.created_at DESC
-    `;
+  ...Base,
+
+  async findAllRecipesChefName() {
+    const results = await db.query(`
+    SELECT recipes.*, chefs.name AS chef_name
+    FROM recipes
+    LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
+    ORDER BY recipes.created_at DESC
+  `);
+
+    return results.rows;
+  },
+
+  async create(fields) {
+    const keys = [];
+    const values = [];
+
+    Object.keys(fields).map((key) => {
+      keys.push(keys);
+      if (key === 'ingredients' || key === 'preparation') {
+        values.push(`'{${fields[key]}}'`);
+      } else {
+        values.push(`'${fields[key]}'`);
+      }
+    });
+  },
+
+  update(id, fields) {
+    const line = [];
+
+    Object.keys(fields).map((key) => {
+      if (key === 'ingredients' || key === 'preparation') {
+        line.push(` ${key} = '{${fields[key]}}'`);
+      } else {
+        line.push(` ${key} = '${fields[key]}'`);
+      }
+    });
+
+    const query = `UPDATE recipes SET ${line.join(',')} WHERE id = ${id}`;
 
     return db.query(query);
   },
 
-  create(data) {
-    const query = `
-      INSERT INTO recipes (
-        chef_id,
-        user_id,
-        title,
-        ingredients,
-        preparation,
-        information
-      ) VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING id
-    `;
-
-    const values = [
-      data.chef_id,
-      data.user_id || 1,
-      data.title,
-      data.ingredients,
-      data.preparation,
-      data.information,
-    ];
-
-    return db.query(query, values);
-  },
-
-  async update(id, fields) {
-    let query = `UPDATE recipes SET`;
-
-    Object.keys(fields).map((key, index, array) => {
-      if (index + 1 < array.length) {
-        if (key === 'ingredients' || key === 'preparation') {
-          query = `${query} ${key} = '{${fields[key]}}',`;
-        } else {
-          query = `${query} ${key} = '${fields[key]}',`;
-        }
-      } else {
-        query = `${query} ${key} = '${fields[key]}'WHERE id = ${id}`;
-      }
-
-      return {};
-    });
-
-    await db.query(query);
-  },
-
-  findOne(id) {
+  findOneRecipeChefName(id) {
     const query = `
       SELECT recipes.*, chefs.name AS chef_name
       FROM recipes
@@ -68,21 +58,21 @@ module.exports = {
     return db.query(query, [id]);
   },
 
-  search(filter) {
-    return db.query(`
+  async search(filter) {
+    const results = await db.query(`
       SELECT recipes.*, chefs.name AS chef_name
       FROM recipes
       LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
       WHERE recipes.title ILIKE '%${filter}%'
       ORDER BY recipes.created_at DESC
     `);
+
+    return results.rows;
   },
 
-  delete(id) {
-    return db.query(`DELETE FROM recipes WHERE id = $1`, [id]);
-  },
+  async chefSelectionOptions() {
+    const results = await db.query(`SELECT name, id FROM chefs`);
 
-  ChefSelectionOptions() {
-    return db.query(`SELECT name, id FROM chefs`);
+    return results.rows;
   },
 };
