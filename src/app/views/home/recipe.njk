@@ -4,74 +4,67 @@
 {% block content %}
 
   {% call container.render("", "recipe-show") %}
-    <div class="gallery">
-      <div class="highlight">
-        <img src="{{ recipe.files[0].src }}" alt="{{ recipe.files[0].name }}">
-      </div>
+  <div class="gallery">
+    <div class="highlight">
+      <img src="{{ recipe.img }}" alt="{{ recipe.files[0].name }}">
+    </div>
 
-      <div class="gallery-preview">
-        {% for file in recipe.files %}
-          <img
-            src="{{ file.src }}" 
-            alt="{{ file.name }}"
-            onclick="Gallery.setImage(event)"
-            {% if loop.index0 == 0 %}
-              class="active"
-            {% endif %}
-          >
+    <div class="gallery-preview">
+      {% for file in recipe.files %}
+        <img src="{{ file.src }}" alt="{{ file.name }}" onclick="Gallery.setImage(event)" {% if loop.index0 == 0 %} class="active" {% endif %}>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="recipe-info">
+    <h1>{{ recipe.title }}</h1>
+    <span>{{ recipe.chef_name }}</span>
+  </div>
+
+  <div class="paragraphs">
+    <div>
+      <strong>Ingredientes</strong>
+      {% if recipe.ingredients %}
+        <button onclick="HiddenDiv.apply(this)">esconder</button>
+      {% endif %}
+    </div>
+
+    <div class="hide">
+      <ul>
+        {% for ingredient in recipe.ingredients %}
+          <li>{{ ingredient }}</li>
         {% endfor %}
-      </div>
+      </ul>
+    </div>
+  </div>
+
+  <div class="paragraphs">
+    <div>
+      <strong>Modo de preparo</strong>
+      {% if recipe.preparation %}
+        <button onclick="HiddenDiv.apply(this)">esconder</button>
+      {% endif %}
     </div>
 
-    <div class="recipe-info">
-      <h1>{{ recipe.title }}</h1>
-      <span>{{ recipe.chef_name }}</span>
+    <div class="hide">
+      {% for phrase in recipe.preparation %}
+        <p>{{ phrase }}</p>
+      {% endfor %}
     </div>
+  </div>
 
-    <div class="paragraphs">
-      <div>
-        <Strong>Ingredientes</Strong>
-        {% if recipe.ingredients %}
-          <button onclick="HiddenDiv.apply(this)">esconder</button>
-        {% endif %}
-      </div>
-
-      <div class="hide">
-        <ul>
-          {% for ingredient in recipe.ingredients %}
-            <li>{{ ingredient }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-    </div>
-
-    <div class="paragraphs">
-      <div>
-        <Strong>Modo de preparo</Strong>
-        {% if recipe.preparation %}
-          <button onclick="HiddenDiv.apply(this)">esconder</button>
-        {% endif %}
-      </div>
-
-      <div class="hide">
-        {% for phrase in recipe.preparation %}
-          <p>{{ phrase }}</p>
-        {% endfor %}
-      </div>
-    </div>
-
-    <div class="paragraphs">
-      <div>
-      <Strong>Informações adicionais</Strong>
+  <div class="paragraphs">
+    <div>
+      <strong>Informações adicionais</strong>
       {% if recipe.information %}
         <button onclick="HiddenDiv.apply(this)">esconder</button>
       {% endif %}
-      </div>
-
-      <div class="hide">
-        <p>{{ recipe.information }}</p>
-      </div>
     </div>
+
+    <div class="hide">
+      <p>{{ recipe.information }}</p>
+    </div>
+  </div>
   {% endcall %}
 
 {% endblock content %}

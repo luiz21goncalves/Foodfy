@@ -4,6 +4,10 @@
     "commonjs": true,
     "es6": true
   },
+  "globals": {
+    "document": "readonly",
+    "location": "readonly"
+  },
   "extends": ["airbnb-base", "prettier"],
   "plugins": ["prettier"],
   "parserOptions": {
@@ -14,6 +18,8 @@
     "prettier/prettier": "error",
     "no-restricted-globals": "off",
     "no-restricted-syntax": "warn",
+    "no-param-reassign": "warn",
+    "no-return-await": "warn",
     "consistent-return": "warn",
     "no-shadow": "warn",
     "camelcase": "warn",

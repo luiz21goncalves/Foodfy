@@ -7,8 +7,8 @@ function find(filters, table) {
     Object.keys(filters).map((key) => {
       query += ` ${key}`;
 
-      Object.keys(key).map((field) => {
-        query += ` ${field} = ${filters[key][field]}`;
+      Object.keys(filters[key]).map((field) => {
+        query += ` ${field} = '${filters[key][field]}'`;
       });
     });
   }
@@ -26,62 +26,84 @@ const Base = {
   },
 
   async find(id) {
-    const results = await find({ where: { id } }, this.table);
+    try {
+      const results = await find({ where: { id } }, this.table);
 
-    return results.rows;
+      return results.rows[0];
+    } catch (err) {
+      console.error(err);
+    }
   },
 
-  async findOne(filteres) {
-    const results = await find(filteres, this.table);
+  async findOne(filters) {
+    try {
+      const results = await find(filters, this.table);
 
-    return results.rows;
+      return results.rows[0];
+    } catch (err) {
+      console.error(err);
+    }
   },
 
-  async findAll(filteres) {
-    const results = await find(filteres, this.table);
+  async findAll(filters) {
+    try {
+      const results = await find(filters, this.table);
 
-    return results.rows;
+      return results.rows;
+    } catch (err) {
+      console.error(err);
+    }
   },
 
   async create(fields) {
-    const keys = [];
-    const values = [];
+    try {
+      const keys = [];
+      const values = [];
 
-    Object.keys(fields).map((key) => {
-      keys.push(key);
-      values.push(`'${fields[key]}'`);
-    });
+      Object.keys(fields).map((key) => {
+        keys.push(key);
+        values.push(`'${fields[key]}'`);
+      });
 
-    const query = `INSERT INTO ${this.table} 
-      (${keys.join(',')}) 
-      VALUES (${values.join(',')}) 
-      RETURNING id`;
+      const query = `INSERT INTO ${this.table} 
+        (${keys.join(',')}) 
+        VALUES (${values.join(',')}) 
+        RETURNING id`;
 
-    const results = await db.query(query);
+      const results = await db.query(query);
 
-    return results.rows[0].id;
+      return results.rows[0].id;
+    } catch (err) {
+      console.error(err);
+    }
   },
 
   update(id, fields) {
-    const line = [];
+    try {
+      const line = [];
 
-    Object.keys(fields).map((key) => {
-      line.push(`${key} = ${fields[key]}`);
-    });
+      Object.keys(fields).map((key) => {
+        line.push(`${key} = ${fields[key]}`);
+      });
 
-    const query = `UPDATE ${this.table} SET
-      ${line.join(',')}
-      WHERE id = ${id}`;
+      const query = `UPDATE ${this.table} SET
+        ${line.join(',')}
+        WHERE id = ${id}`;
 
-    return db.query(query);
+      return db.query(query);
+    } catch (err) {
+      console.error(err);
+    }
   },
 
   delete(id) {
     return db.query(`DELETE FROM ${this.table} WHERE id = ${id}`);
   },
 
-  count() {
-    return db.query(`COUNT * FROM ${this.table}`);
+  async count() {
+    const results = await db.query(`SELECT COUNT (*) FROM ${this.table}`);
+
+    return results.rows[0].count;
   },
 };
 

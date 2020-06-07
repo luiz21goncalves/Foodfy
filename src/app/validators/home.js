@@ -1,47 +1,14 @@
 const Chef = require('../models/Chef');
-const File = require('../models/File');
 const Recipe = require('../models/Recipe');
-
-async function getChefImage(chef, req) {
-  const results = await File.findOne(chef.file_id);
-  const files = results.rows.map((file) => ({
-    ...file,
-    src: `${req.protocol}://${req.headers.host}${file.path.replace(
-      'public',
-      ''
-    )}`,
-  }));
-
-  return {
-    ...chef,
-    files,
-  };
-}
-
-async function getRecipeImage(recipe, req) {
-  const results = await File.findByRecipe(recipe.id);
-  const files = results.rows.map((file) => ({
-    ...file,
-    src: `${req.protocol}://${req.headers.host}${file.path.replace(
-      'public',
-      ''
-    )}`,
-  }));
-
-  return {
-    ...recipe,
-    files,
-  };
-}
+const LoadChefService = require('../services/LoadChefService');
+const LoadRecipeService = require('../services/LoadRecipeService');
 
 async function checkChef(req, res, next) {
-  const results = await Chef.findOne(req.params.id);
-  const chef = results.rows[0];
+  const { id } = req.params;
+  const chef = await Chef.findOne({ where: { id } });
 
   if (!chef) {
-    const results = await Chef.all();
-    const filesPromise = results.rows.map((chef) => getChefImage(chef, req));
-    const chefs = await Promise.all(filesPromise);
+    const chefs = await LoadChefService.load('chefs');
 
     return res.render('home/chef', {
       chefs,
@@ -55,21 +22,19 @@ async function checkChef(req, res, next) {
 }
 
 async function checkRecipe(req, res, next) {
-  const results = await Recipe.findOne(req.params.id);
-  const recipe = results.rows[0];
+  const { id } = req.params;
+  const recipe = await Recipe.findOne({ where: { id } });
 
   if (!recipe) {
-    const results = await Recipe.all();
-    const filesPromise = results.rows.map((recipe) =>
-      getRecipeImage(recipe, req)
-    );
-    const recipes = await Promise.all(filesPromise);
+    const recipes = await LoadRecipeService.load('recipes');
 
     return res.render('home/index', {
       recipes,
       error: 'Receita não encontrada.',
     });
   }
+
+  req.recipe = recipe;
 
   next();
 }

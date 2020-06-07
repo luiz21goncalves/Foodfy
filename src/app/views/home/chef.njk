@@ -3,31 +3,28 @@
 
 {% block content %}
 
-<div class="container">
+  {% call container.render("", "") %}
 
-  {% call conteiner.render("", "") %}
+  <div class="chefs">
 
-    <div class="chefs">
+    {% for chef in chefs %}
 
-      {% for chef in chefs %}
+      <article>
+        <a href="/chefs/{{ chef.id }}">
+          <img src="{{ chef.img }}" alt="Imagem de {{ chef.name }}">
+        </a>
 
-        <article>
-          <a href="/chefs/{{ chef.id }}">
-            <img src="{{ chef.files[0].src }}" alt="{{ chef.files[0].name }}">
-          </a>
+        <div>
+          <p>{{ chef.name }}</p>
+          <span>{{ chef.total }}
+            receitas</span>
+        </div>
+      </article>
 
-          <div>
-            <p>{{ chef.name }}</p>
-            <span>{{ chef.total }} receitas</span>
-          </div>
-        </article>
-        
-      {% endfor %}
-      
-    </div>
+    {% endfor %}
+
+  </div>
 
   {% endcall %}
-
-</div>
 
 {% endblock content %}

@@ -5,29 +5,33 @@
 {% block content %}
 
   {% call banner.render("As melhores receitas") %}
-    <p>Aprenda a construir os melhores pratos <br> com receitas criadas pro profissionais <br> do mundo inteiro.</p>
+  <p>Aprenda a construir os melhores pratos
+    <br>
+    com receitas criadas pro profissionais
+    <br>
+    do mundo inteiro.</p>
   {% endcall %}
 
   {% call container.render("Adicionadas Recentemente", "") %}
 
-    <div class="recipes">
-      {% for recipe in recipes %}
+  <div class="recipes">
+    {% for recipe in recipes %}
 
-        <article>
-          <a href="/recipes/{{recipe.id}}">
-            <img src="{{ recipe.files[0].src }}" alt="{{ recipe.files[0].name }}">
+      <article>
+        <a href="/recipes/{{recipe.id}}">
+          <img src="{{ recipe.img }}" alt="{{ recipe.files[0].name }}">
+        </a>
+
+        <div>
+          <p>{{ recipe.title }}</p>
+          <a href="/chefs/{{ recipe.chef_id }}">
+            <span>{{ recipe.chef_name }}</span>
           </a>
+        </div>
+      </article>
 
-          <div>
-            <p>{{ recipe.title }}</p>
-            <a href="/chefs/{{ recipe.chef_id }}">
-              <span>{{ recipe.chef_name }}</span>
-            </a>
-          </div>
-        </article>
-        
-      {% endfor %}
-    </div>
+    {% endfor %}
+  </div>
 
   {% endcall %}
 
