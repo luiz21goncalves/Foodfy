@@ -1,31 +1,12 @@
 const Recipe = require('../models/Recipe');
 const File = require('../models/File');
 const RecipeFile = require('../models/RecipeFile');
-
-async function getRecipeImage(recipe, req) {
-  const results = await File.findByRecipe(recipe.id);
-  const files = results.rows.map((file) => ({
-    ...file,
-    src: `${req.protocol}://${req.headers.host}${file.path.replace(
-      'public',
-      ''
-    )}`,
-  }));
-
-  return {
-    ...recipe,
-    files,
-  };
-}
+const LoadRecipeService = require('../services/LoadRecipeService');
 
 module.exports = {
   async index(req, res) {
     try {
-      const results = await Recipe.all();
-      const filesPromise = results.rows.map((recipe) =>
-        getRecipeImage(recipe, req)
-      );
-      const recipes = await Promise.all(filesPromise);
+      const recipes = await LoadRecipeService.load('recipes');
 
       return res.render('recipe/index', { recipes });
     } catch (err) {
@@ -37,8 +18,7 @@ module.exports = {
 
   async create(req, res) {
     try {
-      const results = await Recipe.ChefSelectionOptions();
-      const chefs = results.rows;
+      const chefs = await Recipe.chefSelectionOptions();
 
       return res.render('recipe/create', { chefs });
     } catch (err) {
