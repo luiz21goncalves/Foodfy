@@ -8,43 +8,60 @@ module.exports = {
 
   async findAllRecipesChefName() {
     const results = await db.query(`
-    SELECT recipes.*, chefs.name AS chef_name
-    FROM recipes
-    LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-    ORDER BY recipes.created_at DESC
-  `);
+      SELECT recipes.*, chefs.name AS chef_name
+      FROM recipes
+      LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
+      ORDER BY recipes.created_at DESC
+    `);
 
     return results.rows;
   },
 
   async create(fields) {
-    const keys = [];
-    const values = [];
+    try {
+      const keys = [];
+      const values = [];
 
-    Object.keys(fields).map((key) => {
-      keys.push(keys);
-      if (key === 'ingredients' || key === 'preparation') {
-        values.push(`'{${fields[key]}}'`);
-      } else {
-        values.push(`'${fields[key]}'`);
-      }
-    });
+      Object.keys(fields).map((key) => {
+        keys.push(key);
+        if (key === 'ingredients' || key === 'preparation') {
+          values.push(`'{${fields[key]}}'`);
+        } else {
+          values.push(`'${fields[key]}'`);
+        }
+      });
+
+      const query = `INSERT INTO ${this.table} 
+        (${keys.join(',')}) 
+        VALUES (${values.join(',')}) 
+        RETURNING id`;
+
+      const results = await db.query(query);
+
+      return results.rows[0].id;
+    } catch (err) {
+      console.error(err);
+    }
   },
 
   update(id, fields) {
-    const line = [];
+    try {
+      const line = [];
 
-    Object.keys(fields).map((key) => {
-      if (key === 'ingredients' || key === 'preparation') {
-        line.push(` ${key} = '{${fields[key]}}'`);
-      } else {
-        line.push(` ${key} = '${fields[key]}'`);
-      }
-    });
+      Object.keys(fields).map((key) => {
+        if (key === 'ingredients' || key === 'preparation') {
+          line.push(` ${key} = '{${fields[key]}}'`);
+        } else {
+          line.push(` ${key} = '${fields[key]}'`);
+        }
+      });
 
-    const query = `UPDATE recipes SET ${line.join(',')} WHERE id = ${id}`;
+      const query = `UPDATE recipes SET ${line.join(',')} WHERE id = ${id}`;
 
-    return db.query(query);
+      return db.query(query);
+    } catch (err) {
+      console.error(err);
+    }
   },
 
   findOneRecipeChefName(id) {

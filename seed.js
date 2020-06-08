@@ -1,29 +1,19 @@
-const { randomBytes } = require('crypto');
 const { hash } = require('bcryptjs');
 const faker = require('faker');
+const fs = require('fs');
+const path = require('path');
 
 const User = require('./src/app/models/User');
 const Chef = require('./src/app/models/Chef');
 const Recipe = require('./src/app/models/Recipe');
+const File = require('./src/app/models/File');
 
-const mailer = require('./src/lib/mailer');
+const totalUsers = 4;
+const totalChefs = 8;
+const usersIds = [];
+const chefsIds = [];
 
-const totalUsers = 6;
-let usersIds = [];
-
-/**
- * "id" serial PRIMARY KEY,
-  "name" text NOT NULL,
-  "email" text UNIQUE NOT NULL,
-  "password" text NOT NULL,
-  "reset_token" text,
-  "reset_token_expires" text,
-  "is_admin" boolean DEFAULT false,
-  "created_at" timestamp DEFAULT (now()),
-  "updated_at" timestamp DEFAULT (now())
- */
-
-async function createUser() {
+async function createUsers() {
   const users = [];
   const password = await hash('123456', 8);
 
@@ -36,15 +26,96 @@ async function createUser() {
     });
   }
 
-  const usersPromise = users.map((user) => User.create(user));
-  usersIds = await Promise.all(usersPromise);
+  usersIds.push(await Promise.all(users.map((user) => User.create(user))));
+}
+
+/**
+ * recipes  
+ * 
+ * 'anastasia-zhenina.jpg',
+'asinhas.png',
+'burger.png',
+'doce.png',
+'espaguete.png',
+'izzah.jpg',
+'kiser-taylor.jpg',
+'lasanha.png',
+'mathilda-khoo.jpg',
+'nick-bratanek.jpg',
+'pizza.png',
+'praise-adesina.jpg',
+'stacey-doyle.jpg',
+'taylor-kiser.jpg',
+ */
+
+async function createChefs() {
+  const chefs = [];
+  const files = [];
+
+  const filesName = [
+    'andre-noboa.jpg',
+    'conor-samuel.jpg',
+    'jeff-siepman.jpg',
+    'jose-antonio-gallego-vazquez.jpg',
+    'louis-hansel.jpg',
+    'redcharlie.jpg',
+    'ross-sneddon.jpg',
+    'stefan-c-asafti.jpg',
+  ];
+
+  function copyFile() {
+    const fileLength = faker.random.number({
+      min: 0,
+      max: filesName.length - 1,
+    });
+    const origianalName = filesName[fileLength];
+    const newName = `${faker.random.number(9999999999)}-${origianalName}`;
+
+    const pathIn = fs.createReadStream(
+      path.resolve(__dirname, 'seeds', 'chefs', `${origianalName}`)
+    );
+    const pathOut = fs.createWriteStream(
+      path.resolve(__dirname, 'public', 'images', `${newName}`)
+    );
+
+    const WriteStream = pathIn.pipe(pathOut);
+
+    return {
+      path: WriteStream.path.replace(`${path.resolve(__dirname)}/`, ''),
+      origianalName,
+      newName,
+    };
+  }
+
+  while (files.length < totalChefs) {
+    const file = copyFile();
+
+    files.push({
+      name: file.newName,
+      original_name: file.origianalName,
+      path: file.path,
+    });
+  }
+
+  const filesIds = await Promise.all(files.map((file) => File.create(file)));
+
+  while (chefs.length < totalChefs) {
+    chefs.push({
+      name: faker.name.findName(),
+      file_id: filesIds[chefs.length],
+    });
+  }
+
+  chefsIds.push(await Promise.all(chefs.map((chef) => Chef.create(chef))));
 }
 
 async function init() {
-  await createUser();
+  await createUsers();
+  await createChefs();
 }
 
 init();
+
 // module.exports = {
 //   async post(req, res) {
 //     try {

@@ -4,16 +4,20 @@ const File = require('../models/File');
 
 async function getImage(fileId) {
   const file = await File.find(fileId);
-  file.src = file.path.replace('public', '');
+
+  if (file) file.src = file.path.replace('public', '');
 
   return file;
 }
 
 async function format(chef) {
   const file = await getImage(chef.file_id);
-  chef.img = file.src;
-  chef.file = file;
-  chef.total = await Recipe.count();
+
+  if (file) {
+    chef.img = file.src;
+    chef.file = file;
+    chef.total = await Recipe.count();
+  }
 
   return chef;
 }

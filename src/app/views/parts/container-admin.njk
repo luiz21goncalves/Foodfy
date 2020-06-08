@@ -1,0 +1,7 @@
+{% macro render(classes) %}
+
+  <div class="container admin {{ classes }}">
+    {{ caller() }}
+  </div>
+
+{% endmacro %}

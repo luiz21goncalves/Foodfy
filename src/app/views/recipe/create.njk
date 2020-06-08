@@ -1,17 +1,23 @@
 {% extends "layouts/admin.njk" %}
+{% import "parts/container-admin.njk" as container %}
+{% import "parts/actions.njk" as actions %}
 
 {% block content %}
 
-  <div class="container admin">
-    <form action="/admin/recipes" method="post" enctype="multipart/form-data">
-      <div class="actions">
-        <h2>Criando Receita</h2>
-        <button type="submit" class="button">Salvar receita</button>
-      </div>
-      <div class="fields recipe">
-        {% include "recipe/fields.njk" %}
-      </div>
-    </form>
-  </div>
+  {% call container.render("") %}
+  <form action="/admin/recipes" method="post" enctype="multipart/form-data">
+
+    {% call actions.render("Criando Receita") %}
+    <div>
+      <button type="submit" class="button" onclick="Validate.allFields(event)">Salvar receita</button>
+    </div>
+    {% endcall %}
+
+    <div class="fields recipe">
+      {% include "recipe/fields.njk" %}
+    </div>
+
+  </form>
+  {% endcall %}
 
 {% endblock content %}

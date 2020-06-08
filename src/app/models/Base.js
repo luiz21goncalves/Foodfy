@@ -96,8 +96,16 @@ const Base = {
     }
   },
 
-  delete(id) {
-    return db.query(`DELETE FROM ${this.table} WHERE id = ${id}`);
+  delete(field) {
+    try {
+      Object.keys(field).map((key) => {
+        return db.query(
+          `DELETE FROM ${this.table} WHERE ${key} = ${field[key]}`
+        );
+      });
+    } catch (err) {
+      console.error(err);
+    }
   },
 
   async count() {

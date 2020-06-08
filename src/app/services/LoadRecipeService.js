@@ -1,13 +1,15 @@
 const Chef = require('../models/Chef');
 const Recipe = require('../models/Recipe');
-const RecipeFile = require('../models/RecipeFile');
+const File = require('../models/File');
 
 async function getImage(recipeId) {
-  let files = await RecipeFile.findRecipeFilesByRecipeId(recipeId);
-  files = files.map((file) => ({
-    ...file,
-    src: file.path.replace('public', ''),
-  }));
+  let files = await File.findByRecipeId(recipeId);
+
+  if (files)
+    files = files.map((file) => ({
+      ...file,
+      src: file.path.replace('public', ''),
+    }));
 
   return files;
 }
@@ -16,9 +18,12 @@ async function format(recipe) {
   const chef = await Chef.find(recipe.chef_id);
   const files = await getImage(recipe.id);
 
-  recipe.img = files[0].src;
-  recipe.chef_name = chef.name;
-  recipe.files = files;
+  if (chef) recipe.chef_name = chef.name;
+
+  if (files) {
+    recipe.img = files[0].src;
+    recipe.files = files;
+  }
 
   return recipe;
 }

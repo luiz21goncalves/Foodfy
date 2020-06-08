@@ -1,3 +1,5 @@
+const { unlinkSync } = require('fs');
+
 const Recipe = require('../models/Recipe');
 const File = require('../models/File');
 const RecipeFile = require('../models/RecipeFile');
@@ -29,23 +31,37 @@ module.exports = {
   },
 
   async post(req, res) {
+    const { title, chef_id, ingredients, preparation, information } = req.body;
+
+    const { files } = req;
+
     try {
-      const data = { ...req.body, user_id: req.session.userId };
+      const recipeId = await Recipe.create({
+        user_id: req.session.userId,
+        chef_id,
+        title,
+        ingredients,
+        preparation,
+        information,
+      });
 
-      let results = await Recipe.create(data);
-      const recipeId = results.rows[0].id;
+      const filesPromise = files.map((file) =>
+        File.create({
+          name: file.filename,
+          path: file.path,
+          original_name: file.originalname,
+        })
+      );
+      const filesIds = await Promise.all(filesPromise);
 
-      const filesPromise = req.files.map((file) => File.create({ ...file }));
-      results = await Promise.all(filesPromise);
-
-      const filesId = results.map((result) => result.rows[0]);
-      const recipeFilesPromise = filesId.map((file) =>
-        RecipeFile.create(file.id, recipeId)
+      const recipeFilesPromise = filesIds.map((id) =>
+        RecipeFile.create({ file_id: id, recipe_id: recipeId })
       );
       await Promise.all(recipeFilesPromise);
 
-      results = await Recipe.findOne(recipeId);
-      const recipe = await getRecipeImage(results.rows[0], req);
+      const recipe = await LoadRecipeService.load('recipe', {
+        where: { id: recipeId },
+      });
 
       return res.render('recipe/show', {
         recipe,
@@ -53,23 +69,15 @@ module.exports = {
       });
     } catch (err) {
       console.error('RecipeController post', err);
-
-      return res.render('recipe/create', {
-        recipe: req.body,
-        error: 'Erro inesperado, tente novamente!',
-      });
     }
   },
 
   async show(req, res) {
     try {
-      const { isAdmin, userId } = req.session;
+      let { recipe } = req;
+      recipe = await LoadRecipeService.format(recipe);
 
-      const recipeId = req.params.id;
-      const results = await Recipe.findOne(recipeId);
-      const recipe = await getRecipeImage(results.rows[0], req);
-
-      return res.render('recipe/show', { recipe, isAdmin, userId });
+      return res.render('recipe/show', { recipe });
     } catch (err) {
       console.error('RecipeController show', err);
 
@@ -78,25 +86,14 @@ module.exports = {
   },
 
   async edit(req, res) {
-    try {
-      const { isAdmin, userId } = req.session;
+    const recipe = await LoadRecipeService.format(req.recipe);
 
-      const recipe = await getRecipeImage(req.recipe, req);
+    const chefs = await Recipe.chefSelectionOptions();
 
-      const results = await Recipe.ChefSelectionOptions();
-      const chefs = results.rows;
-
-      return res.render('recipe/edit', { recipe, chefs, isAdmin, userId });
-    } catch (err) {
-      console.error('RecipeController edit', err);
-
-      return res.render('recipe/edit');
-    }
+    return res.render('recipe/edit', { recipe, chefs });
   },
 
   async put(req, res) {
-    const { isAdmin, userId } = req.session;
-
     const {
       id,
       title,
@@ -106,28 +103,31 @@ module.exports = {
       information,
     } = req.body;
 
+    const { files } = req;
+
     try {
       if (req.body.removed_images) {
         const filesId = req.body.removed_images.split(',');
         const lastIndex = filesId.length - 1;
         filesId.splice(lastIndex, 1);
 
-        const recipeFilesDeletePromise = filesId.map((id) =>
-          RecipeFile.delete(id)
+        const recipeFilesDeletePromise = filesId.map((file_id) =>
+          RecipeFile.delete({ file_id })
         );
         await Promise.all(recipeFilesDeletePromise);
 
-        const filesDeletePromise = filesId.map((id) => File.delete(id));
+        const filesDeletePromise = filesId.map((id) => File.delete({ id }));
         await Promise.all(filesDeletePromise);
       }
 
-      if (req.files !== 0) {
-        const filesPormise = req.files.map((file) => File.create({ ...file }));
-        const results = await Promise.all(filesPormise);
+      if (files != 0) {
+        const filesPormise = files.map((file) =>
+          File.create({ name: file.filename, path: file.path })
+        );
+        const filesIds = await Promise.all(filesPormise);
 
-        const recipeFiles = results.map((result) => result.rows[0]);
-        const recipeFilesPromise = recipeFiles.map((file) =>
-          RecipeFile.create(file.id, id)
+        const recipeFilesPromise = filesIds.map((file_id) =>
+          RecipeFile.create({ file_id, recipe: id })
         );
         await Promise.all(recipeFilesPromise);
       }
@@ -140,70 +140,41 @@ module.exports = {
         information,
       });
 
-      const results = await Recipe.findOne(id);
-      const recipe = await getRecipeImage(results.rows[0], req);
+      const recipe = await LoadRecipeService.load('recipe', { where: { id } });
 
       return res.render('recipe/show', {
         recipe,
-        isAdmin,
-        userId,
         success: `A receita ${recipe.title} foi atualizada com sucesso.`,
       });
     } catch (err) {
       console.error('RecipeController put', err);
-
-      const results = await Recipe.ChefSelectionOptions();
-      const chefs = results.rows;
-      const recipe = await getRecipeImage(req.body, req);
-
-      return res.render('recipe/edit', {
-        isAdmin,
-        userId,
-        recipe,
-        chefs,
-        error: 'Erro inesperado, tente novamente!',
-      });
     }
   },
 
   async delete(req, res) {
     try {
-      const { isAdmin, userId } = req.session;
+      let { recipe } = req;
 
-      const { recipe } = req;
+      recipe = await LoadRecipeService.format(recipe);
 
-      let results = await RecipeFile.find(recipe.id);
-
-      const recipeFilesDeletePromise = results.rows.map((item) =>
-        RecipeFile.delete(item.file_id)
+      await Promise.all(
+        recipe.files.map((file) => File.delete({ id: file.id }))
       );
-      await Promise.all(recipeFilesDeletePromise);
 
-      const filesDeletePromise = results.rows.map((item) =>
-        File.delete(item.file_id)
-      );
-      await Promise.all(filesDeletePromise);
+      await RecipeFile.delete({ recipe_id: recipe.id });
 
-      await Recipe.delete(recipe.id);
+      await Recipe.delete({ id: recipe.id });
 
-      results = await Recipe.all();
-      const filesPromise = results.rows.map((recipe) =>
-        getRecipeImage(recipe, req)
-      );
-      const recipes = await Promise.all(filesPromise);
+      await Promise.all(recipe.files.map((file) => unlinkSync(file.path)));
+
+      const recipes = await LoadRecipeService.load('recipes');
 
       return res.render('recipe/index', {
-        isAdmin,
-        userId,
         recipes,
         success: `A receita ${recipe.title} deletada com sucesso.`,
       });
     } catch (err) {
       console.error('RecipeController delete', err);
-
-      res.render('recipe/edit', {
-        error: 'Erro inesperado, tente novamente!',
-      });
     }
   },
 };

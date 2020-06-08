@@ -2,21 +2,21 @@
 
 {% block content %}
 
-<div class="container admin">
+  <div class="container admin">
 
-  <form action="/admin/chefs" method="post" enctype="multipart/form-data">
-  
-    <div class="actions">
-      <h2>Criando Chef</h2>
-      
-      <button type="submit" class="button">Salvar chef</button>
-    </div>
+    <form action="/admin/chefs" method="post" enctype="multipart/form-data">
 
-    <div class="fields">
-      {% include "chef/fields.njk" %}
-    </div>
+      <div class="actions">
+        <h2>Criando Chef</h2>
 
-  </form>
-</div>
+        <button type="submit" onclick="Validate.allFields(event)" class="button">Salvar chef</button>
+      </div>
+
+      <div class="fields">
+        {% include "chef/fields.njk" %}
+      </div>
+
+    </form>
+  </div>
 
 {% endblock content %}

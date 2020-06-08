@@ -2,33 +2,33 @@
 
 {% block content %}
 
-<div class="container admin user">
+  <div class="container admin user">
 
-  <form id="form-delete" action="/admin/users?_method=DELETE" method="post">
-    <input type="hidden" name="id" value="{{ user.id }}">
-  </form>
+    <form id="form-delete" action="/admin/users?_method=DELETE" method="post">
+      <input type="hidden" name="id" value="{{ user.id }}">
+    </form>
 
-  <form action="/admin/users?_method=PUT" method="post">
+    <form action="/admin/users?_method=PUT" method="post">
 
-    <div class="actions">
-      <h2>Atualizar Usuário</h2>
+      <div class="actions">
+        <h2>Atualizar Usuário</h2>
 
-      <div>
-        <a onclick="submit()" class="button delete">Deletar</a>
-        <button type="submit" class="button">Salvar</button>
+        <div>
+          <a onclick="submit()" class="button delete">Deletar</a>
+          <button type="submit" class="button" onclick="Validate.allFields(event)">Salvar</button>
+        </div>
       </div>
-    </div>
 
-    <div class="fields">
-      {% include "user/fields.njk" %}
-    </div>
+      <div class="fields">
+        {% include "user/fields.njk" %}
+      </div>
 
-    <input type="hidden" name="id" value="{{ user.id }}">
-    
-  </form>
+      <input type="hidden" name="id" value="{{ user.id }}">
 
-</div>
+    </form>
 
-{% include "confirm.njk" %}
+  </div>
+
+  {% include "confirm.njk" %}
 
 {% endblock content %}

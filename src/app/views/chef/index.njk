@@ -1,30 +1,30 @@
 {% extends "layouts/admin.njk" %}
 
 {% block content %}
-<div class="container admin">
+  <div class="container admin">
 
-  <div class="actions">
-    <h2>Gerenciar Chefs</h2>
-    
-    {% if isAdmin %}
-      <a href="/admin/chefs/create" class="button">Novo chef</a>
-    {% endif %}
+    <div class="actions">
+      <h2>Gerenciar Chefs</h2>
+
+      {% if session.isAdmin %}
+        <a href="/admin/chefs/create" class="button">Novo chef</a>
+      {% endif %}
+    </div>
+
+    <div class="chefs">
+      {% for chef in chefs %}
+
+        <article>
+          <img src="{{ chef.img }}" alt="{{ chef.file.original_name }}">
+
+          <div>
+            <p>{{ chef.name }}</p>
+            <a href="/admin/chefs/{{ chef.id }}">Visualisar</a>
+          </div>
+        </article>
+
+      {% endfor %}
+    </div>
+
   </div>
-
-  <div class="chefs">
-    {% for chef in chefs %}
-
-      <article>
-        <img src="{{ chef.files[0].src }}" alt="{{ chef.files[0].name }}">
-
-        <div>
-          <p>{{ chef.name }}</p>
-          <a href="/admin/chefs/{{ chef.id }}">Visualisar</a>
-        </div>
-      </article>
-      
-    {% endfor %}
-  </div>
-
-</div>
 {% endblock content %}

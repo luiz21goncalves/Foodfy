@@ -4,6 +4,7 @@ CREATE DATABASE foodfy;
 CREATE TABLE "files" (
   "id" serial PRIMARY KEY,
   "name" text NOT NULL,
+  "original_name" text NOT NULL,
   "path" text NOT NULL
 );
 

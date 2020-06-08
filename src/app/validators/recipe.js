@@ -1,50 +1,21 @@
 const Recipe = require('../models/Recipe');
-const File = require('../models/File');
-
-async function polulateChefSelection() {
-  const results = await Recipe.ChefSelectionOptions();
-
-  return results.rows;
-}
+const LoadRecipeService = require('../services/LoadRecipeService');
 
 async function checkAllFields(body) {
-  const keys = Object.keys(body);
-
-  for (const key of keys) {
+  Object.keys(body).map((key) => {
     if (body[key] === '' && key !== 'removed_images' && key !== 'information') {
       return {
         error: 'Apenas o campo de informações adicionas não é obrigatário.',
       };
     }
-  }
-}
-
-async function getRecipeImage(recipe, req) {
-  const results = await File.findByRecipe(recipe.id);
-  const files = results.rows.map((file) => ({
-    ...file,
-    src: `${req.protocol}://${req.headers.host}${file.path.replace(
-      'public',
-      ''
-    )}`,
-  }));
-
-  return {
-    ...recipe,
-    files,
-  };
+  });
 }
 
 async function show(req, res, next) {
-  const results = await Recipe.findOne(req.params.id);
-  const recipe = results.rows[0];
+  const recipe = await Recipe.findOne({ where: { id: req.params.id } });
 
   if (!recipe) {
-    const results = await Recipe.all();
-    const filesPromise = results.rows.map((recipe) =>
-      getRecipeImage(recipe, req)
-    );
-    const recipes = await Promise.all(filesPromise);
+    const recipes = await LoadRecipeService.load('recipes');
 
     return res.render('recipe/index', {
       recipes,
@@ -61,30 +32,23 @@ async function edit(req, res, next) {
   const { isAdmin } = req.session;
   const { userId } = req.session;
 
-  const results = await Recipe.findOne(req.params.id);
-  let recipe = results.rows[0];
-
-  if (!isAdmin && userId !== recipe.user_id) {
-    recipe = await getRecipeImage(recipe, req);
-
-    return res.render('recipe/show', {
-      recipe,
-      isAdmin,
-      userId,
-      error: 'Você não tem permissão para editar ou deletar essa receita.',
-    });
-  }
+  let recipe = await Recipe.findOne({ where: { id: req.params.id } });
 
   if (!recipe) {
-    const results = await Recipe.all();
-    const filesPromise = results.rows.map((recipe) =>
-      getRecipeImage(recipe, req)
-    );
-    const recipes = await Promise.all(filesPromise);
+    const recipes = await LoadRecipeService.load('recipes');
 
     return res.render('recipe/index', {
       recipes,
       error: 'Receita não encontrada.',
+    });
+  }
+
+  if (!isAdmin && userId !== recipe.user_id) {
+    recipe = await LoadRecipeService.format(recipe);
+
+    return res.render('recipe/show', {
+      recipe,
+      error: 'Você não tem permissão para editar ou deletar essa receita.',
     });
   }
 
@@ -103,7 +67,7 @@ async function post(req, res, next) {
     });
 
   if (req.files.length === 0) {
-    const chefs = await polulateChefSelection();
+    const chefs = await Recipe.chefSelectionOptions();
 
     return res.render('recipe/create', {
       chefs,
@@ -118,13 +82,13 @@ async function put(req, res, next) {
   const { isAdmin } = req.session;
   const { userId } = req.session;
 
-  const recipe = await getRecipeImage(req.body, req);
+  const recipe = await LoadRecipeService.load('recipe', {
+    where: { id: req.body.id },
+  });
 
   if (!isAdmin && userId !== req.body.user_id)
     return res.render('recipe/show', {
       recipe,
-      isAdmin,
-      userId,
       error: 'Você não tem permissão para editar ou deletar essa receita.',
     });
 
@@ -133,9 +97,7 @@ async function put(req, res, next) {
   if (fillAllFields)
     return res.render('recipe/edit', {
       ...fillAllFields,
-      recipe,
-      isAdmin,
-      userId,
+      recipe: req.body,
     });
 
   const removedImages = req.body.removed_images.split(',');
@@ -143,13 +105,12 @@ async function put(req, res, next) {
   removedImages.splice(lastIndex, 1);
 
   if (req.files.length === 0 && removedImages.length >= recipe.files.length) {
-    const chefs = await polulateChefSelection();
+    const chefs = await Recipe.chefSelectionOptions();
 
     return res.render('recipe/edit', {
       error: 'Envie pelo menos uma imagem',
-      recipe: { ...recipe, ...req.body },
+      recipe: req.body,
       chefs,
-      isAdmin,
     });
   }
 
@@ -160,11 +121,10 @@ async function deleteRecipe(req, res, next) {
   const { isAdmin } = req.session;
   const { userId } = req.session;
 
-  const results = await Recipe.findOne(req.body.id);
-  let recipe = results.rows[0];
+  let recipe = await Recipe.findOne({ where: { id: req.body.id } });
 
   if (!isAdmin && userId !== recipe.user_id) {
-    recipe = await getRecipeImage(recipe, req);
+    recipe = await LoadRecipeService.format(recipe);
 
     return res.render('recipe/show', {
       recipe,
@@ -173,11 +133,7 @@ async function deleteRecipe(req, res, next) {
   }
 
   if (!recipe) {
-    const results = await Recipe.all();
-    const filesPromise = results.rows.map((recipe) =>
-      getRecipeImage(recipe, req)
-    );
-    const recipes = await Promise.all(filesPromise);
+    const recipes = await LoadRecipeService.load('recipes');
 
     return res.render('recipe/index', {
       recipes,
@@ -190,10 +146,4 @@ async function deleteRecipe(req, res, next) {
   next();
 }
 
-module.exports = {
-  show,
-  edit,
-  post,
-  put,
-  deleteRecipe,
-};
+module.exports = { show, edit, post, put, deleteRecipe };

@@ -1,49 +1,29 @@
 const Chef = require('../models/Chef');
-const File = require('../models/File');
+const LoadChefServce = require('../services/LoadChefService');
 
 function checkAllFields(body) {
   const keys = Object.keys(body);
 
   for (const key of keys) {
-    if (body[key] === '' && key !== 'removed_images')
-      return {
-        error: 'Por favor, preencha todos os campos.',
-      };
+    if (body[key] == '' && key != 'removed_images')
+      return 'Por favor, preencha todos os campos.';
   }
-
-  return {};
-}
-
-async function getChefImage(chef, req) {
-  const results = await File.findOne(chef.file_id);
-  const files = results.rows.map((file) => ({
-    ...file,
-    src: `${req.protocol}://${req.headers.host}${file.path.replace(
-      'public',
-      ''
-    )}`,
-  }));
-
-  return {
-    ...chef,
-    files,
-  };
 }
 
 async function checkChefs(req, res, next) {
-  const results = await Chef.findOne(req.params.id || req.body.id);
-  const chef = results.rows[0];
+  const chef = await Chef.findOne({
+    where: { id: req.params.id || req.body.id },
+  });
 
   if (!chef) {
-    const chefs = await Chef.all();
-    const filesPromise = chefs.map((chef) => getChefImage(chef, req));
-    const sereializedChefs = await Promise.all(filesPromise);
+    const chefs = await LoadChefServce.load('chefs');
 
     return res.render('chef/index', {
-      chefs: sereializedChefs,
+      chefs,
       error: 'Chef não encontrado!',
     });
   }
+
   req.chef = chef;
 
   next();
@@ -52,16 +32,10 @@ async function checkChefs(req, res, next) {
 function post(req, res, next) {
   const fillAllFields = checkAllFields(req.body);
 
-  if (fillAllFields)
-    return res.render('chef/create', {
-      error: 'Envie pelo menos uma imagem.',
-      chef: req.body,
-    });
+  if (fillAllFields) return res.send(fillAllFields);
 
-  if (req.files.length === 0)
-    return res.render('chef/create', {
-      chef: req.body,
-    });
+  if (req.files.length == 0)
+    return res.send('Por favor, envie pelo menos uma image.');
 
   next();
 }
@@ -69,20 +43,12 @@ function post(req, res, next) {
 async function put(req, res, next) {
   const fillAllFields = checkAllFields(req.body);
 
-  const results = await Chef.findOne(req.body.id);
-  const chef = await getChefImage(results.rows[0], req);
+  const chef = await Chef.findOne({ where: { id: req.body.id } });
 
-  if (fillAllFields)
-    return res.render('chef/edit', {
-      ...fillAllFields,
-      chef: { ...chef, ...req.body },
-    });
+  if (fillAllFields) return res.send('Por favor, preencha todos os campos.');
 
   if (req.body.removed_images && req.files.length === 0)
-    return res.render('chef/edit', {
-      error: 'Envie pelo menos uma imagem.',
-      chef: { ...chef, ...req.body },
-    });
+    return res.send('Por favor, envie pelo menos uma image.');
 
   req.chef = chef;
 
@@ -91,9 +57,7 @@ async function put(req, res, next) {
 
 async function onlyAdmin(req, res, next) {
   if (!req.session.isAdmin) {
-    const results = await Chef.all();
-    const filesPromise = results.rows.map((chef) => getChefImage(chef, req));
-    const chefs = await Promise.all(filesPromise);
+    const chefs = await LoadChefServce.load('chefs');
 
     return res.render('chef/index', {
       chefs,

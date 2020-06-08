@@ -2,41 +2,44 @@
 
 {% block content %}
 
-<div class="container admin">
+  <div class="container admin">
 
-  <div class="actions">
-    <h2>Chef: {{ chef.name }}</h2>
+    <div class="actions">
+      <h2>Chef:
+        {{ chef.name }}</h2>
 
-    {% if isAdmin %}
-      <a href="/admin/chefs/{{ chef.id }}/edit" class="button">Editar chef</a>
-    {% endif %}
+      {% if session.isAdmin %}
+        <a href="/admin/chefs/{{ chef.id }}/edit" class="button">Editar chef</a>
+      {% endif %}
+    </div>
+
+    <div class="chef-datail">
+      <img src="{{chef.img}}" alt="{{ chef.file.original_name }}">
+      <h1>{{ chef.name }}</h1>
+      <p>{{ chef.total }}
+        receitas
+      </p>
+    </div>
+
+    <h2>Receitas</h2>
+
+    <div class="recipes">
+
+      {% for recipe in recipes %}
+
+        <article>
+          <img src="{{ recipe.img }}" alt="{{ recipe.files[0].original_name }}">
+
+          <div>
+            <p>{{ recipe.title }}</p>
+            <span>{{ chef.name }}</span>
+            <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
+          </div>
+        </article>
+
+      {% endfor %}
+    </div>
+
   </div>
-
-  <div class="chef-datail">
-    <img src="{{chef.files[0].src}}" alt="{{ chef.files[0].name }}">
-    <h1>{{ chef.name }}</h1>
-    <p>{{ chef.total }} receitas </p>
-  </div>
-
-  <h2>Receitas</h2>
-
-  <div class="recipes">
-
-    {% for recipe in recipes %}
-
-      <article>
-        <img src="{{ recipe.files[0].src }}" alt="{{ recipe.files[0].name }}">
-
-        <div>
-          <p>{{ recipe.title }}</p>
-          <span>{{ chef.name }}</span>
-          <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
-        </div>
-      </article>
-      
-    {% endfor %}
-  </div>
-
-</div>
 
 {% endblock content %}

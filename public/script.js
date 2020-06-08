@@ -20,19 +20,17 @@ const HiddenDiv = {
   hidden: false,
   apply(button) {
     const div = button.parentNode.parentNode.querySelector('.hide');
-    HiddenDiv.hidden
-      ? HiddenDiv.remove(div, button)
-      : HiddenDiv.add(div, button);
+    this.hidden ? this.remove(div, button) : this.add(div, button);
   },
   add(div, button) {
     div.classList.add('active');
     button.innerHTML = 'mostrar';
-    HiddenDiv.hidden = true;
+    this.hidden = true;
   },
   remove(div, button) {
     div.classList.remove('active');
     button.innerHTML = 'esconder';
-    HiddenDiv.hidden = false;
+    this.hidden = false;
   },
 };
 
@@ -326,5 +324,22 @@ const Validate = {
     if (!value.match(mailFormat)) error = 'Email inválido';
 
     return { error, value };
+  },
+  allFields(event) {
+    const items = document.querySelectorAll(
+      '.item input, .item select, .item textarea'
+    );
+
+    for (const item of items) {
+      if (item.value == '' && item.name != 'removed_images') {
+        const message = document.createElement('div');
+        message.classList.add('message');
+        message.classList.add('error');
+        message.innerText = 'Por favor, preencha todos os campos.';
+        document.querySelector('body').append(message);
+
+        event.preventDefault();
+      }
+    }
   },
 };

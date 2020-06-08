@@ -1,54 +1,20 @@
+const { unlinkSync } = require('fs');
+
 const Chef = require('../models/Chef');
 const File = require('../models/File');
-
-async function getRecipeImage(recipe, req) {
-  const results = await File.findByRecipe(recipe.id);
-  const files = results.rows.map((file) => ({
-    ...file,
-    src: `${req.protocol}://${req.headers.host}${file.path.replace(
-      'public',
-      ''
-    )}`,
-  }));
-
-  return {
-    ...recipe,
-    files,
-  };
-}
-
-async function getChefImage(chef, req) {
-  const results = await File.findOne(chef.file_id);
-  const files = results.rows.map((file) => ({
-    ...file,
-    src: `${req.protocol}://${req.headers.host}${file.path.replace(
-      'public',
-      ''
-    )}`,
-  }));
-
-  return {
-    ...chef,
-    files,
-  };
-}
+const Recipe = require('../models/Recipe');
+const LoadChefService = require('../services/LoadChefService');
+const LoadRecipeService = require('../services/LoadRecipeService');
 
 module.exports = {
   async index(req, res) {
     try {
-      const { isAdmin } = req.session;
+      const chefs = await LoadChefService.load('chefs');
 
-      const results = await Chef.all();
-      let chefs = results.rows;
-
-      const filesPromise = chefs.map((chef) => getChefImage(chef, req));
-      chefs = await Promise.all(filesPromise);
-
-      return res.render('chef/index', { chefs, isAdmin });
+      // return res.send({ chefs });
+      return res.render('chef/index', { chefs });
     } catch (err) {
       console.error(err);
-
-      return res.render('chef/index');
     }
   },
 
@@ -57,31 +23,32 @@ module.exports = {
   },
 
   async show(req, res) {
-    const { isAdmin } = req.session;
+    let { chef } = req;
+    chef = await LoadChefService.format(chef);
 
-    const chef = await getChefImage(req.chef, req);
+    const recipes = await LoadRecipeService.load('recipes', {
+      where: { chef_id: chef.id },
+    });
 
-    const results = await Chef.findRecipeByChef(chef.id);
-    const recipesFilesPromise = results.rows.map((recipe) =>
-      getRecipeImage(recipe, req)
-    );
-    const recipes = await Promise.all(recipesFilesPromise);
-
-    return res.render('chef/show', { chef, recipes, isAdmin });
+    return res.render('chef/show', { chef, recipes });
   },
 
   async post(req, res) {
     try {
+      const [file] = req.files;
       const { name } = req.body;
 
-      let results = await File.create(...req.files);
-      const fileId = results.rows[0].id;
+      const file_id = await File.create({
+        name: file.filename,
+        original_name: file.originalname,
+        path: file.path,
+      });
 
-      results = await Chef.create(name, fileId);
-      const chefId = results.rows[0].id;
+      const chefId = await Chef.create({ name, file_id });
 
-      results = await Chef.findOne(chefId);
-      const chef = await getChefImage(results.rows[0], req);
+      const chef = await LoadChefService.load('chef', {
+        where: { id: chefId },
+      });
 
       return res.render('chef/show', {
         chef,
@@ -89,16 +56,12 @@ module.exports = {
       });
     } catch (err) {
       console.error('ChefController post', err);
-
-      return res.render('chef/create', {
-        chef: req.body,
-        error: 'Erro inesperado, tente novamente.',
-      });
     }
   },
 
   async edit(req, res) {
-    const chef = await getChefImage(req.chef, req);
+    const chef = await LoadChefService.format(req.chef);
+
     return res.render('chef/edit', { chef });
   },
 
@@ -146,26 +109,22 @@ module.exports = {
 
   async delete(req, res) {
     try {
-      let { chef } = req;
+      const chef = await LoadChefService.format(req.chef);
 
-      const results = await Chef.findRecipeByChef(chef.id);
-      const recipes = results.rows;
+      const recipes = await Recipe.findAll({ where: { chef_id: chef.id } });
 
       if (recipes.length === 0) {
-        await Chef.delete(chef.id);
-        await File.delete(chef.file_id);
+        await Chef.delete({ id: chef.id });
+        await File.delete({ id: chef.file_id });
+        await unlinkSync(chef.file.path);
 
-        const chefs = await Chef.all();
-        const filesPromise = chefs.map((chef) => getChefImage(chef, req));
-        const sereializedChefs = await Promise.all(filesPromise);
+        const chefs = await LoadChefService.load('chefs');
 
         return res.render('chef/index', {
-          chefs: sereializedChefs,
+          chefs,
           success: `o chef ${chef.name} deletado com sucesso.`,
         });
       }
-
-      chef = await getChefImage(chef, req);
 
       return res.render('chef/edit', {
         chef,
@@ -174,10 +133,6 @@ module.exports = {
       });
     } catch (err) {
       console.error('ChefController delete', err);
-
-      return res.render('chef/edit', {
-        error: 'Erro inesperado, tente novamente.',
-      });
     }
   },
 };
