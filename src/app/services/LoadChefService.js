@@ -16,7 +16,7 @@ async function format(chef) {
   if (file) {
     chef.img = file.src;
     chef.file = file;
-    chef.total = await Recipe.count();
+    chef.total = await Recipe.count({ where: { chef_id: chef.id } });
   }
 
   return chef;

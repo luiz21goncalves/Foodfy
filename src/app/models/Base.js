@@ -13,6 +13,9 @@ function find(filters, table) {
     });
   }
 
+  if (table == 'users' || table == 'recipes' || table == 'chefs')
+    query += ` ORDER BY created_at DESC`;
+
   return db.query(query);
 }
 
@@ -108,8 +111,20 @@ const Base = {
     }
   },
 
-  async count() {
-    const results = await db.query(`SELECT COUNT (*) FROM ${this.table}`);
+  async count(filters) {
+    let query = `SELECT COUNT (*) FROM ${this.table}`;
+
+    if (filters) {
+      Object.keys(filters).map((key) => {
+        query += ` ${key}`;
+
+        Object.keys(filters[key]).map((field) => {
+          query += ` ${field} = '${filters[key][field]}'`;
+        });
+      });
+    }
+
+    const results = await db.query(query);
 
     return results.rows[0].count;
   },
