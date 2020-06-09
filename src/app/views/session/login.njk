@@ -1,44 +1,43 @@
 {% extends "layouts/blank.njk" %}
+{% import "parts/container.njk" as container %}
 
 {% block content %}
 
-  <div class="container login">
+  {% call()container.render("", "login") %}
 
-    <div class="logo">
-      <img src="/assets/logo.png" alt="logo Foodfy">
-    </div>
+  <div class="logo">
+    <img src="/assets/logo.png" alt="logo Foodfy">
+  </div>
 
-    <h2>Iniciar Sessão</h2>
+  <h2>Iniciar Sessão</h2>
 
-    <form action="/login" method="post">
+  <form action="/login" method="post">
+    <div class="fields">
 
-      <div class="fields">
+      <div class="item">
+        <label for="email">Email</label>
 
-        <div class="item">
-          <label for="email">Email</label>
-
-          <div class="input">
-            <input type="email" name="email" id="email" placeholder="Digite seu email" value="{{ user.email }}" onblur="Validate.apply(this, 'isEmail')">
-          </div>
+        <div class="input">
+          <input type="email" name="email" id="email" placeholder="Digite seu email" value="{{ user.email }}" onblur="Validate.apply(this, 'isEmail')">
         </div>
-
-        <div class="item">
-          <label for="password">Senha</label>
-
-          <div class="input">
-            <input type="password" name="password" id="password" placeholder="Digite sua senha">
-          </div>
-        </div>
-
-        <div class="footer">
-          <a href="/forgot-password">Perdeu a senha?</a>
-          <button type="submit" class="button">Acessar</button>
-        </div>
-
       </div>
 
-    </form>
+      <div class="item">
+        <label for="password">Senha</label>
 
-  </div>
+        <div class="input">
+          <input type="password" name="password" id="password" placeholder="Digite sua senha">
+        </div>
+      </div>
+
+      <div class="footer">
+        <a href="/forgot-password">Perdeu a senha?</a>
+        <button type="submit" class="button">Acessar</button>
+      </div>
+
+    </div>
+  </form>
+
+  {% endcall %}
 
 {% endblock content %}

@@ -1,54 +1,53 @@
 {% extends "layouts/blank.njk" %}
+{% import "parts/container.njk" as container %}
 
 {% block content %}
 
-  <div class="container login">
+  {% call()container.render("", "login") %}
 
-    <div class="logo">
-      <img src="/assets/logo.png" alt="logo Foodfy">
-    </div>
+  <div class="logo">
+    <img src="/assets/logo.png" alt="logo Foodfy">
+  </div>
 
-    <h2>Nova Senha</h2>
+  <h2>Nova Senha</h2>
 
-    <form action="/reset-password" method="post">
+  <form action="/reset-password" method="post">
+    <div class="fields">
 
-      <div class="fields">
+      <div class="item">
+        <label for="email">Email</label>
 
-        <div class="item">
-          <label for="email">Email</label>
-
-          <div class="input">
-            <input type="email" name="email" id="email" placeholder="Digite seu email" value="{{ user.email }}" onblur="Validate.apply(this, 'isEmail')">
-          </div>
+        <div class="input">
+          <input type="email" name="email" id="email" placeholder="Digite seu email" value="{{ user.email }}" onblur="Validate.apply(this, 'isEmail')">
         </div>
-
-        <div class="item">
-          <label for="password">Nova senha</label>
-
-          <div class="input">
-            <input type="password" name="password" id="password" placeholder="Digite sua nova senha">
-          </div>
-        </div>
-
-        <div class="item">
-          <label for="passwordRepeat">Repetir Senha</label>
-
-          <div class="input">
-            <input type="password" name="passwordRepeat" id="passwordRepeat" placeholder="Repita a nova senha">
-          </div>
-        </div>
-
-        <input type="hidden" name="token" value="{{ token }}">
-
-        <div class="footer">
-          <div></div>
-          <button type="submit" class="button">Acessar</button>
-        </div>
-
       </div>
 
-    </form>
+      <div class="item">
+        <label for="password">Nova senha</label>
 
-  </div>
+        <div class="input">
+          <input type="password" name="password" id="password" placeholder="Digite sua nova senha">
+        </div>
+      </div>
+
+      <div class="item">
+        <label for="passwordRepeat">Repetir Senha</label>
+
+        <div class="input">
+          <input type="password" name="passwordRepeat" id="passwordRepeat" placeholder="Repita a nova senha">
+        </div>
+      </div>
+
+      <input type="hidden" name="token" value="{{ token }}">
+
+      <div class="footer">
+        <div></div>
+        <button type="submit" class="button">Acessar</button>
+      </div>
+
+    </div>
+  </form>
+
+  {% endcall %}
 
 {% endblock content %}
