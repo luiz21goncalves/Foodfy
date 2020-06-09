@@ -12,9 +12,7 @@ module.exports = {
 
       return res.render('recipe/index', { recipes });
     } catch (err) {
-      console.error('RecipeController index', err);
-
-      return res.render('recipe/index');
+      console.error(err);
     }
   },
 
@@ -24,9 +22,7 @@ module.exports = {
 
       return res.render('recipe/create', { chefs });
     } catch (err) {
-      console.error('RecipeController create', err);
-
-      return res.render('recipe/edit');
+      console.error(err);
     }
   },
 
@@ -45,19 +41,21 @@ module.exports = {
         information,
       });
 
-      const filesPromise = files.map((file) =>
-        File.create({
-          name: file.filename,
-          path: file.path,
-          original_name: file.originalname,
-        })
+      const filesIds = await Promise.all(
+        files.map((file) =>
+          File.create({
+            name: file.filename,
+            path: file.path,
+            original_name: file.originalname,
+          })
+        )
       );
-      const filesIds = await Promise.all(filesPromise);
 
-      const recipeFilesPromise = filesIds.map((id) =>
-        RecipeFile.create({ file_id: id, recipe_id: recipeId })
+      await Promise.all(
+        filesIds.map((id) =>
+          RecipeFile.create({ file_id: id, recipe_id: recipeId })
+        )
       );
-      await Promise.all(recipeFilesPromise);
 
       const recipe = await LoadRecipeService.load('recipe', {
         where: { id: recipeId },
@@ -111,25 +109,33 @@ module.exports = {
         const lastIndex = filesId.length - 1;
         filesId.splice(lastIndex, 1);
 
-        const recipeFilesDeletePromise = filesId.map((file_id) =>
-          RecipeFile.delete({ file_id })
+        const recipeFiles = await Promise.all(
+          filesId.map((file_id) => RecipeFile.findOne({ where: { file_id } }))
         );
-        await Promise.all(recipeFilesDeletePromise);
 
-        const filesDeletePromise = filesId.map((id) => File.delete({ id }));
-        await Promise.all(filesDeletePromise);
+        await Promise.all(
+          recipeFiles.map((item) => RecipeFile.delete(item.id))
+        );
+
+        await Promise.all(filesId.map((id) => File.delete({ id })));
       }
 
       if (files != 0) {
-        const filesPormise = files.map((file) =>
-          File.create({ name: file.filename, path: file.path })
+        const filesIds = await Promise.all(
+          files.map((file) =>
+            File.create({
+              name: file.filename,
+              path: file.path,
+              original_name: file.originalname,
+            })
+          )
         );
-        const filesIds = await Promise.all(filesPormise);
 
-        const recipeFilesPromise = filesIds.map((file_id) =>
-          RecipeFile.create({ file_id, recipe: id })
+        await Promise.all(
+          filesIds.map((file_id) =>
+            RecipeFile.create({ file_id, recipe_id: id })
+          )
         );
-        await Promise.all(recipeFilesPromise);
       }
 
       await Recipe.update(id, {
@@ -153,19 +159,19 @@ module.exports = {
 
   async delete(req, res) {
     try {
-      let { recipe } = req;
+      const recipe = await LoadRecipeService.format(req.recipe);
 
-      recipe = await LoadRecipeService.format(recipe);
+      const recipeFiles = await RecipeFile.findAll({
+        where: { recipe_id: recipe.id },
+      });
 
-      await Promise.all(
-        recipe.files.map((file) => File.delete({ id: file.id }))
-      );
+      await Promise.all(recipeFiles.map((item) => RecipeFile.delete(item.id)));
 
-      await RecipeFile.delete({ recipe_id: recipe.id });
+      await Recipe.delete(recipe.id);
 
-      await Recipe.delete({ id: recipe.id });
+      await Promise.all(recipe.files.map((file) => File.delete(file.id)));
 
-      await Promise.all(recipe.files.map((file) => unlinkSync(file.path)));
+      recipe.files.map((file) => unlinkSync(file.path));
 
       const recipes = await LoadRecipeService.load('recipes');
 

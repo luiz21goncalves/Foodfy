@@ -5,7 +5,7 @@ const File = require('../models/File');
 async function getImage(recipeId) {
   let files = await File.findByRecipeId(recipeId);
 
-  if (files)
+  if (files.length != 0)
     files = files.map((file) => ({
       ...file,
       src: file.path.replace('public', ''),
@@ -20,7 +20,7 @@ async function format(recipe) {
 
   if (chef) recipe.chef_name = chef.name;
 
-  if (files) {
+  if (files.length != 0) {
     recipe.img = files[0].src;
     recipe.files = files;
   }

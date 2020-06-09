@@ -83,7 +83,7 @@ const ImagesUploadRecipes = {
 
     if (fileList.length > uploadLimit) {
       alert(`Envie no máximo ${uploadLimit} imagens.`);
-      event.prefentDefault();
+      event.preventDefault();
       return true;
     }
 
@@ -97,7 +97,7 @@ const ImagesUploadRecipes = {
 
     if (totalImages > uploadLimit) {
       alert('Você atingiu o limite máximo de imagens.');
-      event.prefentDefault();
+      event.preventDefault();
       return true;
     }
 
@@ -194,7 +194,7 @@ const ImagesUploadChefs = {
 
     if (fileList.length > uploadLimit) {
       alert(`Envie no máximo ${uploadLimit} imagem.`);
-      event.prefentDefault();
+      event.preventDefault();
       return true;
     }
 
@@ -208,7 +208,7 @@ const ImagesUploadChefs = {
 
     if (totalImages > uploadLimit) {
       alert('Você atingiu o limite máximo de imagens.');
-      event.prefentDefault();
+      event.preventDefault();
       return true;
     }
 
@@ -327,11 +327,11 @@ const Validate = {
   },
   allFields(event) {
     const items = document.querySelectorAll(
-      '.item input, .item select, .item textarea'
+      '.item input[type=text], .item select, .item textarea'
     );
 
     for (const item of items) {
-      if (item.value == '' && item.name != 'removed_images') {
+      if (item.value == '' && item.name != 'information') {
         const message = document.createElement('div');
         message.classList.add('message');
         message.classList.add('error');
@@ -345,5 +345,41 @@ const Validate = {
         event.preventDefault();
       }
     }
+  },
+  allFieldsChefs(event) {
+    const imagesPreview = document.querySelectorAll('#images-preview .image');
+
+    if (imagesPreview.length == 0 && ImagesUploadChefs.files.length == 0) {
+      const message = document.createElement('div');
+      message.classList.add('message');
+      message.classList.add('error');
+
+      const messageContent = document.createElement('p');
+      messageContent.innerText = 'Por favor, envie pelo menos uma image.';
+      message.appendChild(messageContent);
+
+      document.querySelector('body').append(message);
+      event.preventDefault();
+    }
+
+    this.allFields(event);
+  },
+  allFieldsRecipes(event) {
+    const imagesPreview = document.querySelectorAll('#images-preview .image');
+
+    if (imagesPreview.length == 0 && ImagesUploadRecipes.files.length == 0) {
+      const message = document.createElement('div');
+      message.classList.add('message');
+      message.classList.add('error');
+
+      const messageContent = document.createElement('p');
+      messageContent.innerText = 'Por favor, envie pelo menos uma image.';
+      message.appendChild(messageContent);
+
+      document.querySelector('body').append(message);
+      event.preventDefault();
+    }
+
+    this.allFields(event);
   },
 };

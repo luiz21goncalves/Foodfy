@@ -45,12 +45,19 @@ async function put(req, res, next) {
 
   const chef = await Chef.findOne({ where: { id: req.body.id } });
 
+  if (!chef) {
+    const chefs = await LoadChefServce.load('chefs');
+
+    return res.render('chef/index', {
+      chefs,
+      error: 'Chef não encontrado!',
+    });
+  }
+
   if (fillAllFields) return res.send('Por favor, preencha todos os campos.');
 
   if (req.body.removed_images && req.files.length === 0)
     return res.send('Por favor, envie pelo menos uma image.');
-
-  req.chef = chef;
 
   next();
 }

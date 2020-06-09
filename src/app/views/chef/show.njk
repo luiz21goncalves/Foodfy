@@ -1,45 +1,44 @@
 {% extends "layouts/admin.njk" %}
+{% import "parts/container-admin.njk" as container %}
+{% import "parts/actions.njk" as actions %}
 
 {% block content %}
 
-  <div class="container admin">
+  {% call()container.render("") %}
 
-    <div class="actions">
-      <h2>Chef:
-        {{ chef.name }}</h2>
+  {% call()actions.render("Chef: " + chef.name) %}
+  {% if session.isAdmin %}
+    <a href="/admin/chefs/{{ chef.id }}/edit" class="button">Editar chef</a>
+  {% endif %}
+  {% endcall %}
 
-      {% if session.isAdmin %}
-        <a href="/admin/chefs/{{ chef.id }}/edit" class="button">Editar chef</a>
-      {% endif %}
-    </div>
-
-    <div class="chef-datail">
-      <img src="{{chef.img}}" alt="{{ chef.file.original_name }}">
-      <h1>{{ chef.name }}</h1>
-      <p>{{ chef.total }}
-        receitas
-      </p>
-    </div>
-
-    <h2>Receitas</h2>
-
-    <div class="recipes">
-
-      {% for recipe in recipes %}
-
-        <article>
-          <img src="{{ recipe.img }}" alt="{{ recipe.files[0].original_name }}">
-
-          <div>
-            <p>{{ recipe.title }}</p>
-            <span>{{ chef.name }}</span>
-            <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
-          </div>
-        </article>
-
-      {% endfor %}
-    </div>
-
+  <div class="chef-datail">
+    <img src="{{chef.img}}" alt="{{ chef.file.original_name }}">
+    <h1>{{ chef.name }}</h1>
+    <p>{{ chef.total }}
+      receitas
+    </p>
   </div>
+
+  <h2>Receitas</h2>
+
+  <div class="recipes">
+
+    {% for recipe in recipes %}
+
+      <article>
+        <img src="{{ recipe.img }}" alt="{{ recipe.files[0].original_name }}">
+
+        <div>
+          <p>{{ recipe.title }}</p>
+          <span>{{ chef.name }}</span>
+          <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
+        </div>
+      </article>
+
+    {% endfor %}
+  </div>
+
+  {% endcall %}
 
 {% endblock content %}

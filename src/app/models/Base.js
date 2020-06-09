@@ -86,7 +86,7 @@ const Base = {
       const line = [];
 
       Object.keys(fields).map((key) => {
-        line.push(`${key} = ${fields[key]}`);
+        line.push(`${key} = '${fields[key]}'`);
       });
 
       const query = `UPDATE ${this.table} SET
@@ -99,16 +99,8 @@ const Base = {
     }
   },
 
-  delete(field) {
-    try {
-      Object.keys(field).map((key) => {
-        return db.query(
-          `DELETE FROM ${this.table} WHERE ${key} = ${field[key]}`
-        );
-      });
-    } catch (err) {
-      console.error(err);
-    }
+  delete(id) {
+    return db.query(`DELETE FROM ${this.table} WHERE id = ${id}`);
   },
 
   async count(filters) {

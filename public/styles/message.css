@@ -18,7 +18,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  animation: hidemessage 400ms 5s ease-out forwards;
+  animation: hidemessage 400ms 4s ease-out forwards;
 }
 
 .message p {
@@ -34,10 +34,9 @@
 }
 
 .message.success {
-  background: #01B12A;
+  background: #01b12a;
 }
 
 .message.error {
-  background: #DC4747;
+  background: #dc4747;
 }
-

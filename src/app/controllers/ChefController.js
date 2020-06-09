@@ -55,7 +55,7 @@ module.exports = {
         success: `O chef ${chef.name} foi criado com sucesso.`,
       });
     } catch (err) {
-      console.error('ChefController post', err);
+      console.error(err);
     }
   },
 
@@ -67,30 +67,31 @@ module.exports = {
 
   async put(req, res) {
     try {
-      const removedImges = req.body.removed_images;
-      const { id: chefId, file_id: fileId } = req.chef;
+      const fileIdDeleted = req.body.removed_images;
+      const [file] = req.files;
+      const { id, file_id, name } = req.body;
 
-      let data = { ...req.body, fileId };
+      let data = { file_id, name };
 
-      if (req.files && removedImges) {
-        const results = await File.create(...req.files);
-        const { id } = results.rows[0];
+      if (req.files && fileIdDeleted) {
+        const fileId = await File.create({
+          name: file.filename,
+          original_name: file.originalname,
+          path: file.path,
+        });
 
-        data = { ...data, fileId: id };
+        data = { ...data, file_id: fileId };
       }
 
-      await Chef.update(data);
+      await Chef.update(id, data);
 
-      if (removedImges) await File.delete(removedImges);
+      if (fileIdDeleted) await File.delete(fileIdDeleted);
 
-      let results = await Chef.findOne(chefId);
-      const chef = await getChefImage(results.rows[0], req);
+      const chef = await LoadChefService.load('chef', { where: { id } });
 
-      results = await Chef.findRecipeByChef(chefId);
-      const recipesFilesPromise = results.rows.map((recipe) =>
-        getRecipeImage(recipe, req)
-      );
-      const recipes = await Promise.all(recipesFilesPromise);
+      const recipes = await LoadRecipeService.load('recipes', {
+        where: { chef_id: id },
+      });
 
       return res.render('chef/show', {
         chef,
@@ -98,12 +99,7 @@ module.exports = {
         success: `O chef ${chef.name} foi atualizado com sucesso.`,
       });
     } catch (err) {
-      console.error('ChefController put', err);
-
-      return res.render('chef/edit', {
-        error: 'Erro inesperado, tente novamanete.',
-        chef: req.body,
-      });
+      console.error(err);
     }
   },
 
@@ -111,12 +107,15 @@ module.exports = {
     try {
       const chef = await LoadChefService.format(req.chef);
 
-      const recipes = await Recipe.findAll({ where: { chef_id: chef.id } });
+      const recipes = await Recipe.findAll({
+        where: { chef_id: chef.id },
+      });
 
       if (recipes.length === 0) {
-        await Chef.delete({ id: chef.id });
-        await File.delete({ id: chef.file_id });
-        await unlinkSync(chef.file.path);
+        await Chef.delete(chef.id);
+        await File.delete(chef.file_id);
+
+        unlinkSync(chef.file.path);
 
         const chefs = await LoadChefService.load('chefs');
 
@@ -132,7 +131,7 @@ module.exports = {
           'Esse chef não pode ser deletado, pois possui pelo menos receita cadastrada!',
       });
     } catch (err) {
-      console.error('ChefController delete', err);
+      console.error(err);
     }
   },
 };
