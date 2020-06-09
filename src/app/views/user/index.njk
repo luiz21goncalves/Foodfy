@@ -1,13 +1,14 @@
 {% extends "layouts/admin.njk" %}
+{% import "parts/container-admin.njk" as container %}
+{% import "parts/actions.njk" as actions %}
 
 {% block content %}
 
-<div class="container admin">
+  {% call()container.render("") %}
 
-  <div class="actions">
-    <h2>Usuários</h2>
-    <a href="/admin/users/create" class="button">Novo</a>
-  </div>
+  {% call()actions.render("Usuários") %}
+  <a href="/admin/users/create" class="button">Novo</a>
+  {% endcall %}
 
   <div class="users">
     {% for user in users %}
@@ -22,7 +23,7 @@
             Editar
           </a>
 
-          <form action="/admin/users?_method=DELETE"  method="post">
+          <form action="/admin/users?_method=DELETE" method="post">
             <input type="hidden" name="id" value="{{ user.id }}">
             <a onclick="submit(event)" class="delete">Remover</a>
           </form>
@@ -31,19 +32,21 @@
     {% endfor %}
   </div>
 
-</div>
+  {% endcall %}
 
-<script>
+  <script>
+    function submit(event) {
+      const form = event.target.parentNode;
+      const name = form
+        .parentNode
+        .parentNode
+        .querySelector('p')
+        .innerText
+      const confirmation = confirm(`Deseja deletar ${name}?`);
 
-  function submit(event) {
-    const form = event.target.parentNode;
-    const name = form.parentNode.parentNode.querySelector('p').innerText
-    const confirmation = confirm(`Deseja deletar ${name}?`);
-
-    if (confirmation) 
-      return form.submit();
-  };
-
-</script>
+      if (confirmation) 
+        return form.submit();
+      };
+  </script>
 
 {% endblock content %}

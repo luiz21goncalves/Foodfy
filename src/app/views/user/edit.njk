@@ -1,34 +1,34 @@
 {% extends "layouts/admin.njk" %}
+{% import "parts/container-admin.njk" as container %}
+{% import "parts/actions.njk" as actions %}
 
 {% block content %}
 
-  <div class="container admin user">
+  {% call()container.render("user") %}
 
-    <form id="form-delete" action="/admin/users?_method=DELETE" method="post">
-      <input type="hidden" name="id" value="{{ user.id }}">
-    </form>
-
-    <form action="/admin/users?_method=PUT" method="post">
-
-      <div class="actions">
-        <h2>Atualizar Usuário</h2>
-
-        <div>
-          <a onclick="submit()" class="button delete">Deletar</a>
-          <button type="submit" class="button" onclick="Validate.allFields(event)">Salvar</button>
-        </div>
-      </div>
-
-      <div class="fields">
-        {% include "user/fields.njk" %}
-      </div>
-
-      <input type="hidden" name="id" value="{{ user.id }}">
-
-    </form>
-
+  {% call()actions.render("Atualizar Usuário") %}
+  <div>
+    <a onclick="submit()" class="button delete">Deletar</a>
+    <button type="submit" class="button" onclick="Validate.allFields(event)">Salvar</button>
   </div>
+  {% endcall %}
 
-  {% include "confirm.njk" %}
+  <form id="form-delete" action="/admin/users?_method=DELETE" method="post">
+    <input type="hidden" name="id" value="{{ user.id }}">
+  </form>
+
+  <form action="/admin/users?_method=PUT" method="post">
+
+    <div class="fields">
+      {% include "user/fields.njk" %}
+    </div>
+
+    <input type="hidden" name="id" value="{{ user.id }}">
+
+  </form>
+
+  {% endcall %}
+
+  {% include "parts/confirm.njk" %}
 
 {% endblock content %}

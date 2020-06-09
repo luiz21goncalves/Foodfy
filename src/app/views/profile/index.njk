@@ -1,18 +1,18 @@
 {% extends "lauouts/admin.njk" %}
+{% import "parts/container-admin.njk" as container %}
+{% import "parts/actions.njk" as actions %}
 
 {% block content %}
 
-<div class="container admin profile">
+  {% call()container.render("profile") %}
 
   <form action="/admin/profile?_method=PUT" method="post">
 
-    <div class="actions">
-      <h2>Bem vindo {{ user.firstName }}</h2>
+    {% call()actions.render("Bem vindo " + user.firstName) %}
 
-      <div>
-        <button type="submit" class="button">Salvar</button>
-      </div>
-    </div>
+    <button type="submit" class="button">Salvar</button>
+
+    {% endcall %}
 
     <div class="fields">
 
@@ -20,13 +20,7 @@
         <label for="name">Nome</label>
 
         <div class="input">
-          <input
-            id="name"
-            type="text"
-            name="name"
-            placeholder="Digite o nome completo"
-            value="{{ user.name }}"
-          >
+          <input id="name" type="text" name="name" placeholder="Digite o nome completo" value="{{ user.name }}">
         </div>
       </div>
 
@@ -34,13 +28,7 @@
         <label for="email">Email</label>
 
         <div class="input">
-          <input
-            id="email"
-            type="email"
-            name="email"
-            placeholder="Digite o email"
-            value="{{ user.email }}"
-          >
+          <input id="email" type="email" name="email" placeholder="Digite o email" value="{{ user.email }}">
         </div>
       </div>
 
@@ -48,21 +36,16 @@
         <label for="password">Senha</label>
 
         <div class="input">
-          <input
-            id="password"
-            type="password"
-            name="password"
-            placeholder="Digite a senha"
-          >
+          <input id="password" type="password" name="password" placeholder="Digite a senha">
         </div>
       </div>
 
     </div>
 
     <input type="hidden" name="id" value="{{ user.id }}">
-    
+
   </form>
 
-</div>
+  {% endcall %}
 
 {% endblock content %}
