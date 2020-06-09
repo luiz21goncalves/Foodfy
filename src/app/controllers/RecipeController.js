@@ -117,7 +117,13 @@ module.exports = {
           recipeFiles.map((item) => RecipeFile.delete(item.id))
         );
 
-        await Promise.all(filesId.map((id) => File.delete({ id })));
+        const files = await Promise.all(
+          filesId.map((id) => File.findOne({ where: { id } }))
+        );
+
+        await Promise.all(filesId.map((id) => File.delete(id)));
+
+        files.map((file) => unlinkSync(file.path));
       }
 
       if (files != 0) {

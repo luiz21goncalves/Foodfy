@@ -4,10 +4,9 @@ function checkAllFields(body) {
   const keys = Object.keys(body);
 
   for (const key of keys) {
-    if (body[key] === '' && key !== 'is_admin')
-      return {
-        error: 'Apenas o campo de admistrador não é obrigatório.',
-      };
+    if (body[key] == '' && key != 'is_admin') {
+      return 'Apenas o campo de admistrador não é obrigatório.';
+    }
   }
 }
 
@@ -31,11 +30,7 @@ async function edit(req, res, next) {
 async function post(req, res, next) {
   const fillAllFields = checkAllFields(req.body);
 
-  if (fillAllFields)
-    return res.render('user/create', {
-      ...fillAllFields,
-      user: req.body,
-    });
+  if (fillAllFields) return res.send(fillAllFields);
 
   const user = await User.findOne({ where: { email: req.body.email } });
 
@@ -50,22 +45,30 @@ async function post(req, res, next) {
 }
 
 async function put(req, res, next) {
+  const user = User.findOne({ where: { id: req.body.id } });
+
+  if (!user) {
+    const users = await User.findAll();
+
+    return res.render('user/index', {
+      users,
+      error: 'Usuário não encontrado.',
+    });
+  }
+
   const fillAllFields = checkAllFields(req.body);
 
-  if (fillAllFields)
+  if (fillAllFields) return res.send(fillAllFields);
+
+  const emailAvailable = await User.findOne({
+    where: { email: req.body.email },
+  });
+
+  if (!emailAvailable) {
     return res.render('user/edit', {
-      ...fillAllFields,
       user: req.body,
+      error: 'Esse email pretence a outro usuário, por favor ulitize outro.',
     });
-
-  const user = await User.findOne({ where: { email: req.body.email } });
-
-  if (user) {
-    if (user.id !== req.body.id)
-      return res.render('user/edit', {
-        user: req.body,
-        error: 'Esse email pretence a outro usuário, por favor ulitize outro.',
-      });
   }
 
   next();
@@ -76,7 +79,7 @@ async function deleteUser(req, res, next) {
   const user = await User.findOne({ where: { id: req.body.id } });
 
   if (!user) {
-    const users = await User.all();
+    const users = await User.findAll();
 
     return res.render('user/index', {
       users,
@@ -85,11 +88,11 @@ async function deleteUser(req, res, next) {
   }
 
   if (user.id === loggedUserId) {
-    const users = await User.all();
+    const users = await User.findAll();
 
     return res.render('user/index', {
       users,
-      error: 'Você não pode deletar sua próprio usuário.',
+      error: 'Você não pode deletar seu próprio usuário.',
     });
   }
 

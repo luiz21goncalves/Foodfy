@@ -6,18 +6,19 @@
 
   {% call()container.render("user") %}
 
-  {% call()actions.render("Criar Usuário") %}
-  <div>
-    <button type="submit" class="button" onclick="Validate.allFields(event)">Salvar</button>
-    <a href="/admin/users" class="button cancel">Cancelar</a>
-  </div>
-  {% endcall %}
-
   <form action="/admin/users" method="post">
+
+    {% call()actions.render("Criar Usuário") %}
+    <div>
+      <button type="submit" class="button" onclick="Validate.allFields(event)">Salvar</button>
+      <a href="/admin/users" class="button cancel">Cancelar</a>
+    </div>
+    {% endcall %}
 
     <div class="fields">
       {% include "user/fields.njk" %}
     </div>
+
   </form>
 
   {% endcall %}

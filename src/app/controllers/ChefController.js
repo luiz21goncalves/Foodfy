@@ -85,7 +85,13 @@ module.exports = {
 
       await Chef.update(id, data);
 
-      if (fileIdDeleted) await File.delete(fileIdDeleted);
+      if (fileIdDeleted) {
+        const file = File.findOne({ where: { id: fileIdDeleted } });
+
+        await File.delete(fileIdDeleted);
+
+        unlinkSync(file.path);
+      }
 
       const chef = await LoadChefService.load('chef', { where: { id } });
 

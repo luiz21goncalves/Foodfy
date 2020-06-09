@@ -8,8 +8,26 @@
       <a href="/admin/chefs">Chefs</a>
       <a href="/admin/users">Usuários</a>
     </nav>
-    <form action="/logout" method="post">
-      <button type="submit">Sair</button>
-    </form>
+    {% if session.isAdmin %}
+      <a href="">Minha conta
+        <div class="drop-down">
+          <ul>
+            <li>
+              <a href="/admin/profile">Meu perfil</a>
+            </li>
+
+            <li>
+              <form action="/logout" method="post">
+                <button type="submit">Sair</button>
+              </form>
+            </li>
+          </ul>
+        </div>
+      </a>
+    {% else %}
+      <form action="/logout" method="post">
+        <button type="submit">Sair</button>
+      </form>
+    {% endif %}
   </div>
 </header>
