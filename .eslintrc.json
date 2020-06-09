@@ -17,7 +17,7 @@
     "no-console": "off",
     "prettier/prettier": "error",
     "no-restricted-globals": "off",
-    "no-restricted-syntax": "warn",
+    "no-restricted-syntax": "off",
     "no-param-reassign": "warn",
     "no-return-await": "warn",
     "consistent-return": "warn",

@@ -335,7 +335,11 @@ const Validate = {
         const message = document.createElement('div');
         message.classList.add('message');
         message.classList.add('error');
-        message.innerText = 'Por favor, preencha todos os campos.';
+
+        const messageContent = document.createElement('p');
+        messageContent.innerText = 'Por favor, preencha todos os campos.';
+        message.appendChild(messageContent);
+
         document.querySelector('body').append(message);
 
         event.preventDefault();
