@@ -65,7 +65,7 @@ module.exports = {
 
     const chefsFormated = await Promise.all(chefs.map(LoadChefService.format));
 
-    const count = Chef.count();
+    const count = await Chef.count();
 
     const pagination = { total: Math.ceil(count / limit), page };
 
@@ -89,7 +89,7 @@ module.exports = {
       recipes.map(LoadRecipeService.format)
     );
 
-    const count = Recipe.count(filters);
+    const count = await Recipe.count(filters);
 
     const pagination = { total: Math.ceil(count / limit), page };
 

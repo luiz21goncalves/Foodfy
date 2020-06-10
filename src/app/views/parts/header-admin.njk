@@ -1,33 +1,45 @@
 <header class="admin">
-  <div class="content">
+
+  <div class="content-admin">
+
+    <a href="/admin">
+      <img src="/assets/logo_white.png" alt="Logo Foodfy">
+    </a>
+
     <nav>
-      <a href="/admin">
-        <img src="/assets/logo_white.png" alt="Logo Foodfy">
-      </a>
       <a href="/admin/recipes">Receitas</a>
       <a href="/admin/chefs">Chefs</a>
       <a href="/admin/users">Usuários</a>
     </nav>
-    {% if session.isAdmin %}
-      <a href="">Minha conta
-        <div class="drop-down">
-          <ul>
-            <li>
-              <a href="/admin/profile">Meu perfil</a>
-            </li>
 
-            <li>
-              <form action="/logout" method="post">
-                <button type="submit">Sair</button>
-              </form>
-            </li>
-          </ul>
-        </div>
-      </a>
+    {% if session.isAdmin %}
+
+      <div class="dropdown-container">
+        <a href="/admin/profile">Minha conta</a>
+
+        <ul class="dropdown">
+          <li>
+            <a href="/admin/profile">Meu perfil</a>
+          </li>
+
+          <li>
+            <form action="/logout" method="post">
+              <button type="submit">Sair</button>
+            </form>
+          </li>
+        </ul>
+      </div>
+
     {% else %}
-      <form action="/logout" method="post">
-        <button type="submit">Sair</button>
-      </form>
+
+      <div class="dropdown-container">
+        <form action="/logout" method="post">
+          <button type="submit">Sair</button>
+        </form>
+      </div>
+
     {% endif %}
+
   </div>
+
 </header>

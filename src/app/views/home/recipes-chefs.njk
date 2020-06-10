@@ -6,7 +6,7 @@
   {% call container.render("", "") %}
 
   <div class="chef-datail">
-    <img src="{{chef.img}}" alt="{{ chef.files[0].name }}">
+    <img src="{{chef.img}}" alt="{{ chef.file.original_name }}">
     <h1>{{ chef.name }}</h1>
     <p>{{ chef.total }}
       receitas
@@ -23,7 +23,7 @@
 
       <article>
         <a href="/recipes/{{recipe.id}}">
-          <img src="{{ recipe.img }}" alt="{{ recipe.files[0].name }}">
+          <img src="{{ recipe.img }}" alt="{{ recipe.files[0].original_name }}">
         </a>
 
         <div>

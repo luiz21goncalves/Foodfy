@@ -8,7 +8,7 @@ module.exports = {
   async index(req, res) {
     let { limit, page } = req.query;
     const filters = '';
-    limit = limit || 16;
+    limit = limit || 9;
     page = page || 1;
     const offset = Math.ceil(limit * (page - 1));
 
@@ -97,10 +97,20 @@ module.exports = {
     try {
       await User.delete(user.id);
 
-      const users = await User.findAll();
+      const filters = '';
+      const limit = 9;
+      const page = 1;
+      const offset = 0;
+
+      const users = await User.paginate({ filters, offset, limit });
+
+      const count = await User.count();
+
+      const pagination = { total: Math.ceil(count / limit), page };
 
       return res.render('user/index', {
         users,
+        pagination,
         success: `Usuário ${user.name} deletado com sucesso.`,
       });
     } catch (err) {

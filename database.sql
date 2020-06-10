@@ -1,6 +1,12 @@
+-- Delete a tabale se existir 
+--(Selecione apenas a linha 3 e aplique a alteração, não esteja com a DB que vai deletar selecionada)
 DROP DATABASE IF EXISTS foodfy;
+
+-- Crie a tabela e a selecione
 CREATE DATABASE foodfy;
 
+-- Selecione a partir da linha 10 e crie as tabelas, triggers e views 
+-- (confira se a DB foodfy esta selecionada)
 CREATE TABLE "files" (
   "id" serial PRIMARY KEY,
   "name" text NOT NULL,
@@ -43,7 +49,8 @@ CREATE TABLE "users" (
   "reset_token_expires" text,
   "is_admin" boolean DEFAULT false,
   "created_at" timestamp DEFAULT (now()),
-  "updated_at" timestamp DEFAULT (now())
+  "updated_at" timestamp DEFAULT (now()),
+  "deleted_at" timestamp
 );
 
 CREATE TABLE "session" (
@@ -87,3 +94,14 @@ CREATE TRIGGER set_timestamp
 BEFORE UPDATE ON users
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE OR REPLACE RULE delete_user AS
+ON DELETE TO users DO INSTEAD
+UPDATE users
+SET deleted_at = now()
+WHERE users.id = old.id;
+
+ALTER TABLE users RENAME TO users_with_deleted;
+
+CREATE VIEW users AS
+SELECT * FROM users_with_deleted WHERE deleted_at IS null;

@@ -21,7 +21,7 @@ module.exports = {
         chefs.map(LoadChefService.format)
       );
 
-      const count = Chef.count();
+      const count = await Chef.count();
 
       const pagination = { total: Math.ceil(count / limit), page };
 
@@ -37,13 +37,30 @@ module.exports = {
 
   async show(req, res) {
     let { chef } = req;
+    let { limit, page } = req.query;
+
+    const filters = { where: { chef_id: chef.id } };
+    limit = limit || 6;
+    page = page || 1;
+    const offset = Math.ceil(limit * (page - 1));
+
     chef = await LoadChefService.format(chef);
 
-    const recipes = await LoadRecipeService.load('recipes', {
-      where: { chef_id: chef.id },
-    });
+    const recipes = await Recipe.paginate({ filters, limit, offset });
 
-    return res.render('chef/show', { chef, recipes });
+    const recipesFormated = await Promise.all(
+      recipes.map(LoadRecipeService.format)
+    );
+
+    const count = await Recipe.count(filters);
+
+    const pagination = { total: Math.ceil(count / limit), page };
+
+    return res.render('chef/show', {
+      chef,
+      recipes: recipesFormated,
+      pagination,
+    });
   },
 
   async post(req, res) {
@@ -99,7 +116,7 @@ module.exports = {
       await Chef.update(id, data);
 
       if (fileIdDeleted) {
-        const file = File.findOne({ where: { id: fileIdDeleted } });
+        const file = await File.findOne({ where: { id: fileIdDeleted } });
 
         await File.delete(fileIdDeleted);
 
@@ -136,10 +153,24 @@ module.exports = {
 
         unlinkSync(chef.file.path);
 
-        const chefs = await LoadChefService.load('chefs');
+        const filters = '';
+        const limit = 16;
+        const page = 1;
+        const offset = 0;
+
+        const chefs = await Chef.paginate({ filters, limit, offset });
+
+        const chefsFormated = await Promise.all(
+          chefs.map(LoadChefService.format)
+        );
+
+        const count = await Chef.count();
+
+        const pagination = { total: Math.ceil(count / limit), page };
 
         return res.render('chef/index', {
-          chefs,
+          chefs: chefsFormated,
+          pagination,
           success: `o chef ${chef.name} deletado com sucesso.`,
         });
       }

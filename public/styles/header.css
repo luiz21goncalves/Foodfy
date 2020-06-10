@@ -54,36 +54,92 @@ header .content div a {
 header.admin {
   background: #111;
   max-width: 100%;
-  margin: 0 auto;
+  height: 80px;
   margin-bottom: 50px;
   display: flex;
   align-items: center;
 }
 
-header.admin .content {
-  margin-top: 0;
-  width: 100%;
+header.admin .content-admin {
+  margin: 0 auto;
+  max-width: 940px;
+  width: 80%;
+  height: 100%;
+  display: flex;
   align-items: center;
 }
 
-header.admin .content nav a:first-child {
+header.admin .content-admin > a {
   margin-right: 50px;
 }
 
-header.admin .content nav a,
-header.admin .content form button {
+header.admin .content-admin nav {
+  flex: 1;
+}
+
+header.admin .content-admin a,
+header.admin .content-admin button {
   font-size: 15px;
   font-weight: bold;
   color: #999;
   text-transform: uppercase;
 }
 
-header.admin .content nav a:hover, header.admin .content nav a.active,
-header.admin .content form button:hover  {
+header.admin .content-admin a + a {
+  margin-left: 30px;
+}
+
+header.admin .content-admin a:hover,
+header.admin .content-admin a.active,
+header.admin .content-admin button:hover {
   color: #fff;
 }
 
-header.admin .content form button {
+header.admin .content-admin button {
   background: none;
   cursor: pointer;
+}
+
+header.admin .content-admin .dropdown-container {
+  position: relative;
+}
+
+header.admin .content-admin .dropdown-container:hover .dropdown {
+  top: -20px;
+  opacity: 1;
+  visibility: initial;
+}
+
+header.admin .content-admin .dropdown {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: #111;
+  border: 1px solid #999;
+  border-radius: 4px;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  opacity: 0;
+  visibility: hidden;
+  transition: 400ms;
+}
+
+header.admin .dropdown {
+  list-style-type: none;
+  padding: 0;
+}
+
+header.admin .dropdown li {
+  padding: 16px 0;
+  border-radius: 4px;
+  width: 100%;
+  text-align: center;
+}
+
+header.admin .dropdown li + li {
+  border-top: 1px solid #999;
 }

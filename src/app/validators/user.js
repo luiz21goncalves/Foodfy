@@ -14,10 +14,20 @@ async function edit(req, res, next) {
   const user = await User.findOne({ where: { id: req.params.id } });
 
   if (!user) {
-    const users = await User.all();
+    const filters = '';
+    const limit = 9;
+    const page = 1;
+    const offset = 0;
+
+    const users = await User.paginate({ filters, offset, limit });
+
+    const count = await User.count();
+
+    const pagination = { total: Math.ceil(count / limit), page };
 
     return res.render('user/index', {
       users,
+      pagination,
       error: 'Usuário não encontrado.',
     });
   }
@@ -45,13 +55,23 @@ async function post(req, res, next) {
 }
 
 async function put(req, res, next) {
-  const user = User.findOne({ where: { id: req.body.id } });
+  const user = await User.findOne({ where: { id: req.body.id } });
 
   if (!user) {
-    const users = await User.findAll();
+    const filters = '';
+    const limit = 9;
+    const page = 1;
+    const offset = 0;
+
+    const users = await User.paginate({ filters, offset, limit });
+
+    const count = await User.count();
+
+    const pagination = { total: Math.ceil(count / limit), page };
 
     return res.render('user/index', {
       users,
+      pagination,
       error: 'Usuário não encontrado.',
     });
   }
@@ -64,7 +84,7 @@ async function put(req, res, next) {
     where: { email: req.body.email },
   });
 
-  if (!emailAvailable) {
+  if (emailAvailable) {
     return res.render('user/edit', {
       user: req.body,
       error: 'Esse email pretence a outro usuário, por favor ulitize outro.',
@@ -79,19 +99,39 @@ async function deleteUser(req, res, next) {
   const user = await User.findOne({ where: { id: req.body.id } });
 
   if (!user) {
-    const users = await User.findAll();
+    const filters = '';
+    const limit = 9;
+    const page = 1;
+    const offset = 0;
+
+    const users = await User.paginate({ filters, offset, limit });
+
+    const count = await User.count();
+
+    const pagination = { total: Math.ceil(count / limit), page };
 
     return res.render('user/index', {
       users,
+      pagination,
       error: 'Usuário não encontrado.',
     });
   }
 
   if (user.id === loggedUserId) {
-    const users = await User.findAll();
+    const filters = '';
+    const limit = 9;
+    const page = 1;
+    const offset = 0;
+
+    const users = await User.paginate({ filters, offset, limit });
+
+    const count = await User.count();
+
+    const pagination = { total: Math.ceil(count / limit), page };
 
     return res.render('user/index', {
       users,
+      pagination,
       error: 'Você não pode deletar seu próprio usuário.',
     });
   }

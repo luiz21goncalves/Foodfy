@@ -10,7 +10,7 @@ module.exports = {
     try {
       let { limit, page, filter } = req.query;
       filter = filter || '';
-      limit = limit || 6;
+      limit = limit || 12;
       page = page || 1;
       const offset = Math.ceil(limit * (page - 1));
 
@@ -196,10 +196,23 @@ module.exports = {
 
       recipe.files.map((file) => unlinkSync(file.path));
 
-      const recipes = await LoadRecipeService.load('recipes');
+      const filters = '';
+      const limit = 12;
+      const offset = 0;
+
+      const recipes = await Recipe.paginate({ filters, limit, offset });
+
+      const recipesFormated = await Promise.all(
+        recipes.map(LoadRecipeService.format)
+      );
+
+      const count = await Recipe.count();
+
+      const pagination = { total: Math.ceil(count / limit), page: 1 };
 
       return res.render('recipe/index', {
-        recipes,
+        recipes: recipesFormated,
+        pagination,
         success: `A receita ${recipe.title} deletada com sucesso.`,
       });
     } catch (err) {
