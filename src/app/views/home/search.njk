@@ -5,24 +5,26 @@
 
   {% call container.render('Buscando por  "' + filter + '"', "") %}
 
-    <div class="recipes">
-      {% for recipe in recipes %}
+  <div class="recipes">
+    {% for recipe in recipes %}
 
-        <article>
-          <a href="/recipes/{{recipe.id}}">
-            <img src="{{ recipe.files[0].src }}" alt="{{ recipe.files[0].name }}">
+      <article>
+        <a href="/recipes/{{recipe.id}}">
+          <img src="{{ recipe.files[0].src }}" alt="{{ recipe.files[0].name }}">
+        </a>
+
+        <div>
+          <p>{{ recipe.title }}</p>
+          <a href="/chefs/{{ recipe.chef_id }}">
+            <span>{{ recipe.chef_name }}</span>
           </a>
+        </div>
+      </article>
 
-          <div>
-            <p>{{ recipe.title }}</p>
-            <a href="/chefs/{{ recipe.chef_id }}">
-              <span>{{ recipe.chef_name }}</span>
-            </a>
-          </div>
-        </article>
-        
-      {% endfor %}
-    </div>
+    {% endfor %}
+  </div>
+
+  {% include "parts/pagination.njk" %}
 
   {% endcall %}
 

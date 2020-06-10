@@ -75,21 +75,34 @@ module.exports = {
     return db.query(query, [id]);
   },
 
-  async search(filter) {
-    const results = await db.query(`
-      SELECT recipes.*, chefs.name AS chef_name
-      FROM recipes
-      LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-      WHERE recipes.title ILIKE '%${filter}%'
-      ORDER BY recipes.created_at DESC
-    `);
-
-    return results.rows;
-  },
-
   async chefSelectionOptions() {
     const results = await db.query(`SELECT name, id FROM chefs`);
 
     return results.rows;
+  },
+
+  async search({ filter, limit, offset }) {
+    const query = `
+      SELECT * FROM recipes
+      WHERE recipes.title ILIKE '%${filter}%'  
+      ORDER BY created_at
+      LIMIT ${limit}
+      OFFSET ${offset}
+    `;
+
+    const results = await db.query(query);
+
+    return results.rows;
+  },
+
+  async countSearch(filter) {
+    const query = `
+      SELECT COUNT(*) FROM recipes
+      WHERE recipes.title ILIKE '%${filter}%'
+    `;
+
+    const results = await db.query(query);
+
+    return results.rows[0].count;
   },
 };

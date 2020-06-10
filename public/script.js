@@ -329,11 +329,9 @@ const Validate = {
     const items = document.querySelectorAll(
       '.item input[type=text], .item input[type=email], .item select, .item textarea'
     );
-    console.log(items);
 
     for (const item of items) {
       if (item.value == '' && item.name != 'information') {
-        console.log(item.name, item.value);
         const message = document.createElement('div');
         message.classList.add('message');
         message.classList.add('error');

@@ -120,6 +120,32 @@ const Base = {
 
     return results.rows[0].count;
   },
+
+  async paginate({ filters, limit, offset }) {
+    let filterquery = ``;
+
+    if (filters) {
+      Object.keys(filters).map((key) => {
+        filterquery += ` ${key}`;
+
+        Object.keys(filters[key]).map((field) => {
+          filterquery += ` ${field} = '${filters[key][field]}'`;
+        });
+      });
+    }
+
+    const query = `
+      SELECT * FROM ${this.table}
+      ${filterquery}
+      ORDER BY created_at
+      LIMIT ${limit}
+      OFFSET ${offset}
+    `;
+
+    const results = await db.query(query);
+
+    return results.rows;
+  },
 };
 
 module.exports = Base;

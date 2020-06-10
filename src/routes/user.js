@@ -9,7 +9,7 @@ const { onlyAdmin } = require('../app/middlewares/session');
 
 routes.use(onlyAdmin);
 
-routes.get('/', UserController.list);
+routes.get('/', UserController.index);
 routes.get('/create', UserController.create);
 routes.get('/:id/edit', UserValidator.edit, UserController.edit);
 

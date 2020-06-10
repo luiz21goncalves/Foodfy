@@ -9,10 +9,23 @@ const LoadRecipeService = require('../services/LoadRecipeService');
 module.exports = {
   async index(req, res) {
     try {
-      const chefs = await LoadChefService.load('chefs');
+      let { limit, page } = req.query;
+      const filters = '';
+      limit = limit || 16;
+      page = page || 1;
+      const offset = Math.ceil(limit * (page - 1));
 
-      // return res.send({ chefs });
-      return res.render('chef/index', { chefs });
+      const chefs = await Chef.paginate({ filters, limit, offset });
+
+      const chefsFormated = await Promise.all(
+        chefs.map(LoadChefService.format)
+      );
+
+      const count = Chef.count();
+
+      const pagination = { total: Math.ceil(count / limit), page };
+
+      return res.render('chef/index', { chefs: chefsFormated, pagination });
     } catch (err) {
       console.error(err);
     }

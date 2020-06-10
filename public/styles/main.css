@@ -1,8 +1,8 @@
 :root {
   --color-text: #111;
-  --color-link: #6558C3;
-  --color-delete: #DC4747;
-  --color-cancel: #8A8A8A;
+  --color-link: #6558c3;
+  --color-delete: #dc4747;
+  --color-cancel: #8a8a8a;
 }
 
 * {
@@ -50,7 +50,7 @@ img {
 }
 
 .button.cancel {
-  background:  var(--color-cancel);
+  background: var(--color-cancel);
   margin-left: 10px;
 }
 
@@ -74,6 +74,10 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.pagination + footer {
+  margin-top: 50px;
 }
 
 footer p {

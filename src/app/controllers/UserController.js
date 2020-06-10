@@ -3,13 +3,22 @@ const crypto = require('crypto');
 
 const mailer = require('../../lib/mailer');
 const User = require('../models/User');
-const Recipe = require('../models/Recipe');
 
 module.exports = {
-  async list(req, res) {
-    const users = await User.findAll();
+  async index(req, res) {
+    let { limit, page } = req.query;
+    const filters = '';
+    limit = limit || 16;
+    page = page || 1;
+    const offset = Math.ceil(limit * (page - 1));
 
-    return res.render('user/index', { users });
+    const users = await User.paginate({ filters, offset, limit });
+
+    const count = await User.count();
+
+    const pagination = { total: Math.ceil(count / limit), page };
+
+    return res.render('user/index', { users, pagination });
   },
 
   create(req, res) {

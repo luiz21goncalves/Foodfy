@@ -8,9 +8,26 @@ const LoadRecipeService = require('../services/LoadRecipeService');
 module.exports = {
   async index(req, res) {
     try {
-      const recipes = await LoadRecipeService.load('recipes');
+      let { limit, page, filter } = req.query;
+      filter = filter || '';
+      limit = limit || 6;
+      page = page || 1;
+      const offset = Math.ceil(limit * (page - 1));
 
-      return res.render('recipe/index', { recipes });
+      const recipes = await Recipe.paginate({ filter, limit, offset });
+
+      const recipesFormated = await Promise.all(
+        recipes.map(LoadRecipeService.format)
+      );
+
+      const count = await Recipe.count();
+
+      const pagination = { total: Math.ceil(count / limit), page };
+
+      return res.render('recipe/index', {
+        recipes: recipesFormated,
+        pagination,
+      });
     } catch (err) {
       console.error(err);
     }

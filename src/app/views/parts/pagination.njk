@@ -1,0 +1,60 @@
+<div class="pagination" data-total="{{ pagination.total }}" data-filter="{{ filter }}" data-page="{{ pagination.page }}"></div>
+
+<script>
+
+  function paginate(selectedPage, totalPages) {
+    const pages = [];
+    let oldPage;
+
+    for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
+      const pageAfterSelectedPage = currentPage <= selectedPage + 1;
+      const pageBeforeSelectedPage = currentPage >= selectedPage - 1;
+      const firstAndLastPages = currentPage == 1 || currentPage == 2 || currentPage == totalPages || currentPage == totalPages - 1;
+
+      if (firstAndLastPages || pageBeforeSelectedPage && pageAfterSelectedPage) {
+        if (oldPage && currentPage - oldPage > 2) {
+          pages.push('...');
+        }
+
+        if (oldPage && currentPage - oldPage == 2) {
+          pages.push(currentPage - 1);
+        }
+
+        pages.push(currentPage);
+        oldPage = currentPage;
+      }
+    }
+
+    return pages;
+  }
+
+  const divPagination = document.querySelector('.pagination');
+  const total = Number(divPagination.dataset.total);
+  const selectedPage = Number(divPagination.dataset.page);
+  const filter = divPagination.dataset.filter;
+  const pages = paginate(selectedPage, total);
+
+  let elements = '';
+
+  for (const page of pages) {
+    if (String(page).includes('...')) {
+      elements += `<span>${page}</span>`;
+    } else {
+      if (filter) {
+        if (page == selectedPage) {
+          elements += `<a class="selected" href="?page=${page}&filter=${filter}">${page}</a>`;
+        } else {
+          elements += `<a href="?page=${page}&filter=${filter}">${page}</a>`;
+        }
+      } else {
+        if (page == selectedPage) {
+          elements += `<a class="selected" href="?page=${page}">${page}</a>`;
+        } else {
+          elements += `<a href="?page=${page}">${page}</a>`;
+        }
+      }
+    }
+  }
+
+  divPagination.innerHTML = elements;
+</script>

@@ -12,9 +12,9 @@ const Recipe = require('./src/app/models/Recipe');
 const RecipeFile = require('./src/app/models/RecipeFile');
 const File = require('./src/app/models/File');
 
-const totalUsers = 2;
-const totalChefs = 4;
-const totalRecipes = 8;
+const totalUsers = 4;
+const totalChefs = 8;
+const totalRecipes = 16;
 const totalImagePerRecipe = 2;
 let usersIds;
 let chefsIds;
