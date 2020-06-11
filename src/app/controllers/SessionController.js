@@ -67,7 +67,8 @@ module.exports = {
       console.error(err);
 
       return res.render('session/forgot', {
-        error: 'Erro inesperado, por favor tente novamente.',
+        user,
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
       });
     }
   },
@@ -97,9 +98,9 @@ module.exports = {
       console.error(err);
 
       return res.render('session/reset', {
-        user: req.body,
+        user,
         token,
-        error: 'Erro inesperado, por favor tente novamente.',
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
       });
     }
   },

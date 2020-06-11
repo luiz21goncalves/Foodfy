@@ -8,10 +8,19 @@ async function checkChef(req, res, next) {
   const chef = await Chef.findOne({ where: { id } });
 
   if (!chef) {
-    const chefs = await LoadChefService.load('chefs');
+    const filters = '';
+    const limit = 16;
+    const page = 1;
+
+    const { chefs, pagination } = await LoadChefService.paginate({
+      limit,
+      page,
+      filters,
+    });
 
     return res.render('home/chef', {
       chefs,
+      pagination,
       error: 'Chef não encontrado.',
     });
   }
@@ -26,10 +35,19 @@ async function checkRecipe(req, res, next) {
   const recipe = await Recipe.findOne({ where: { id } });
 
   if (!recipe) {
-    const recipes = await LoadRecipeService.load('recipes');
+    const filters = '';
+    const limit = 6;
+    const page = 1;
+
+    const { recipes, pagination } = await LoadRecipeService.paginate({
+      limit,
+      page,
+      filters,
+    });
 
     return res.render('home/index', {
       recipes,
+      pagination,
       error: 'Receita não encontrada.',
     });
   }
@@ -39,16 +57,4 @@ async function checkRecipe(req, res, next) {
   next();
 }
 
-function search(req, res, next) {
-  const { filter } = req.query;
-
-  if (!filter) return res.redirect('/recipes');
-
-  next();
-}
-
-module.exports = {
-  checkChef,
-  checkRecipe,
-  search,
-};
+module.exports = { checkChef, checkRecipe };

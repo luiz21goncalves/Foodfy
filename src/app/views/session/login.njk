@@ -3,40 +3,61 @@
 
 {% block content %}
 
-  {% call()container.render("", "login") %}
+  {% call container.render("", "login") %}
 
-  <div class="logo">
-    <img src="/assets/logo.png" alt="logo Foodfy">
-  </div>
-
-  <h2>Iniciar Sessão</h2>
-
-  <form action="/login" method="post">
-    <div class="fields">
-
-      <div class="item">
-        <label for="email">Email</label>
-
-        <div class="input">
-          <input type="email" name="email" id="email" placeholder="Digite seu email" value="{{ user.email }}" onblur="Validate.apply(this, 'isEmail')">
-        </div>
-      </div>
-
-      <div class="item">
-        <label for="password">Senha</label>
-
-        <div class="input">
-          <input type="password" name="password" id="password" placeholder="Digite sua senha">
-        </div>
-      </div>
-
-      <div class="footer">
-        <a href="/forgot-password">Perdeu a senha?</a>
-        <button type="submit" class="button">Acessar</button>
-      </div>
-
+    <div class="logo">
+      <img src="/assets/logo.png" alt="logo Foodfy">
     </div>
-  </form>
+
+    <h2>Iniciar Sessão</h2>
+
+    <form action="/login" method="post">
+
+      <div class="fields">
+
+        <div class="item">
+          <label for="email">Email</label>
+
+          <div class="input">
+            <input 
+              type="email" 
+              name="email" 
+              id="email" 
+              placeholder="Digite seu email" 
+              value="{{ user.email }}" 
+              onblur="Validate.apply(this, 'isEmail')"
+            >
+          </div>
+        </div>
+
+        <div class="item">
+          <label for="password">Senha</label>
+
+          <div class="input">
+            <input 
+              type="password" 
+              name="password" 
+              id="password" 
+              placeholder="Digite sua senha"
+            >
+          </div>
+        </div>
+
+        <div class="footer">
+          <a href="/forgot-password">Perdeu a senha?</a>
+
+          <button 
+            type="submit" 
+            class="button" 
+            onclick="Validate.allFields(event)"
+          >
+            Acessar
+          </button>
+        </div>
+
+      </div>
+
+    </form>
 
   {% endcall %}
 

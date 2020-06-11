@@ -11,7 +11,15 @@
 
   <div class="images-input">
     <div id="images-upload">
-      <input id="images-input" type="file" name="images_recipes" multiple="multiple" accept="image/*" onchange="ImagesUploadRecipes.handleFileInput(event)">
+      <input 
+        id="images-input" 
+        type="file" 
+        name="images_recipes" 
+        multiple="multiple" 
+        accept="image/*" 
+        onchange="ImagesUploadRecipes.handleFileInput(event)"
+      >
+      
       <i class="material-icons">add</i>
     </div>
 
@@ -19,7 +27,11 @@
       {% for file in recipe.files %}
         <div class="image" id="{{ file.id }}">
           <img src="{{ file.src }}" alt="{{ file.original_name }}">
-          <i class="material-icons" onclick="ImagesUploadRecipes.removeOldImage(event)">
+
+          <i 
+            class="material-icons" 
+            onclick="ImagesUploadRecipes.removeOldImage(event)"
+          >
             close
           </i>
         </div>
@@ -52,15 +64,19 @@
 
   <div>
     {% if recipe.ingredients %}
+
       {% for ingredient in recipe.ingredients %}
         <div class="copy">
           <input type="text" name="ingredients[]" value="{{ ingredient }}">
         </div>
       {% endfor %}
+
     {% else %}
+
       <div class="copy">
         <input type="text" name="ingredients[]" value="{{ ingredient }}">
       </div>
+
     {% endif %}
   </div>
 
@@ -72,15 +88,19 @@
 
   <div>
     {% if recipe.preparation %}
+
       {% for preparate in recipe.preparation %}
         <div class="copy">
           <input type="text" name="preparation[]" value="{{ preparate }}">
         </div>
       {% endfor %}
+
     {% else %}
+
       <div class="copy">
         <input type="text" name="preparation[]" value="{{ preparate }}">
       </div>
+      
     {% endif %}
   </div>
 

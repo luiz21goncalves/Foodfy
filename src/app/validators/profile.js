@@ -4,15 +4,15 @@ const User = require('../models/User');
 async function put(req, res, next) {
   const { password, id, email } = req.body;
 
+  const user = await User.findOne({ where: { id } });
   const usedEmail = await User.findOne({ where: { email } });
 
-  if (usedEmail)
+  if (usedEmail && user.id != id)
     return res.render('profile/index', {
       user: req.body,
       error: 'Esse email pretence a outro usuário, por favor ulitize outro.',
     });
 
-  const user = await User.findOne({ where: { id } });
   const passed = await compare(password, user.password);
 
   if (!passed)
@@ -24,6 +24,4 @@ async function put(req, res, next) {
   next();
 }
 
-module.exports = {
-  put,
-};
+module.exports = { put };

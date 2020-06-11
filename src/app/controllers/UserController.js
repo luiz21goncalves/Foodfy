@@ -4,21 +4,36 @@ const crypto = require('crypto');
 const mailer = require('../../lib/mailer');
 const User = require('../models/User');
 
+async function paginate({ filters, limit, page }) {
+  const offset = Math.ceil(limit * (page - 1));
+
+  const users = await User.paginate({ filters, offset, limit });
+
+  const count = await User.count();
+
+  const pagination = { total: Math.ceil(count / limit), page };
+
+  return { users, pagination };
+}
+
 module.exports = {
   async index(req, res) {
     let { limit, page } = req.query;
     const filters = '';
     limit = limit || 9;
     page = page || 1;
-    const offset = Math.ceil(limit * (page - 1));
 
-    const users = await User.paginate({ filters, offset, limit });
+    try {
+      const { users, pagination } = await paginate({ filters, limit, page });
 
-    const count = await User.count();
+      return res.render('user/index', { users, pagination });
+    } catch (err) {
+      console.error(err);
 
-    const pagination = { total: Math.ceil(count / limit), page };
-
-    return res.render('user/index', { users, pagination });
+      return res.render('user/index', {
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
+      });
+    }
   },
 
   create(req, res) {
@@ -26,10 +41,10 @@ module.exports = {
   },
 
   async post(req, res) {
-    try {
-      const { name, email, is_admin } = req.body;
-      const isAdmin = !!is_admin;
+    const { name, email, is_admin } = req.body;
+    const isAdmin = !!is_admin;
 
+    try {
       const password = crypto.randomBytes(4).toString('hex');
       const passwordHash = await bcrypt.hash(password, 8);
 
@@ -64,6 +79,11 @@ module.exports = {
       });
     } catch (err) {
       console.error(err);
+
+      return res.render('user/create', {
+        user: req.body,
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
+      });
     }
   },
 
@@ -74,10 +94,10 @@ module.exports = {
   },
 
   async put(req, res) {
-    try {
-      const { name, email, is_admin, id } = req.body;
-      const isAdmin = !!is_admin;
+    const { name, email, is_admin, id } = req.body;
+    const isAdmin = !!is_admin;
 
+    try {
       await User.update(id, { name, email, is_admin: isAdmin });
 
       const user = await User.findOne({ where: { id } });
@@ -88,6 +108,11 @@ module.exports = {
       });
     } catch (err) {
       console.error(err);
+
+      return res.render('user/edit', {
+        user: req.body,
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
+      });
     }
   },
 
@@ -100,13 +125,8 @@ module.exports = {
       const filters = '';
       const limit = 9;
       const page = 1;
-      const offset = 0;
 
-      const users = await User.paginate({ filters, offset, limit });
-
-      const count = await User.count();
-
-      const pagination = { total: Math.ceil(count / limit), page };
+      const { users, pagination } = await paginate({ filters, limit, page });
 
       return res.render('user/index', {
         users,
@@ -115,6 +135,11 @@ module.exports = {
       });
     } catch (err) {
       console.error(err);
+
+      return res.render('user/edit', {
+        user,
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
+      });
     }
   },
 };

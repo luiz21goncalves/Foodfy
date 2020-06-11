@@ -6,17 +6,6 @@ Base.init({ table: 'recipes' });
 module.exports = {
   ...Base,
 
-  async findAllRecipesChefName() {
-    const results = await db.query(`
-      SELECT recipes.*, chefs.name AS chef_name
-      FROM recipes
-      LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-      ORDER BY recipes.created_at DESC
-    `);
-
-    return results.rows;
-  },
-
   async create(fields) {
     try {
       const keys = [];
@@ -24,7 +13,7 @@ module.exports = {
 
       Object.keys(fields).map((key) => {
         keys.push(key);
-        if (key === 'ingredients' || key === 'preparation') {
+        if (key == 'ingredients' || key == 'preparation') {
           values.push(`'{${fields[key]}}'`);
         } else {
           values.push(`'${fields[key]}'`);
@@ -49,7 +38,7 @@ module.exports = {
       const line = [];
 
       Object.keys(fields).map((key) => {
-        if (key === 'ingredients' || key === 'preparation') {
+        if (key == 'ingredients' || key == 'preparation') {
           line.push(` ${key} = '{${fields[key]}}'`);
         } else {
           line.push(` ${key} = '${fields[key]}'`);
@@ -64,17 +53,6 @@ module.exports = {
     }
   },
 
-  findOneRecipeChefName(id) {
-    const query = `
-      SELECT recipes.*, chefs.name AS chef_name
-      FROM recipes
-      LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-      WHERE recipes.id = $1
-    `;
-
-    return db.query(query, [id]);
-  },
-
   async chefSelectionOptions() {
     const results = await db.query(`SELECT name, id FROM chefs`);
 
@@ -82,10 +60,12 @@ module.exports = {
   },
 
   async search({ filter, limit, offset }) {
-    const query = `
-      SELECT * FROM recipes
-      WHERE recipes.title ILIKE '%${filter}%'  
-      ORDER BY created_at
+    let query = `SELECT * FROM recipes`;
+
+    if (filter) query += ` WHERE recipes.title ILIKE '%${filter}%'`;
+
+    query += `       
+      ORDER BY updated_at DESC
       LIMIT ${limit}
       OFFSET ${offset}
     `;

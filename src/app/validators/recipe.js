@@ -1,9 +1,27 @@
 const Recipe = require('../models/Recipe');
 const LoadRecipeService = require('../services/LoadRecipeService');
 
+async function redirec() {
+  const filters = '';
+  const limit = 12;
+  const page = 1;
+
+  const { recipes, pagination } = await LoadRecipeService.paginate({
+    limit,
+    page,
+    filters,
+  });
+
+  return {
+    recipes,
+    pagination,
+    error: 'Chef não encontrado!',
+  };
+}
+
 async function checkAllFields(body) {
   Object.keys(body).map((key) => {
-    if (body[key] === '' && key !== 'removed_images' && key !== 'information') {
+    if (body[key] == '' && key != 'removed_images' && key != 'information') {
       return {
         error: 'Apenas o campo de informações adicionas não é obrigatário.',
       };
@@ -15,12 +33,9 @@ async function show(req, res, next) {
   const recipe = await Recipe.findOne({ where: { id: req.params.id } });
 
   if (!recipe) {
-    const recipes = await LoadRecipeService.load('recipes');
+    const data = await redirec();
 
-    return res.render('recipe/index', {
-      recipes,
-      error: 'Receita não encontrada.',
-    });
+    return res.render('recipe/index', data);
   }
 
   req.recipe = recipe;
@@ -35,15 +50,12 @@ async function edit(req, res, next) {
   let recipe = await Recipe.findOne({ where: { id: req.params.id } });
 
   if (!recipe) {
-    const recipes = await LoadRecipeService.load('recipes');
+    const data = await redirec();
 
-    return res.render('recipe/index', {
-      recipes,
-      error: 'Receita não encontrada.',
-    });
+    return res.render('recipe/index', data);
   }
 
-  if (!isAdmin && userId !== recipe.user_id) {
+  if (!isAdmin && userId != recipe.user_id) {
     recipe = await LoadRecipeService.format(recipe);
 
     return res.render('recipe/show', {
@@ -66,7 +78,7 @@ async function post(req, res, next) {
       recipe: req.body,
     });
 
-  if (req.files.length === 0) {
+  if (req.files.length == 0) {
     const chefs = await Recipe.chefSelectionOptions();
 
     return res.render('recipe/create', {
@@ -86,7 +98,13 @@ async function put(req, res, next) {
     where: { id: req.body.id },
   });
 
-  if (!isAdmin && userId !== req.body.user_id)
+  if (!recipe) {
+    const data = await redirec();
+
+    return res.render('recipe/index', data);
+  }
+
+  if (!isAdmin && userId != req.body.user_id)
     return res.render('recipe/show', {
       recipe,
       error: 'Você não tem permissão para editar ou deletar essa receita.',
@@ -104,7 +122,7 @@ async function put(req, res, next) {
   const lastIndex = removedImages.length - 1;
   removedImages.splice(lastIndex, 1);
 
-  if (req.files.length === 0 && removedImages.length >= recipe.files.length) {
+  if (req.files.length == 0 && removedImages.length >= recipe.files.length) {
     const chefs = await Recipe.chefSelectionOptions();
 
     return res.render('recipe/edit', {
@@ -123,21 +141,18 @@ async function deleteRecipe(req, res, next) {
 
   let recipe = await Recipe.findOne({ where: { id: req.body.id } });
 
-  if (!isAdmin && userId !== recipe.user_id) {
+  if (!recipe) {
+    const data = await redirec();
+
+    return res.render('recipe/index', data);
+  }
+
+  if (!isAdmin && userId != recipe.user_id) {
     recipe = await LoadRecipeService.format(recipe);
 
     return res.render('recipe/show', {
       recipe,
       error: 'Você não tem permissão para editar ou deletar essa receita.',
-    });
-  }
-
-  if (!recipe) {
-    const recipes = await LoadRecipeService.load('recipes');
-
-    return res.render('recipe/index', {
-      recipes,
-      error: 'Receita não encontrada.',
     });
   }
 

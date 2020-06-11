@@ -6,29 +6,27 @@
 
   {% call container.render("") %}
 
-  {% call actions.render("Gerenciar Receitas") %}
-  <div>
-    <a href="/admin/recipes/create" class="button">Nova receita</a>
-  </div>
-  {% endcall %}
+    {% call actions.render("Gerenciar Receitas") %}
+      <a href="/admin/recipes/create" class="button">Nova receita</a>
+    {% endcall %}
 
-  <div class="recipes">
-    {% for recipe in recipes %}
+    <div class="recipes">
+      {% for recipe in recipes %}
 
-      <article>
-        <img src="{{ recipe.img }}" alt="{{ recipe.files[0].original_name }}">
+        <article>
+          <img src="{{ recipe.img }}" alt="{{ recipe.files[0].original_name }}">
 
-        <div>
-          <p>{{ recipe.title }}</p>
-          <span>{{ recipe.chef_name }}</span>
-          <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
-        </div>
-      </article>
+          <div>
+            <p>{{ recipe.title }}</p>
+            <span>{{ recipe.chef_name }}</span>
+            <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
+          </div>
+        </article>
 
-    {% endfor %}
-  </div>
+      {% endfor %}
+    </div>
 
-  {% include "parts/pagination.njk" %}
+    {% include "parts/pagination.njk" %}
 
   {% endcall %}
 

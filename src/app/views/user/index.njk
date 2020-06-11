@@ -4,14 +4,15 @@
 
 {% block content %}
 
-  {% call()container.render("") %}
+  {% call container.render("") %}
 
-  {% call()actions.render("Usuários") %}
-  <a href="/admin/users/create" class="button">Novo</a>
+  {% call actions.render("Usuários") %}
+    <a href="/admin/users/create" class="button">Novo</a>
   {% endcall %}
 
   <div class="users">
     {% for user in users %}
+
       <article>
         <div>
           <p>{{ user.name }}</p>
@@ -29,6 +30,7 @@
           </form>
         </div>
       </article>
+
     {% endfor %}
   </div>
 

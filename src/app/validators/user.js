@@ -1,4 +1,20 @@
 const User = require('../models/User');
+const UserWithDeleted = require('../models/UserWithDeleted');
+
+async function redirect() {
+  const filters = '';
+  const limit = 9;
+  const page = 1;
+  const offset = Math.ceil(limit * (page - 1));
+
+  const users = await User.paginate({ filters, offset, limit });
+
+  const count = await User.count();
+
+  const pagination = { total: Math.ceil(count / limit), page };
+
+  return { users, pagination, error: 'Usuário não encontrado.' };
+}
 
 function checkAllFields(body) {
   const keys = Object.keys(body);
@@ -14,22 +30,9 @@ async function edit(req, res, next) {
   const user = await User.findOne({ where: { id: req.params.id } });
 
   if (!user) {
-    const filters = '';
-    const limit = 9;
-    const page = 1;
-    const offset = 0;
+    const data = await redirect();
 
-    const users = await User.paginate({ filters, offset, limit });
-
-    const count = await User.count();
-
-    const pagination = { total: Math.ceil(count / limit), page };
-
-    return res.render('user/index', {
-      users,
-      pagination,
-      error: 'Usuário não encontrado.',
-    });
+    return res.render('user/index', data);
   }
 
   req.user = user;
@@ -42,13 +45,14 @@ async function post(req, res, next) {
 
   if (fillAllFields) return res.send(fillAllFields);
 
-  const user = await User.findOne({ where: { email: req.body.email } });
+  const user = await UserWithDeleted.findOne({
+    where: { email: req.body.email },
+  });
 
   if (user)
     return res.render('user/create', {
       user: req.body,
-      error:
-        'Usuário  já cadastrado, <a href="/login">faça login</a> ou <a href="/forgot-password">recupere sua senha</a>.',
+      error: 'Email não disponível, por favor dente outro.',
     });
 
   next();
@@ -58,29 +62,16 @@ async function put(req, res, next) {
   const user = await User.findOne({ where: { id: req.body.id } });
 
   if (!user) {
-    const filters = '';
-    const limit = 9;
-    const page = 1;
-    const offset = 0;
+    const data = await redirect();
 
-    const users = await User.paginate({ filters, offset, limit });
-
-    const count = await User.count();
-
-    const pagination = { total: Math.ceil(count / limit), page };
-
-    return res.render('user/index', {
-      users,
-      pagination,
-      error: 'Usuário não encontrado.',
-    });
+    return res.render('user/index', data);
   }
 
   const fillAllFields = checkAllFields(req.body);
 
   if (fillAllFields) return res.send(fillAllFields);
 
-  const emailAvailable = await User.findOne({
+  const emailAvailable = await UserWithDeleted.findOne({
     where: { email: req.body.email },
   });
 
@@ -99,39 +90,16 @@ async function deleteUser(req, res, next) {
   const user = await User.findOne({ where: { id: req.body.id } });
 
   if (!user) {
-    const filters = '';
-    const limit = 9;
-    const page = 1;
-    const offset = 0;
+    const data = await redirect();
 
-    const users = await User.paginate({ filters, offset, limit });
-
-    const count = await User.count();
-
-    const pagination = { total: Math.ceil(count / limit), page };
-
-    return res.render('user/index', {
-      users,
-      pagination,
-      error: 'Usuário não encontrado.',
-    });
+    return res.render('user/index', data);
   }
 
-  if (user.id === loggedUserId) {
-    const filters = '';
-    const limit = 9;
-    const page = 1;
-    const offset = 0;
-
-    const users = await User.paginate({ filters, offset, limit });
-
-    const count = await User.count();
-
-    const pagination = { total: Math.ceil(count / limit), page };
+  if (user.id == loggedUserId) {
+    const data = await redirect();
 
     return res.render('user/index', {
-      users,
-      pagination,
+      ...data,
       error: 'Você não pode deletar seu próprio usuário.',
     });
   }
@@ -141,9 +109,4 @@ async function deleteUser(req, res, next) {
   next();
 }
 
-module.exports = {
-  edit,
-  post,
-  put,
-  deleteUser,
-};
+module.exports = { edit, post, put, deleteUser };

@@ -8,26 +8,25 @@ const LoadRecipeService = require('../services/LoadRecipeService');
 
 module.exports = {
   async index(req, res) {
+    let { limit, page } = req.query;
+    const filters = '';
+    limit = limit || 16;
+    page = page || 1;
+
     try {
-      let { limit, page } = req.query;
-      const filters = '';
-      limit = limit || 16;
-      page = page || 1;
-      const offset = Math.ceil(limit * (page - 1));
+      const { chefs, pagination } = await LoadChefService.paginate({
+        limit,
+        page,
+        filters,
+      });
 
-      const chefs = await Chef.paginate({ filters, limit, offset });
-
-      const chefsFormated = await Promise.all(
-        chefs.map(LoadChefService.format)
-      );
-
-      const count = await Chef.count();
-
-      const pagination = { total: Math.ceil(count / limit), page };
-
-      return res.render('chef/index', { chefs: chefsFormated, pagination });
+      return res.render('chef/index', { chefs, pagination });
     } catch (err) {
       console.error(err);
+
+      return res.render('chef/index', {
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
+      });
     }
   },
 
@@ -36,38 +35,42 @@ module.exports = {
   },
 
   async show(req, res) {
-    let { chef } = req;
+    const { chef } = req;
     let { limit, page } = req.query;
 
-    const filters = { where: { chef_id: chef.id } };
-    limit = limit || 6;
-    page = page || 1;
-    const offset = Math.ceil(limit * (page - 1));
+    try {
+      const filters = { where: { chef_id: chef.id } };
+      limit = limit || 6;
+      page = page || 1;
 
-    chef = await LoadChefService.format(chef);
+      const formatedChef = await LoadChefService.format(chef);
 
-    const recipes = await Recipe.paginate({ filters, limit, offset });
+      const { recipes, pagination } = await LoadRecipeService.paginate({
+        limit,
+        page,
+        filters,
+      });
 
-    const recipesFormated = await Promise.all(
-      recipes.map(LoadRecipeService.format)
-    );
+      return res.render('chef/show', {
+        chef: formatedChef,
+        recipes,
+        pagination,
+      });
+    } catch (err) {
+      console.error(err);
 
-    const count = await Recipe.count(filters);
-
-    const pagination = { total: Math.ceil(count / limit), page };
-
-    return res.render('chef/show', {
-      chef,
-      recipes: recipesFormated,
-      pagination,
-    });
+      return res.render('chef/show', {
+        chef,
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
+      });
+    }
   },
 
   async post(req, res) {
-    try {
-      const [file] = req.files;
-      const { name } = req.body;
+    const [file] = req.files;
+    const { name } = req.body;
 
+    try {
       const file_id = await File.create({
         name: file.filename,
         original_name: file.originalname,
@@ -86,6 +89,11 @@ module.exports = {
       });
     } catch (err) {
       console.error(err);
+
+      return res.render('chef/create', {
+        chef: req.body,
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
+      });
     }
   },
 
@@ -96,11 +104,11 @@ module.exports = {
   },
 
   async put(req, res) {
-    try {
-      const fileIdDeleted = req.body.removed_images;
-      const [file] = req.files;
-      const { id, file_id, name } = req.body;
+    const fileIdDeleted = req.body.removed_images;
+    const [file] = req.files;
+    const { id, file_id, name } = req.body;
 
+    try {
       let data = { file_id, name };
 
       if (req.files && fileIdDeleted) {
@@ -136,6 +144,11 @@ module.exports = {
       });
     } catch (err) {
       console.error(err);
+
+      return res.render('chef/edit', {
+        chef: req.body,
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
+      });
     }
   },
 
@@ -147,7 +160,7 @@ module.exports = {
         where: { chef_id: chef.id },
       });
 
-      if (recipes.length === 0) {
+      if (recipes.length == 0) {
         await Chef.delete(chef.id);
         await File.delete(chef.file_id);
 
@@ -156,20 +169,15 @@ module.exports = {
         const filters = '';
         const limit = 16;
         const page = 1;
-        const offset = 0;
 
-        const chefs = await Chef.paginate({ filters, limit, offset });
-
-        const chefsFormated = await Promise.all(
-          chefs.map(LoadChefService.format)
-        );
-
-        const count = await Chef.count();
-
-        const pagination = { total: Math.ceil(count / limit), page };
+        const { chefs, pagination } = await LoadChefService.paginate({
+          limit,
+          page,
+          filters,
+        });
 
         return res.render('chef/index', {
-          chefs: chefsFormated,
+          chefs,
           pagination,
           success: `o chef ${chef.name} deletado com sucesso.`,
         });
@@ -182,6 +190,11 @@ module.exports = {
       });
     } catch (err) {
       console.error(err);
+
+      return res.render('chef/edit', {
+        chef: req.chef,
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
+      });
     }
   },
 };

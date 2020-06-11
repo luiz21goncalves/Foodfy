@@ -8,28 +8,24 @@ const LoadRecipeService = require('../services/LoadRecipeService');
 module.exports = {
   async index(req, res) {
     try {
-      let { limit, page, filter } = req.query;
-      filter = filter || '';
+      let { limit, page } = req.query;
+      const filters = '';
       limit = limit || 12;
       page = page || 1;
-      const offset = Math.ceil(limit * (page - 1));
 
-      const recipes = await Recipe.paginate({ filter, limit, offset });
-
-      const recipesFormated = await Promise.all(
-        recipes.map(LoadRecipeService.format)
-      );
-
-      const count = await Recipe.count();
-
-      const pagination = { total: Math.ceil(count / limit), page };
-
-      return res.render('recipe/index', {
-        recipes: recipesFormated,
-        pagination,
+      const { recipes, pagination } = await LoadRecipeService.paginate({
+        limit,
+        page,
+        filters,
       });
+
+      return res.render('recipe/index', { recipes, pagination });
     } catch (err) {
       console.error(err);
+
+      return res.render('recipe/index', {
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
+      });
     }
   },
 
@@ -40,6 +36,10 @@ module.exports = {
       return res.render('recipe/create', { chefs });
     } catch (err) {
       console.error(err);
+
+      return res.render('recipe/create', {
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
+      });
     }
   },
 
@@ -83,29 +83,47 @@ module.exports = {
         success: `A receita ${recipe.title} foi criada com sucesso.`,
       });
     } catch (err) {
-      console.error('RecipeController post', err);
+      console.error(err);
+
+      return res.render('recipe/create', {
+        recipe: req.body,
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
+      });
     }
   },
 
   async show(req, res) {
+    let { recipe } = req;
+
     try {
-      let { recipe } = req;
       recipe = await LoadRecipeService.format(recipe);
 
       return res.render('recipe/show', { recipe });
     } catch (err) {
       console.error('RecipeController show', err);
 
-      return res.render('recipe/show');
+      return res.render('recipe/show', {
+        recipe,
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
+      });
     }
   },
 
   async edit(req, res) {
-    const recipe = await LoadRecipeService.format(req.recipe);
+    try {
+      const recipe = await LoadRecipeService.format(req.recipe);
 
-    const chefs = await Recipe.chefSelectionOptions();
+      const chefs = await Recipe.chefSelectionOptions();
 
-    return res.render('recipe/edit', { recipe, chefs });
+      return res.render('recipe/edit', { recipe, chefs });
+    } catch (err) {
+      console.error(err);
+
+      return res.render('recipe/edit', {
+        recipe: req.recipe,
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
+      });
+    }
   },
 
   async put(req, res) {
@@ -176,7 +194,12 @@ module.exports = {
         success: `A receita ${recipe.title} foi atualizada com sucesso.`,
       });
     } catch (err) {
-      console.error('RecipeController put', err);
+      console.error(err);
+
+      return res.render('recipe/edit', {
+        recipe: req.body,
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
+      });
     }
   },
 
@@ -198,25 +221,26 @@ module.exports = {
 
       const filters = '';
       const limit = 12;
-      const offset = 0;
+      const page = 1;
 
-      const recipes = await Recipe.paginate({ filters, limit, offset });
-
-      const recipesFormated = await Promise.all(
-        recipes.map(LoadRecipeService.format)
-      );
-
-      const count = await Recipe.count();
-
-      const pagination = { total: Math.ceil(count / limit), page: 1 };
+      const { recipes, pagination } = await LoadRecipeService.paginate({
+        limit,
+        page,
+        filters,
+      });
 
       return res.render('recipe/index', {
-        recipes: recipesFormated,
+        recipes,
         pagination,
         success: `A receita ${recipe.title} deletada com sucesso.`,
       });
     } catch (err) {
-      console.error('RecipeController delete', err);
+      console.error(err);
+
+      return res.render('recipe/edit', {
+        recipe: req.recipe,
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
+      });
     }
   },
 };

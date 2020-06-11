@@ -1,5 +1,23 @@
 const Chef = require('../models/Chef');
-const LoadChefServce = require('../services/LoadChefService');
+const LoadChefService = require('../services/LoadChefService');
+
+async function redirec() {
+  const filters = '';
+  const limit = 16;
+  const page = 1;
+
+  const { chefs, pagination } = await LoadChefService.paginate({
+    limit,
+    page,
+    filters,
+  });
+
+  return {
+    chefs,
+    pagination,
+    error: 'Chef não encontrado!',
+  };
+}
 
 function checkAllFields(body) {
   const keys = Object.keys(body);
@@ -16,12 +34,9 @@ async function checkChefs(req, res, next) {
   });
 
   if (!chef) {
-    const chefs = await LoadChefServce.load('chefs');
+    const data = await redirec();
 
-    return res.render('chef/index', {
-      chefs,
-      error: 'Chef não encontrado!',
-    });
+    return res.render('chef/index', data);
   }
 
   req.chef = chef;
@@ -46,17 +61,14 @@ async function put(req, res, next) {
   const chef = await Chef.findOne({ where: { id: req.body.id } });
 
   if (!chef) {
-    const chefs = await LoadChefServce.load('chefs');
+    const data = await redirec();
 
-    return res.render('chef/index', {
-      chefs,
-      error: 'Chef não encontrado!',
-    });
+    return res.render('chef/index', data);
   }
 
   if (fillAllFields) return res.send('Por favor, preencha todos os campos.');
 
-  if (req.body.removed_images && req.files.length === 0)
+  if (req.body.removed_images && req.files.length == 0)
     return res.send('Por favor, envie pelo menos uma image.');
 
   next();
@@ -64,7 +76,7 @@ async function put(req, res, next) {
 
 async function onlyAdmin(req, res, next) {
   if (!req.session.isAdmin) {
-    const chefs = await LoadChefServce.load('chefs');
+    const chefs = await LoadChefService.load('chefs');
 
     return res.render('chef/index', {
       chefs,
@@ -76,9 +88,4 @@ async function onlyAdmin(req, res, next) {
   next();
 }
 
-module.exports = {
-  checkChefs,
-  onlyAdmin,
-  post,
-  put,
-};
+module.exports = { checkChefs, onlyAdmin, post, put };

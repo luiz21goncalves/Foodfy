@@ -6,45 +6,51 @@
 
   {% call()container.render("profile") %}
 
-  <form action="/admin/profile?_method=PUT" method="post">
+    <form action="/admin/profile?_method=PUT" method="post">
 
-    {% call()actions.render("Bem vindo " + user.firstName) %}
+      {% call()actions.render("Bem vindo " + user.firstName) %}
 
-    <button type="submit" class="button">Salvar</button>
+        <button 
+          type="submit" 
+          class="button" 
+          onclick="Validate.allFields(event)"
+        >
+          Salvar
+        </button>
 
-    {% endcall %}
+      {% endcall %}
 
-    <div class="fields">
+      <div class="fields">
 
-      <div class="item">
-        <label for="name">Nome</label>
+        <div class="item">
+          <label for="name">Nome</label>
 
-        <div class="input">
-          <input id="name" type="text" name="name" placeholder="Digite o nome completo" value="{{ user.name }}">
+          <div class="input">
+            <input id="name" type="text" name="name" placeholder="Digite o nome completo" value="{{ user.name }}">
+          </div>
         </div>
+
+        <div class="item">
+          <label for="email">Email</label>
+
+          <div class="input">
+            <input id="email" type="email" name="email" placeholder="Digite o email" value="{{ user.email }}">
+          </div>
+        </div>
+
+        <div class="item">
+          <label for="password">Senha</label>
+
+          <div class="input">
+            <input id="password" type="password" name="password" placeholder="Digite a senha">
+          </div>
+        </div>
+
       </div>
 
-      <div class="item">
-        <label for="email">Email</label>
+      <input type="hidden" name="id" value="{{ user.id }}">
 
-        <div class="input">
-          <input id="email" type="email" name="email" placeholder="Digite o email" value="{{ user.email }}">
-        </div>
-      </div>
-
-      <div class="item">
-        <label for="password">Senha</label>
-
-        <div class="input">
-          <input id="password" type="password" name="password" placeholder="Digite a senha">
-        </div>
-      </div>
-
-    </div>
-
-    <input type="hidden" name="id" value="{{ user.id }}">
-
-  </form>
+    </form>
 
   {% endcall %}
 

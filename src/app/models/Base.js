@@ -13,9 +13,6 @@ function find(filters, table) {
     });
   }
 
-  if (table == 'users' || table == 'recipes' || table == 'chefs')
-    query += ` ORDER BY created_at DESC`;
-
   return db.query(query);
 }
 
@@ -137,7 +134,7 @@ const Base = {
     const query = `
       SELECT * FROM ${this.table}
       ${filterquery}
-      ORDER BY created_at
+      ORDER BY created_at DESC
       LIMIT ${limit}
       OFFSET ${offset}
     `;

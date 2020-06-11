@@ -22,7 +22,7 @@ let chefsIds;
 
 async function createUsers() {
   const users = [];
-  const password = await hash('123456', 8);
+  const password = await hash(process.env.USERS_PASSWORD, 8);
 
   while (users.length < totalUsers) {
     users.push({

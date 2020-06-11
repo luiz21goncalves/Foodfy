@@ -5,19 +5,29 @@
 {% block content %}
 
   {% call container.render("") %}
-  <form action="/admin/recipes" method="post" enctype="multipart/form-data">
 
-    {% call actions.render("Criando Receita") %}
-    <div>
-      <button type="submit" class="button" onclick="Validate.allFieldsRecipes(event)">Salvar receita</button>
-    </div>
-    {% endcall %}
+    <form action="/admin/recipes" method="post" enctype="multipart/form-data">
 
-    <div class="fields recipe">
-      {% include "recipe/fields.njk" %}
-    </div>
+      {% call actions.render("Criando Receita") %}
+        <div>
+          <button 
+            type="submit" 
+            class="button" 
+            onclick="Validate.allFieldsRecipes(event)"
+          >
+            Salvar receita
+          </button>
+          
+          <a href="/admin/recipes" class="button cancel">Cancelar</a>
+        </div>
+      {% endcall %}
 
-  </form>
+      <div class="fields recipe">
+        {% include "recipe/fields.njk" %}
+      </div>
+
+    </form>
+
   {% endcall %}
 
 {% endblock content %}

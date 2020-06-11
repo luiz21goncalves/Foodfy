@@ -5,32 +5,40 @@
 {% block content %}
 
   {% call container.render("") %}
-  <form id="form-delete" action="/admin/recipes?_method=DELETE" method="post">
-    <input type="hidden" name="id" value="{{ recipe.id }}">
-  </form>
 
-  <form action="/admin/recipes?_method=PUt" method="post" enctype="multipart/form-data">
+    <form id="form-delete" action="/admin/recipes?_method=DELETE" method="post">
+      <input type="hidden" name="id" value="{{ recipe.id }}">
+    </form>
 
-    {% call actions.render("Editando Receita") %}
+    <form action="/admin/recipes?_method=PUt" method="post" enctype="multipart/form-data">
 
-    {% if (session.isAdmin) 
-      or(session.userId == recipe.user_id) %}
-      <div>
-        <a onclick="submit()" class="button delete">Deletar</a>
-        <button type="submit" class="button" onclick="Validate.allFieldsRecipes(event)">Salva receita</button>
+      {% call actions.render("Editando Receita") %}
+
+        {% if (session.isAdmin) or (session.userId == recipe.user_id) %}
+          <div>
+            <a onclick="submit()" class="button delete">Deletar</a>
+
+            <button 
+              type="submit" 
+              class="button" 
+              onclick="Validate.allFieldsRecipes(event)"
+            >
+              Salva receita
+            </button>
+          </div>
+        {% endif %}
+
+      {% endcall %}
+
+      <div class="fields recipe">
+        {% include "recipe/fields.njk" %}
       </div>
-    {% endif %}
 
-    {% endcall %}
+      <input type="hidden" name="id" value="{{ recipe.id }}">
+      <input type="hidden" name="user_id" value="{{ recipe.user_id }}">
 
-    <div class="fields recipe">
-      {% include "recipe/fields.njk" %}
-    </div>
+    </form>
 
-    <input type="hidden" name="id" value="{{ recipe.id }}">
-    <input type="hidden" name="user_id" value="{{ recipe.user_id }}">
-
-  </form>
   {% endcall %}
 
   {% include "parts/confirm.njk" %}

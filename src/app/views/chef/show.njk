@@ -6,40 +6,39 @@
 
   {% call()container.render("") %}
 
-  {% call()actions.render("Chef: " + chef.name) %}
-  {% if session.isAdmin %}
-    <a href="/admin/chefs/{{ chef.id }}/edit" class="button">Editar chef</a>
-  {% endif %}
-  {% endcall %}
+    {% call()actions.render("Chef: " + chef.name) %}
+      {% if session.isAdmin %}
+        <a href="/admin/chefs/{{ chef.id }}/edit" class="button">
+          Editar chef
+        </a>
+      {% endif %}
+    {% endcall %}
 
-  <div class="chef-datail">
-    <img src="{{chef.img}}" alt="{{ chef.file.original_name }}">
-    <h1>{{ chef.name }}</h1>
-    <p>{{ chef.total }}
-      receitas
-    </p>
-  </div>
+    <div class="chef-datail">
+      <img src="{{chef.img}}" alt="{{ chef.file.original_name }}">
+      <h1>{{ chef.name }}</h1>
+      <p>{{ chef.total }} receitas</p>
+    </div>
 
-  <h2>Receitas</h2>
+    <h2>Receitas</h2>
 
-  <div class="recipes">
+    <div class="recipes">
+      {% for recipe in recipes %}
 
-    {% for recipe in recipes %}
+        <article>
+          <img src="{{ recipe.img }}" alt="{{ recipe.files[0].original_name }}">
 
-      <article>
-        <img src="{{ recipe.img }}" alt="{{ recipe.files[0].original_name }}">
+          <div>
+            <p>{{ recipe.title }}</p>
+            <span>{{ chef.name }}</span>
+            <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
+          </div>
+        </article>
 
-        <div>
-          <p>{{ recipe.title }}</p>
-          <span>{{ chef.name }}</span>
-          <a href="/admin/recipes/{{ recipe.id }}">Visualizar</a>
-        </div>
-      </article>
+      {% endfor %}
+    </div>
 
-    {% endfor %}
-  </div>
-
-  {% include "parts/pagination.njk" %}
+    {% include "parts/pagination.njk" %}
 
   {% endcall %}
 

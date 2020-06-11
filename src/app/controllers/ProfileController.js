@@ -2,17 +2,25 @@ const User = require('../models/User');
 
 module.exports = {
   async index(req, res) {
-    const user = await User.findOne({ where: { id: req.session.userId } });
-    const [name] = user.name.split(' ');
-    user.firstName = name;
+    try {
+      const user = await User.findOne({ where: { id: req.session.userId } });
+      const [name] = user.name.split(' ');
+      user.firstName = name;
 
-    return res.render('profile/index', { user });
+      return res.render('profile/index', { user });
+    } catch (err) {
+      console.error(err);
+
+      return res.render('profile/index', {
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
+      });
+    }
   },
 
   async put(req, res) {
-    try {
-      const { name, email, id } = req.body;
+    const { name, email, id } = req.body;
 
+    try {
       await User.update(id, { name, email });
 
       const user = await User.findOne({ where: { id } });
@@ -28,7 +36,7 @@ module.exports = {
 
       return res.render('profile/index', {
         user: req.body,
-        error: 'Erro inesperado, por favor tente novamente. ',
+        error: 'Desculpe ocorreu um erro, por favor tente novamente',
       });
     }
   },

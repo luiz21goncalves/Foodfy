@@ -56,6 +56,36 @@ const LoadService = {
     }
   },
 
+  async paginate({ limit, page, filters }) {
+    const offset = Math.ceil(limit * (page - 1));
+
+    const totalRecipes = await Recipe.paginate({ filters, limit, offset });
+
+    const recipes = await Promise.all(totalRecipes.map(this.format));
+
+    const count = await Recipe.count(filters);
+
+    const pagination = { total: Math.ceil(count / limit), page };
+
+    return { recipes, pagination };
+  },
+
+  async search({ limit, page, filter }) {
+    const offset = Math.ceil(limit * (page - 1));
+
+    const totalRecipes = await Recipe.search({ filter, limit, offset });
+
+    const recipes = await Promise.all(totalRecipes.map(this.format));
+
+    let count = await Recipe.countSearch(filter);
+
+    if (!filter) count = await Recipe.count();
+
+    const pagination = { total: Math.ceil(count / limit), page };
+
+    return { recipes, pagination };
+  },
+
   format,
 };
 

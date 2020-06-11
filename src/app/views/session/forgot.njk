@@ -3,32 +3,41 @@
 
 {% block content %}
 
-  {% call()container.render("", "login") %}
+  {% call container.render("", "login") %}
 
-  <div class="logo">
-    <img src="/assets/logo.png" alt="logo Foodfy">
-  </div>
-
-  <h2>Esqueceu a Senha?</h2>
-
-  <form action="/forgot-password" method="post">
-    <div class="fields">
-
-      <div class="item">
-        <label for="email">Email</label>
-
-        <div class="input">
-          <input type="email" name="email" id="email" placeholder="Digite seu email para recuperar sua senha" value="{{ user.email }}" onblur="Validate.apply(this, 'isEmail')">
-        </div>
-      </div>
-
-      <div class="footer">
-        <div></div>
-        <button type="submit" class="button">Acessar</button>
-      </div>
-
+    <div class="logo">
+      <img src="/assets/logo.png" alt="logo Foodfy">
     </div>
-  </form>
+
+    <h2>Esqueceu a Senha?</h2>
+
+    <form action="/forgot-password" method="post">
+
+      <div class="fields">
+
+        <div class="item">
+          <label for="email">Email</label>
+
+          <div class="input">
+            <input type="email" name="email" id="email" placeholder="Digite seu email para recuperar sua senha" value="{{ user.email }}" onblur="Validate.apply(this, 'isEmail')">
+          </div>
+        </div>
+
+        <div class="footer">
+          <div></div>
+
+          <button 
+            type="submit" 
+            class="button" 
+            onclick="Validate.allFields(event)"
+          >
+            Acessar
+          </button>
+        </div>
+        
+      </div>
+
+    </form>
 
   {% endcall %}
 

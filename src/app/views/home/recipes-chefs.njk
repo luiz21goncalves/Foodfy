@@ -5,38 +5,34 @@
 
   {% call container.render("", "") %}
 
-  <div class="chef-datail">
-    <img src="{{chef.img}}" alt="{{ chef.file.original_name }}">
-    <h1>{{ chef.name }}</h1>
-    <p>{{ chef.total }}
-      receitas
-    </p>
-  </div>
+    <div class="chef-datail">
+      <img src="{{chef.img}}" alt="{{ chef.file.original_name }}">
+      <h1>{{ chef.name }}</h1>
+      <p>{{ chef.total }} receitas</p>
+    </div>
 
-  <div class="title">
-    <h2>Receitas</h2>
-  </div>
+    <div class="title">
+      <h2>Receitas</h2>
+    </div>
 
-  <div class="recipes">
+    <div class="recipes">
+      {% for recipe in recipes %}
 
-    {% for recipe in recipes %}
+        <article>
+          <a href="/recipes/{{recipe.id}}">
+            <img src="{{ recipe.img }}" alt="{{ recipe.files[0].original_name }}">
+          </a>
 
-      <article>
-        <a href="/recipes/{{recipe.id}}">
-          <img src="{{ recipe.img }}" alt="{{ recipe.files[0].original_name }}">
-        </a>
+          <div>
+            <p>{{ recipe.title }}</p>
+            <span>{{ recipe.chef_name }}</span>
+          </div>
+        </article>
 
-        <div>
-          <p>{{ recipe.title }}</p>
-          <span>{{ recipe.chef_name }}</span>
-        </div>
-      </article>
+      {% endfor %}
+    </div>
 
-    {% endfor %}
-
-  </div>
-
-  {% include "parts/pagination.njk" %}
+    {% include "parts/pagination.njk" %}
 
   {% endcall %}
 

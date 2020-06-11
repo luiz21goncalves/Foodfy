@@ -5,27 +5,24 @@
 
   {% call container.render("", "") %}
 
-  <div class="chefs">
+    <div class="chefs">
+      {% for chef in chefs %}
+        <article>
 
-    {% for chef in chefs %}
+          <a href="/chefs/{{ chef.id }}">
+            <img src="{{ chef.img }}" alt="Imagem de {{ chef.file.original_name }}">
+          </a>
 
-      <article>
-        <a href="/chefs/{{ chef.id }}">
-          <img src="{{ chef.img }}" alt="Imagem de {{ chef.file.original_name }}">
-        </a>
+          <div>
+            <p>{{ chef.name }}</p>
+            <span>{{ chef.total }} receitas</span>
+          </div>
+          
+        </article>
+      {% endfor %}
+    </div>
 
-        <div>
-          <p>{{ chef.name }}</p>
-          <span>{{ chef.total }}
-            receitas</span>
-        </div>
-      </article>
-
-    {% endfor %}
-
-  </div>
-
-  {% include "parts/pagination.njk" %}
+    {% include "parts/pagination.njk" %}
 
   {% endcall %}
 

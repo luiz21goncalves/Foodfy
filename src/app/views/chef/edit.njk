@@ -3,27 +3,35 @@
 {% import "parts/actions.njk" as actions %}
 
 {% block content %}
+
   {% call()container.render("") %}
 
-  <form id="form-delete" action="/admin/chefs?_method=DELETE" method="post">
-    <input type="hidden" name="id" value="{{ chef.id }}">
-  </form>
+    <form id="form-delete" action="/admin/chefs?_method=DELETE" method="post">
+      <input type="hidden" name="id" value="{{ chef.id }}">
+    </form>
 
-  <form action="/admin/chefs?_method=PUT" method="post" enctype="multipart/form-data">
+    <form action="/admin/chefs?_method=PUT" method="post" enctype="multipart/form-data">
 
-    {% call()actions.render("Editando Chef:" + chef.name) %}
-    <div>
-      <a onclick="submit()" class="button delete">Deletar</a>
-      <button type="submit" class="button" onclick="Validate.allFieldsChefs(event)">Salva chef</button>
-    </div>
-    {% endcall %}
+      {% call()actions.render("Editando Chef: " + chef.name) %}
+        <div>
+          <a onclick="submit()" class="button delete">Deletar</a>
 
-    <div class="fields">
-      {% include "chef/fields.njk" %}
-    </div>
+          <button 
+            type="submit" 
+            class="button" 
+            onclick="Validate.allFieldsChefs(event)"
+          >
+            Salvar chef
+          </button>
+        </div>
+      {% endcall %}
 
-    <input type="hidden" name="id" value="{{ chef.id }}">
-  </form>
+      <div class="fields">
+        {% include "chef/fields.njk" %}
+      </div>
+
+      <input type="hidden" name="id" value="{{ chef.id }}">
+    </form>
 
   {% endcall %}
 

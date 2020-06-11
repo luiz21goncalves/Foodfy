@@ -50,6 +50,20 @@ const LoadService = {
     }
   },
 
+  async paginate({ limit, page, filters }) {
+    const offset = Math.ceil(limit * (page - 1));
+
+    const totalChefs = await Chef.paginate({ filters, limit, offset });
+
+    const chefs = await Promise.all(totalChefs.map(this.format));
+
+    const count = await Chef.count(filters);
+
+    const pagination = { total: Math.ceil(count / limit), page };
+
+    return { chefs, pagination };
+  },
+
   format,
 };
 

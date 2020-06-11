@@ -6,30 +6,32 @@
 
   {% call()container.render('') %}
 
-  {% call()actions.render("Gerenciar Chefs") %}
+    {% call()actions.render("Gerenciar Chefs") %}
 
-  {% if session.isAdmin %}
-    <a href="/admin/chefs/create" class="button">Novo chef</a>
-  {% endif %}
+      {% if session.isAdmin %}
+        <a href="/admin/chefs/create" class="button">Novo chef</a>
+      {% endif %}
 
-  {% endcall %}
+    {% endcall %}
 
-  <div class="chefs">
-    {% for chef in chefs %}
+    <div class="chefs">
 
-      <article>
-        <img src="{{ chef.img }}" alt="{{ chef.file.original_name }}">
+      {% for chef in chefs %}
 
-        <div>
-          <p>{{ chef.name }}</p>
-          <a href="/admin/chefs/{{ chef.id }}">Visualisar</a>
-        </div>
-      </article>
+        <article>
+          <img src="{{ chef.img }}" alt="{{ chef.file.original_name }}">
 
-    {% endfor %}
-  </div>
+          <div>
+            <p>{{ chef.name }}</p>
+            <a href="/admin/chefs/{{ chef.id }}">Visualisar</a>
+          </div>
+        </article>
 
-  {% include "parts/pagination.njk" %}
+      {% endfor %}
+      
+    </div>
+
+    {% include "parts/pagination.njk" %}
 
   {% endcall %}
 

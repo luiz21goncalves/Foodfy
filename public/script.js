@@ -1,15 +1,15 @@
 const currentPage = location.pathname;
 const menuItems = document.querySelectorAll('header nav a');
 
+if (currentPage.includes('profile')) {
+  menuItems[2].classList.add('active');
+}
+
 for (const item of menuItems) {
   if (currentPage.includes(item.getAttribute('href'))) {
     if (currentPage.includes('search') || currentPage == '/recipes') {
       const form = document.querySelector('header .content div #search');
       form.classList.add('active');
-    }
-
-    if (currentPage.includes('profile')) {
-      menuItems[3].classList.add('active');
     }
 
     item.classList.add('active');
@@ -41,7 +41,7 @@ function addInput(button) {
 
   const newField = fieldContainer[fieldContainer.length - 1].cloneNode(true);
 
-  if (newField.children[0].value === '') return false;
+  if (newField.children[0].value == '') return false;
 
   newField.children[0].value = '';
   div.appendChild(newField);
@@ -327,7 +327,7 @@ const Validate = {
   },
   allFields(event) {
     const items = document.querySelectorAll(
-      '.item input[type=text], .item input[type=email], .item select, .item textarea'
+      '.item input[type=text], .item input[type=email], .item input[type=password], .item select, .item textarea'
     );
 
     for (const item of items) {

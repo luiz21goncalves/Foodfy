@@ -1,4 +1,5 @@
 const multer = require('multer');
+const { randomBytes } = require('crypto');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -6,13 +7,13 @@ const storage = multer.diskStorage({
   },
 
   filename: (req, file, cb) => {
-    cb(null, `${Date.now().toString()}-${file.originalname}`);
+    cb(null, `${randomBytes(14).toString('hex')}-${file.originalname}`);
   },
 });
 
 const fileFilter = (req, file, cb) => {
   const isAccepted = ['image/png', 'image/jpg', 'image/jpeg'].find(
-    (accepetedFormat) => accepetedFormat === file.mimetype
+    (accepetedFormat) => accepetedFormat == file.mimetype
   );
 
   if (isAccepted) return cb(null, true);
