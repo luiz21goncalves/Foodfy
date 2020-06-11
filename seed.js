@@ -1,8 +1,9 @@
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 const { hash } = require('bcryptjs');
 const { randomBytes } = require('crypto');
 const faker = require('faker');
 const fs = require('fs');
-const path = require('path');
 
 faker.locale = 'pt_BR';
 
@@ -12,9 +13,9 @@ const Recipe = require('./src/app/models/Recipe');
 const RecipeFile = require('./src/app/models/RecipeFile');
 const File = require('./src/app/models/File');
 
-const totalUsers = 4;
-const totalChefs = 8;
-const totalRecipes = 16;
+const totalUsers = process.env.TOTAL_USERS;
+const totalChefs = process.env.TOTAL_CHEFS;
+const totalRecipes = process.env.TOTAL_RECIPES;
 const totalImagePerRecipe = 2;
 let usersIds;
 let chefsIds;
@@ -99,7 +100,7 @@ async function createRecipes() {
   const recipeFiles = [];
 
   while (recipes.length < totalRecipes) {
-    const max = 8;
+    const max = 16;
     const min = 4;
     const ingredients = [];
     const preparation = [];

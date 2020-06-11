@@ -1,3 +1,5 @@
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
 const express = require('express');
 const nunjuncks = require('nunjucks');
 const methodOverride = require('method-override');
@@ -27,4 +29,4 @@ nunjuncks.configure('src/app/views', {
 
 server.use((req, res) => res.status(404).render('not-found'));
 
-server.listen(5000, () => console.log('server is running'));
+server.listen(process.env.PORT || 5000, () => console.log('server is running'));
