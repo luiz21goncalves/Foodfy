@@ -33,6 +33,8 @@ async function createUsers() {
     });
   }
 
+  console.log(users)
+
   usersIds = await Promise.all(users.map((user) => User.create(user)));
 }
 
