@@ -10,7 +10,7 @@ async function put(req, res, next) {
   if (usedEmail && user.id != id)
     return res.render('profile/index', {
       user: req.body,
-      error: 'Esse email pretence a outro usuário, por favor ulitize outro.',
+      error: 'Esse email pertence a outro usuário, por favor utilize outro.',
     });
 
   const passed = await compare(password, user.password);

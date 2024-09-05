@@ -21,7 +21,7 @@ function checkAllFields(body) {
 
   for (const key of keys) {
     if (body[key] == '' && key != 'is_admin') {
-      return 'Apenas o campo de admistrador não é obrigatório.';
+      return 'Apenas o campo de administrador não é obrigatório.';
     }
   }
 }
@@ -78,7 +78,7 @@ async function put(req, res, next) {
   if (emailAvailable) {
     return res.render('user/edit', {
       user: req.body,
-      error: 'Esse email pretence a outro usuário, por favor ulitize outro.',
+      error: 'Esse email pertence a outro usuário, por favor utilize outro.',
     });
   }
 

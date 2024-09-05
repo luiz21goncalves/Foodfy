@@ -53,11 +53,11 @@ async function createChefs() {
 
   function copyFile() {
     const fileLength = faker.random.number(filesName.length - 1);
-    const origianalName = filesName[fileLength];
-    const newName = `${randomBytes(14).toString('hex')}-${origianalName}`;
+    const originalName = filesName[fileLength];
+    const newName = `${randomBytes(14).toString('hex')}-${originalName}`;
 
     const pathIn = fs.createReadStream(
-      path.resolve(__dirname, 'seeds', 'chefs', `${origianalName}`)
+      path.resolve(__dirname, 'seeds', 'chefs', `${originalName}`)
     );
     const pathOut = fs.createWriteStream(
       path.resolve(__dirname, 'public', 'images', `${newName}`)
@@ -67,7 +67,7 @@ async function createChefs() {
 
     return {
       path: WriteStream.path.replace(`${path.resolve(__dirname)}/`, ''),
-      origianalName,
+      originalName: originalName,
       newName,
     };
   }
@@ -77,7 +77,7 @@ async function createChefs() {
 
     files.push({
       name: file.newName,
-      original_name: file.origianalName,
+      original_name: file.originalName,
       path: file.path,
     });
   }
@@ -146,11 +146,11 @@ async function createRecipes() {
 
   function copyFile() {
     const fileLength = faker.random.number(filesName.length - 1);
-    const origianalName = filesName[fileLength];
-    const newName = `${randomBytes(14).toString('hex')}-${origianalName}`;
+    const originalName = filesName[fileLength];
+    const newName = `${randomBytes(14).toString('hex')}-${originalName}`;
 
     const pathIn = fs.createReadStream(
-      path.resolve(__dirname, 'seeds', 'recipes', `${origianalName}`)
+      path.resolve(__dirname, 'seeds', 'recipes', `${originalName}`)
     );
     const pathOut = fs.createWriteStream(
       path.resolve(__dirname, 'public', 'images', `${newName}`)
@@ -160,7 +160,7 @@ async function createRecipes() {
 
     return {
       path: WriteStream.path.replace(`${path.resolve(__dirname)}/`, ''),
-      origianalName,
+      originalName: originalName,
       newName,
     };
   }
@@ -170,7 +170,7 @@ async function createRecipes() {
 
     files.push({
       name: file.newName,
-      original_name: file.origianalName,
+      original_name: file.originalName,
       path: file.path,
     });
   }

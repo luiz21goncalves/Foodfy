@@ -34,7 +34,7 @@ async function forgot(req, res, next) {
   if (!user)
     return res.render('session/forgot', {
       user: req.body,
-      error: 'Usuário não cadastrdo.',
+      error: 'Usuário não cadastrado.',
     });
 
   req.user = user;

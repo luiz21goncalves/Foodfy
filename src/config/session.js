@@ -10,7 +10,7 @@ module.exports = session({
   }),
   secret: process.env.SESSION_SECRET,
   resave: process.env.SESSION_RESAVE,
-  saveUninitialized: process.env.SESSION_SAVE_UNITIALIZED,
+  saveUninitialized: process.env.SESSION_SAVE_INITIALIZED,
   cookie: {
     maxAge: process.env.SESSION_COOKIE_MAX_AGE,
   },

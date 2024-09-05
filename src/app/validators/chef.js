@@ -1,7 +1,7 @@
 const Chef = require('../models/Chef');
 const LoadChefService = require('../services/LoadChefService');
 
-async function redirec() {
+async function redirect() {
   const filters = '';
   const limit = 16;
   const page = 1;
@@ -34,7 +34,7 @@ async function checkChefs(req, res, next) {
   });
 
   if (!chef) {
-    const data = await redirec();
+    const data = await redirect();
 
     return res.render('chef/index', data);
   }
@@ -61,7 +61,7 @@ async function put(req, res, next) {
   const chef = await Chef.findOne({ where: { id: req.body.id } });
 
   if (!chef) {
-    const data = await redirec();
+    const data = await redirect();
 
     return res.render('chef/index', data);
   }

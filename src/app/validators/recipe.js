@@ -1,7 +1,7 @@
 const Recipe = require('../models/Recipe');
 const LoadRecipeService = require('../services/LoadRecipeService');
 
-async function redirec() {
+async function redirect() {
   const filters = '';
   const limit = 12;
   const page = 1;
@@ -33,7 +33,7 @@ async function show(req, res, next) {
   const recipe = await Recipe.findOne({ where: { id: req.params.id } });
 
   if (!recipe) {
-    const data = await redirec();
+    const data = await redirect();
 
     return res.render('recipe/index', data);
   }
@@ -50,7 +50,7 @@ async function edit(req, res, next) {
   let recipe = await Recipe.findOne({ where: { id: req.params.id } });
 
   if (!recipe) {
-    const data = await redirec();
+    const data = await redirect();
 
     return res.render('recipe/index', data);
   }
@@ -99,7 +99,7 @@ async function put(req, res, next) {
   });
 
   if (!recipe) {
-    const data = await redirec();
+    const data = await redirect();
 
     return res.render('recipe/index', data);
   }
@@ -142,7 +142,7 @@ async function deleteRecipe(req, res, next) {
   let recipe = await Recipe.findOne({ where: { id: req.body.id } });
 
   if (!recipe) {
-    const data = await redirec();
+    const data = await redirect();
 
     return res.render('recipe/index', data);
   }
