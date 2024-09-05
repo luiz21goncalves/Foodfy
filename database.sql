@@ -1,12 +1,3 @@
--- Delete a tabale se existir 
---(Selecione apenas a linha 3 e aplique a alteração, não esteja com a DB que vai deletar selecionada)
-DROP DATABASE IF EXISTS foodfy;
-
--- Crie a tabela e a selecione
-CREATE DATABASE foodfy;
-
--- Selecione a partir da linha 10 e crie as tabelas, triggers e views 
--- (confira se a DB foodfy esta selecionada)
 CREATE TABLE "files" (
   "id" serial PRIMARY KEY,
   "name" text NOT NULL,
